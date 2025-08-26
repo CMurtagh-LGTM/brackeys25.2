@@ -14,11 +14,11 @@ noise = SubResource("FastNoiseLite_3dxm6")
 colors = PackedColorArray(0, 0, 0, 1, 0.0627451, 0.0627451, 0.0627451, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_r0du0"]
+noise_type = 0
 frequency = 1.0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cm0pq"]
-width = 1152
-height = 648
+seamless = true
 color_ramp = SubResource("Gradient_uu6xs")
 noise = SubResource("FastNoiseLite_r0du0")
 
@@ -61,8 +61,6 @@ shader_parameter/interval = 0.5
 shader_parameter/noise_offset = SubResource("NoiseTexture2D_uu6xs")
 shader_parameter/noise_grain = SubResource("NoiseTexture2D_cm0pq")
 shader_parameter/noise_grain2 = SubResource("NoiseTexture2D_fos0i")
-shader_parameter/vignette_inner_radius = 0.1
-shader_parameter/vignette_outer_radius = 1.5
 shader_parameter/perlin_noise_cloud = SubResource("NoiseTexture2D_3dxm6")
 shader_parameter/cell_noise_cloud = SubResource("NoiseTexture2D_lgr22")
 

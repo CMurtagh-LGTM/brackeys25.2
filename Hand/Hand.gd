@@ -22,6 +22,7 @@ func add_card(card: Card, index: int = -1) -> void:
 	else:
 		_cards.insert(index, card)
 	add_child(card)
+	card.reveal(globals.open_hands or _ai == null)
 	if _ai == null:
 		card.clicked.connect(_on_card_clicked.bind(card))
 		card.hovered.connect(_on_card_hovered.bind(card))
@@ -97,10 +98,6 @@ func _update_focused_card() -> void:
 			focused_card.set_can_play(Card.CanPlay.YES)
 		else:
 			focused_card.set_can_play(Card.CanPlay.NO)
-
-func _ready() -> void:
-	for card: Card in _cards:
-		card.reveal(globals.open_hands or _ai == null)
 
 func _has_suit(suit: Suit) -> bool:
 	for card: Card in _cards:

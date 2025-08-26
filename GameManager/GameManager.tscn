@@ -24,21 +24,26 @@ text = "Next
 [node name="Pips" type="Node2D" parent="."]
 
 [node name="Pip0" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
 position = Vector2(576, 324)
 texture = ExtResource("3_pe3qf")
 
 [node name="Pip1" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
 position = Vector2(41, 49)
 texture = ExtResource("3_pe3qf")
 
 [node name="Pip2" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
 position = Vector2(1111, 49)
 texture = ExtResource("3_pe3qf")
 
 [node name="Pip3" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
 position = Vector2(1111, 599)
 texture = ExtResource("3_pe3qf")
 
 [node name="Pip4" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
 position = Vector2(41, 599)
 texture = ExtResource("3_pe3qf")

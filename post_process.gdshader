@@ -5,11 +5,11 @@ uniform sampler2D screen_texture : hint_screen_texture;
 uniform float interval = 0.5; // the displacement will happen every [interval] seconds
 
 uniform sampler2D noise_offset;
-uniform sampler2D noise_grain;
+uniform sampler2D noise_grain: repeat_enable;
 uniform sampler2D noise_grain2;
 
-uniform float vignette_inner_radius = 0.1;
-uniform float vignette_outer_radius = 1.5;
+const float vignette_inner_radius = 0.2;
+const float vignette_outer_radius = 1.5;
 
 uniform sampler2D perlin_noise_cloud: repeat_enable;
 uniform sampler2D cell_noise_cloud: repeat_enable;
@@ -63,23 +63,22 @@ void fragment() {
 	vec4 original_color = vec4(blur(screen_texture, uv, SCREEN_PIXEL_SIZE), 1.0);
 	
 	// Clouds
-	vec2 uv1 = vec2(uv.x + TIME * 0.004, uv.y + TIME * 0.001);
+	vec2 grain_uv = vec2(uv.x + TIME * 0.008, uv.y + TIME * 0.002) + vec2(cos(TIME)*0.005, sin(TIME)*0.01);
 	vec2 uv2 = vec2(uv.x + TIME * 0.006, uv.y + TIME * 0.001);
-	float noise1 = blur_cloud(perlin_noise_cloud, uv1, SCREEN_PIXEL_SIZE).r;
+	float noise1 = blur_cloud(perlin_noise_cloud, grain_uv, SCREEN_PIXEL_SIZE).r;
 	float noise2 = blur_cloud(cell_noise_cloud, uv2, SCREEN_PIXEL_SIZE).r;
 	float noise = smoothstep(noise1 * noise2, 0.0, 0.15) * 0.1;
 	original_color.rgb = mix(original_color.rgb, vec3(0.96, 0.87, 0.70), noise);
 
 	// Grain
-	vec2 grain_offset = vec2(cos(TIME)*0.01, sin(TIME)*0.005);
-	original_color.rgb -= texture(noise_grain, SCREEN_UV + grain_offset).rgb
+	original_color.rgb -= texture(noise_grain, SCREEN_UV + grain_uv * 2.0).rgb
 		+ texture(noise_grain2, SCREEN_UV).rgb;
 	original_color = clamp(original_color, 0.0, 1.0);
 
 	// Vignette
 	vec2 clip = abs(UV.xy - 0.5) * 2.0;
-	float inner_radius = vignette_inner_radius + cos(TIME*0.5)*0.1;
-	float outer_radius = vignette_outer_radius + cos(TIME*0.5)*0.1;
+	float inner_radius = vignette_inner_radius + cos(TIME*0.66)*0.01;
+	float outer_radius = vignette_outer_radius + cos(TIME*0.66)*0.05;
 	float vignette = 1.0 - (1.0 - length(clip)/outer_radius)/(1.0 - inner_radius);
 	original_color.rgb = mix(original_color.rgb, vec3(0.0), vignette);
 	
