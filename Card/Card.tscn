@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://cjo5i2haxfp05"]
+
+[ext_resource type="Script" uid="uid://dx7xolpo3n2vx" path="res://Card/Card.gd" id="1_6ma3f"]
+[ext_resource type="Resource" uid="uid://b3lvyvy1i7h8l" path="res://Resources/TestCard.tres" id="2_kkgq3"]
+[ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="3_5u7pk"]
+[ext_resource type="Texture2D" uid="uid://b4pql4sdt4b84" path="res://Assets/Characters/11.svg" id="4_hcyk8"]
+[ext_resource type="Texture2D" uid="uid://bmu4qwei2bt1f" path="res://Assets/Suits/Anglo-American_card_suits.svg" id="5_hcyk8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x8cmv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hcyk8"]
+size = Vector2(58, 92)
+
+[node name="Card" type="Node2D"]
+script = ExtResource("1_6ma3f")
+info = ExtResource("2_kkgq3")
+
+[node name="Front" type="Polygon2D" parent="."]
+modulate = Color(0.960784, 0.870588, 0.701961, 1)
+material = SubResource("ShaderMaterial_x8cmv")
+invert_border = 5.0
+polygon = PackedVector2Array(-28, -45, 28, -45, 28, 45, -28, 45)
+
+[node name="FrontBorder" type="Polygon2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+color = Color(0, 0, 0, 1)
+invert_enabled = true
+invert_border = 1.0
+polygon = PackedVector2Array(-28, -45, 28, -45, 28, 45, -28, 45)
+
+[node name="Face" type="Node2D" parent="."]
+
+[node name="Pip" type="Sprite2D" parent="Face"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+position = Vector2(-17, -32)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_5u7pk")
+
+[node name="Pip2" type="Sprite2D" parent="Face"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+position = Vector2(17, 32)
+rotation = 3.14159
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_5u7pk")
+
+[node name="Character" type="Sprite2D" parent="Face"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("4_hcyk8")
+
+[node name="Back" type="Node2D" parent="."]
+visible = false
+
+[node name="Sprite" type="Sprite2D" parent="Back"]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("5_hcyk8")
+
+[node name="MouseArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MouseArea"]
+visible = false
+shape = SubResource("RectangleShape2D_hcyk8")
+
+[connection signal="input_event" from="MouseArea" to="." method="_on_mouse_area_input_event"]
+[connection signal="mouse_entered" from="MouseArea" to="." method="_on_mouse_area_mouse_entered"]
+[connection signal="mouse_exited" from="MouseArea" to="." method="_on_mouse_area_mouse_exited"]

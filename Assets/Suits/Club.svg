@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="84"
+   height="98"
+   viewBox="0 0 84.754112 98.342712"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="Spade.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#FFFFFF"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.85477343"
+     inkscape:cx="508.90679"
+     inkscape:cy="119.91482"
+     inkscape:window-width="1894"
+     inkscape:window-height="2094"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       sodipodi:nodetypes="czcccczczc"
+       id="rect3667"
+       d="m 34.082596,42.437325 c -15.56117,-7.433358 -38.4511485,1.433192 -33.0354095,21.434446 5.277674,19.491372 28.0697765,15.213942 35.9512715,3.349192 -3.288051,22.49627 -9.062601,25.99858 -12.523754,30.88218 h 36.74639 c -3.72315,-5.22262 -10.483771,-8.38591 -14.448467,-31.19048 7.941827,11.84476 31.816937,15.95096 37.018347,-3.25879 C 88.907674,44.75707 65.843344,33.995574 50.50613,42.550027 65.213064,32.6743 70.494674,0.2395725 42.639785,0.2395725 c -28.129858,0 -23.436483,33.0688755 -8.557189,42.1977525 z"
+       style="color:#FFFFFF;display:block;overflow:visible;visibility:visible;fill:#FFFFFF;fill-opacity:1;fill-rule:nonzero;stroke:#FFFFFF;stroke-width:0.479145;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
+       inkscape:label="Club" />
+  </g>
+</svg>

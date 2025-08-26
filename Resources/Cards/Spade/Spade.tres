@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Suit" load_steps=3 format=3 uid="uid://osieuolj3rel"]
+
+[ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="1_2lfdg"]
+[ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="1_auf4b"]
+
+[resource]
+script = ExtResource("1_2lfdg")
+name = "Spade"
+colour = 0
+texture = ExtResource("1_auf4b")
+metadata/_custom_type_script = "uid://drdg5d7rgrqhy"

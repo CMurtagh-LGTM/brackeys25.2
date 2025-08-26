@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="NormalCardInfo" load_steps=3 format=3 uid="uid://b1tgfadpa66j5"]
+
+[ext_resource type="Script" uid="uid://0svpn7ag1d1u" path="res://Card/NormalCardInfo.gd" id="1_wbbvk"]
+[ext_resource type="Resource" uid="uid://drwbm7qviinbf" path="res://Resources/Cards/Club/Club.tres" id="2_4prnx"]
+
+[resource]
+script = ExtResource("1_wbbvk")
+character = 10
+suit = ExtResource("2_4prnx")
+front_colour = Color(0.960784, 0.870588, 0.701961, 1)
+border_colour = Color(0.215686, 0.196078, 0.176471, 1)
+front_can_play_colour = Color(0.917647, 0.956863, 0.698039, 1)
+front_cant_play_colour = Color(0.956863, 0.737255, 0.698039, 1)

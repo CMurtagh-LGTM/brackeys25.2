@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DeckGenerator" load_steps=3 format=3 uid="uid://ceov0djbfpfbm"]
+
+[ext_resource type="Script" uid="uid://c1gau4la6cbkj" path="res://Deck/DeckGenerator.gd" id="1_tyxxv"]
+[ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="2_hwysx"]
+
+[resource]
+script = ExtResource("1_tyxxv")
+name = ""
+suits = Array[ExtResource("2_hwysx")]([])
+characters = Array[int]([])
+metadata/_custom_type_script = "uid://c1gau4la6cbkj"

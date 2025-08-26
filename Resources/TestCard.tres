@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="NormalCardInfo" load_steps=5 format=3 uid="uid://b3lvyvy1i7h8l"]
+
+[ext_resource type="Script" uid="uid://0svpn7ag1d1u" path="res://Card/NormalCardInfo.gd" id="1_bh2dr"]
+[ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="2_kioh7"]
+[ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="3_ej8de"]
+
+[sub_resource type="Resource" id="Resource_rjdcu"]
+script = ExtResource("2_kioh7")
+name = "Test"
+colour = 0
+texture = ExtResource("3_ej8de")
+metadata/_custom_type_script = "uid://drdg5d7rgrqhy"
+
+[resource]
+script = ExtResource("1_bh2dr")
+suit = SubResource("Resource_rjdcu")
+character = 11
+front_colour = Color(0.960784, 0.870588, 0.701961, 1)
+border_colour = Color(0, 0, 0, 1)
+front_hover_colour = Color(1, 1, 0, 1)
+metadata/_custom_type_script = "uid://0svpn7ag1d1u"

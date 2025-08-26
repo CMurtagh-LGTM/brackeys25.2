@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Suit" load_steps=3 format=3 uid="uid://b10nvne5yvyf3"]
+
+[ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="1_e1t15"]
+[ext_resource type="Texture2D" uid="uid://dycxjfepc72ba" path="res://Assets/Suits/Heart.svg" id="2_dj44a"]
+
+[resource]
+script = ExtResource("1_e1t15")
+name = "Heart"
+colour = 1
+texture = ExtResource("2_dj44a")
+metadata/_custom_type_script = "uid://drdg5d7rgrqhy"

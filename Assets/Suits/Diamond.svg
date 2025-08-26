@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="67"
+   height="98"
+   viewBox="0 0 66.951218 98.340202"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="Diamond.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#FFFFFF"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.7095469"
+     inkscape:cx="126.34927"
+     inkscape:cy="186.30668"
+     inkscape:window-width="1894"
+     inkscape:window-height="2094"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-71.437494,-99.218749)">
+    <path
+       sodipodi:nodetypes="ccccc"
+       id="path2139"
+       d="M 104.9131,99.218749 C 94.674226,116.25718 83.147823,132.64722 71.437494,148.38885 c 12.262128,15.74164 23.972461,32.13167 33.475606,49.1701 9.87101,-17.36262 20.66168,-33.91476 33.47561,-49.1701 -12.44606,-15.74163 -23.78853,-32.45587 -33.47561,-49.170101 z"
+       style="fill:#FFFFFF;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.264583pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:label="Diamond" />
+  </g>
+</svg>

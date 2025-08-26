@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="NormalCardInfo" load_steps=3 format=3 uid="uid://d0j6f3yu46o52"]
+
+[ext_resource type="Script" uid="uid://0svpn7ag1d1u" path="res://Card/NormalCardInfo.gd" id="1_4ic7c"]
+[ext_resource type="Resource" uid="uid://b10nvne5yvyf3" path="res://Resources/Cards/Heart/Heart.tres" id="2_g06wd"]
+
+[resource]
+script = ExtResource("1_4ic7c")
+character = 1
+suit = ExtResource("2_g06wd")
+front_colour = Color(0.960784, 0.870588, 0.701961, 1)
+border_colour = Color(0.215686, 0.196078, 0.176471, 1)
+front_can_play_colour = Color(0.917647, 0.956863, 0.698039, 1)
+front_cant_play_colour = Color(0.956863, 0.737255, 0.698039, 1)

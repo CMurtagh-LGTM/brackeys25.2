@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Suit" load_steps=3 format=3 uid="uid://brhwwsuf10j7s"]
+
+[ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="1_xikwe"]
+[ext_resource type="Texture2D" uid="uid://b71j10i488kgw" path="res://Assets/Suits/Diamond.svg" id="2_ltjo1"]
+
+[resource]
+script = ExtResource("1_xikwe")
+name = "Diamond"
+colour = 1
+texture = ExtResource("2_ltjo1")
+metadata/_custom_type_script = "uid://drdg5d7rgrqhy"

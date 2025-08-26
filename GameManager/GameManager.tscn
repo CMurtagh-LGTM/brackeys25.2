@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://da5qnxmm2ylvk"]
+
+[ext_resource type="Texture2D" uid="uid://d2oodsnv6qt3m" path="res://Assets/plain-arrow.svg" id="1_jmty1"]
+[ext_resource type="Script" uid="uid://b4r4rffx3opro" path="res://GameManager/GameManager.gd" id="1_v4rul"]
+[ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="3_pe3qf"]
+
+[node name="GameManager" type="Node2D"]
+script = ExtResource("1_v4rul")
+
+[node name="Arrow" type="Sprite2D" parent="."]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_jmty1")
+
+[node name="Next" type="Button" parent="."]
+offset_left = 650.0
+offset_top = 380.0
+offset_right = 695.0
+offset_bottom = 411.0
+focus_mode = 0
+text = "Next
+"
+
+[node name="Pips" type="Node2D" parent="."]
+
+[node name="Pip0" type="Sprite2D" parent="Pips"]
+position = Vector2(576, 324)
+texture = ExtResource("3_pe3qf")
+
+[node name="Pip1" type="Sprite2D" parent="Pips"]
+position = Vector2(41, 49)
+texture = ExtResource("3_pe3qf")
+
+[node name="Pip2" type="Sprite2D" parent="Pips"]
+position = Vector2(1111, 49)
+texture = ExtResource("3_pe3qf")
+
+[node name="Pip3" type="Sprite2D" parent="Pips"]
+position = Vector2(1111, 599)
+texture = ExtResource("3_pe3qf")
+
+[node name="Pip4" type="Sprite2D" parent="Pips"]
+position = Vector2(41, 599)
+texture = ExtResource("3_pe3qf")

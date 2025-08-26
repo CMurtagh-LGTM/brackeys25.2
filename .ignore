@@ -1,0 +1,4 @@
+.godot/
+Assets/
+*.uid
+Resources/Cards/*

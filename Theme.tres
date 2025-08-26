@@ -1,0 +1,33 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://dhu0scfiaody0"]
+
+[ext_resource type="FontFile" uid="uid://c4mpmcg2nqhva" path="res://Assets/Sofia/Sofia-Regular.ttf" id="1_yd3fu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1aya"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.917647, 0.956863, 0.698039, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j4jqe"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.960784, 0.870588, 0.701961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c6xh3"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.215686, 0.196078, 0.176471, 1)
+
+[resource]
+default_font = ExtResource("1_yd3fu")
+Button/colors/font_color = Color(0.215686, 0.196078, 0.176471, 1)
+Button/colors/font_hover_color = Color(0.215686, 0.196078, 0.176471, 1)
+Button/colors/font_outline_color = Color(0.960784, 0.870588, 0.701961, 1)
+Button/styles/hover = SubResource("StyleBoxFlat_k1aya")
+Button/styles/normal = SubResource("StyleBoxFlat_j4jqe")
+Button/styles/pressed = SubResource("StyleBoxFlat_c6xh3")
