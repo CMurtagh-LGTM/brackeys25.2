@@ -14,13 +14,13 @@ func get_image() -> Texture2D:
 	return Texture2D.new()
 
 func get_pip() -> Texture2D:
-	return Texture2D.new()
+	return suit.texture
 
 func get_colour() -> Color:
-	return Color()
+	return Suit.colours[suit.colour]
 
 func get_suit_colour() -> Suit.SuitColour:
-	return Suit.SuitColour.BLACK
+	return suit.colour 
 
 func get_ordinal() -> Card.Ordinal:
 	return Card.Ordinal.BOTTOM

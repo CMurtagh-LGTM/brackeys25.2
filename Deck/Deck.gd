@@ -2,7 +2,8 @@ class_name Deck
 extends Node2D
 
 var deck_info: DeckInfo
-var _cards: Array[Card]
+
+@onready var _cards: Stack = $Pile
 
 func shuffle() -> void:
 	_cards.shuffle()
@@ -10,11 +11,14 @@ func shuffle() -> void:
 func reset() -> void:
 	_cards.clear()	
 	for card_info: CardInfo in deck_info.cards:
-		_cards.push_back(Card.instantiate(card_info))
+		_cards.push_card(Card.instantiate(card_info))
 	shuffle()
 
 func draw_card() -> Card:
-	return _cards.pop_back()
+	return _cards.draw_card()
+
+func peek_top() -> Card:
+	return _cards.peek_top()
 
 func _ready() -> void:
 	reset()

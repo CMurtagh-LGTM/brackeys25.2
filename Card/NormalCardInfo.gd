@@ -60,14 +60,6 @@ const ordinal_character: Array[Card.Ordinal] = [
 func get_image() -> Texture2D:
 	return characters[character]
 
-func get_pip() -> Texture2D:
-	return suit.texture
-
-func get_colour() -> Color:
-	return Suit.colours[suit.colour]
-
-func get_suit_colour() -> Suit.SuitColour:
-	return suit.colour
-
 func get_ordinal() -> Card.Ordinal:
 	return ordinal_character[character]
+

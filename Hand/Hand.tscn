@@ -1,6 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckta17078muxh"]
+[gd_scene load_steps=5 format=3 uid="uid://ckta17078muxh"]
 
 [ext_resource type="Script" uid="uid://bctw7rnd23ycv" path="res://Hand/Hand.gd" id="1_kj8sc"]
+[ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="2_wnkge"]
+[ext_resource type="Texture2D" uid="uid://dcvemtlnepedh" path="res://Assets/Circle.svg" id="3_p271h"]
+[ext_resource type="Texture2D" uid="uid://gf5ub6ytpvim" path="res://Assets/Characters/D.svg" id="4_217al"]
 
 [node name="Hand" type="Node2D"]
 script = ExtResource("1_kj8sc")
+
+[node name="Stack" parent="." instance=ExtResource("2_wnkge")]
+
+[node name="HandScore" type="Label" parent="."]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+offset_right = 22.0
+offset_bottom = 27.0
+text = "10"
+
+[node name="Dealer" type="Sprite2D" parent="."]
+self_modulate = Color(0.960784, 0.870588, 0.701961, 1)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_p271h")
+
+[node name="D" type="Sprite2D" parent="Dealer"]
+self_modulate = Color(0.215686, 0.196078, 0.176471, 1)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_217al")

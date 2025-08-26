@@ -3,11 +3,11 @@ class_name Suit
 extends Resource
 
 enum SuitColour {
-	BLACK, RED
+	BLACK, RED, YELLOW, GREEN
 }
 
 const colours: Array[Color] = [
-	Globals.BLACK, Globals.RED
+	Globals.BLACK, Globals.RED, Globals.YELLOW, Globals.GREEN,
 ]
 
 @export var name: String

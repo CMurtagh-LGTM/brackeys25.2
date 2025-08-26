@@ -1,11 +1,15 @@
-[gd_resource type="Resource" script_class="DeckGenerator" load_steps=3 format=3 uid="uid://ceov0djbfpfbm"]
+[gd_resource type="Resource" script_class="DeckGenerator" load_steps=7 format=3 uid="uid://ceov0djbfpfbm"]
 
 [ext_resource type="Script" uid="uid://c1gau4la6cbkj" path="res://Deck/DeckGenerator.gd" id="1_tyxxv"]
 [ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="2_hwysx"]
+[ext_resource type="Resource" uid="uid://drwbm7qviinbf" path="res://Resources/Cards/Club/Club.tres" id="3_o4t2c"]
+[ext_resource type="Resource" uid="uid://brhwwsuf10j7s" path="res://Resources/Cards/Diamond/Diamond.tres" id="4_gi1nf"]
+[ext_resource type="Resource" uid="uid://b10nvne5yvyf3" path="res://Resources/Cards/Heart/Heart.tres" id="5_2fc51"]
+[ext_resource type="Resource" uid="uid://osieuolj3rel" path="res://Resources/Cards/Spade/Spade.tres" id="6_1kv4j"]
 
 [resource]
 script = ExtResource("1_tyxxv")
-name = ""
-suits = Array[ExtResource("2_hwysx")]([])
-characters = Array[int]([])
+name = "French32"
+suits = Array[ExtResource("2_hwysx")]([ExtResource("3_o4t2c"), ExtResource("4_gi1nf"), ExtResource("5_2fc51"), ExtResource("6_1kv4j")])
+characters = Array[int]([7, 8, 9, 10, 15, 17, 18, 19])
 metadata/_custom_type_script = "uid://c1gau4la6cbkj"

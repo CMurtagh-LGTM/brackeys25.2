@@ -1,7 +1,7 @@
 class_name GameManager
 extends Node2D
 
-@export var deck_info: DeckInfo = preload("res://Resources/Decks/French52.tres")
+@export var deck_info: DeckInfo = preload("res://Resources/Decks/French32.tres")
 
 @onready var _hand_scene: PackedScene = preload("res://Hand/Hand.tscn")
 @onready var _deck_scene: PackedScene = preload("res://Deck/Deck.tscn")
@@ -29,9 +29,12 @@ var _trick: Trick
 var _trump: Suit
 var _current_hand: int = 0
 var _dealer: int = 3 # TODO
+var _tricks_remaining: int= 0
+
 var _current_arrow_point: Hand.Compass
 
-var _next_position_offset: Vector2 = Vector2(74, 56)
+const _next_position_offset: Vector2 = Vector2(74, 56)
+const _deck_position_offset: Vector2 = Vector2(-184, 0)
 
 func _ready() -> void:
 	globals.viewport_resize.connect(_on_viewport_resize)
@@ -42,6 +45,11 @@ func _ready() -> void:
 
 	_trick = _trick_scene.instantiate()
 	add_child(_trick)
+
+	_next.visible = false
+
+	for pip: Sprite2D in _pips:
+		pip.modulate.a = 0
 
 	for compass: Hand.Compass in Globals.hand_compasses:
 		var hand: Hand = _hand_scene.instantiate()
@@ -58,17 +66,21 @@ func _ready() -> void:
 	_deal()
 
 func _calculate_game_state() -> GameState:
-	return GameState.new(_trump, _trick.lead_suit())
+	return GameState.new(_trump, _trick.lead_suit(_trump))
 
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
 	card.reveal()
-	_trick.add_card(card, _hand_index_to_compass(_current_hand))
+	await _trick.add_card(card, _hand_index_to_compass(_current_hand))
 	_current_hand += 1
 	_current_hand %= _hands.size()
 	if _trick.card_count() >= _hands.size():
 		_end_trick()
 		return
+	_hands[_current_hand].gain_turn(_calculate_game_state())
+	_point_to_hand(_hand_index_to_compass(_current_hand))
+
+func _start_trick() -> void:
 	_hands[_current_hand].gain_turn(_calculate_game_state())
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
@@ -79,32 +91,50 @@ func _end_trick() -> void:
 	_arrow.modulate = Globals.LIGHT_GREEN
 	_next.visible = true
 	await _next.pressed
-	_start_trick()
+
+	_next.visible = false
+	_hands[_compass_to_hand_index(winner)].winning_trick(_trick.clear())
+	_tricks_remaining -= 1
+	if _tricks_remaining > 0:
+		_start_trick()
+	else:
+		_end_deal()
 
 func _deal() -> void:
+	_trump = null;
+	_on_update_trump()
+	_deck.reset()
+	_hands[_dealer].set_is_dealer()
 	for hand: Hand in _hands:
 		for _i in range(_deal_size):
-			hand.add_card(_deck.draw_card())
-	_dealer += 1
-	_dealer %= _hands.size()
-	_current_hand = _dealer
-	_trump = _deck.draw_card().info.suit
+			await hand.add_card(_deck.draw_card())
+	_current_hand = (_dealer + 1) % _hands.size() # the next dealer
+	_trump = _deck.peek_top().info.suit
+	_deck.peek_top().reveal()
 	_on_update_trump()
+	_tricks_remaining = _deal_size
 	_start_trick()
 
-func _start_trick() -> void:
-	_next.visible = false
-	_trick.clear()
-	_hands[_current_hand].gain_turn(_calculate_game_state())
-	_point_to_hand(_hand_index_to_compass(_current_hand))
+func _end_deal() -> void:
+	for hand: Hand in _hands:
+		hand.clear()
+	_dealer += 1
+	_dealer %= _hands.size()
+	_deal()
 
 func _on_update_trump() -> void:
-	_pips_container.visible = _trump != null
-	if _trump == null:
-		return
 	for pip: Sprite2D in _pips:
-		pip.texture = _trump.texture
-		pip.modulate = Suit.colours[_trump.colour]
+		var target_colour: Color = pip.modulate
+		if _trump != null:
+			pip.texture = _trump.texture
+
+			var a: float = pip.modulate.a
+			pip.modulate = Suit.colours[_trump.colour]
+			pip.modulate.a = a
+			target_colour = Suit.colours[_trump.colour]
+
+		target_colour.a = float(_trump != null)
+		create_tween().tween_property(pip, "modulate", target_colour, 0.2)
 
 func _compass_to_hand_index(compass: Hand.Compass) -> int:
 	return compass as int
@@ -120,6 +150,7 @@ func _point_to_hand(compass: Hand.Compass) -> void:
 
 func _on_viewport_resize() -> void:
 	_next.position = globals.viewport_center() + _next_position_offset
+	_deck.position = globals.viewport_center() + _deck_position_offset
 	for hand_index: int in _hands.size():
 		_hands[hand_index].position = globals.hand_position(_hand_index_to_compass(hand_index))
 

@@ -10,6 +10,10 @@ enum CanPlay {
 	NONE, YES, NO
 }
 
+enum Bower {
+	NONE, LEFT, RIGHT, BEST
+}
+
 @export var info: CardInfo
 
 @onready var _pips: Array[Sprite2D] = [$Face/Pip, $Face/Pip2]
@@ -22,12 +26,19 @@ enum CanPlay {
 const width: float = 58
 const height: float = 92
 
-var _revealed: bool = true
+var _revealed: bool = false
 var _active: bool = false
 var _can_play: CanPlay = CanPlay.NONE
 
 signal clicked
 signal hovered
+
+func is_bower(trump: Suit) -> Bower:
+	if trump.colour == info.get_suit_colour() and info.get_ordinal() == Ordinal.JACK:
+		if trump == info.suit:
+			return Bower.RIGHT
+		return Bower.LEFT
+	return Bower.NONE
 
 func conceal() -> void:
 	reveal(false)
@@ -43,6 +54,25 @@ func set_active(value: bool) -> void:
 func set_can_play(can_play: CanPlay) -> void:
 	_can_play = can_play
 	_on_update_can_play()
+
+func move_to(node: Node2D, dest_position: Vector2, dest_rotation: float, duration: float = Globals.card_move_time) -> void:
+	var tween = create_tween()
+	tween.set_parallel()
+	tween.tween_property(self, "global_position", dest_position + node.global_position, duration)
+	tween.tween_property(self, "global_rotation", dest_rotation + node.rotation, duration)
+	await tween.finished
+	self.get_parent().remove_child(self)
+	node.add_child(self)
+	self.position = dest_position
+	self.rotation = dest_rotation
+
+func reset_state() -> void:
+	rotation = 0
+	position = Vector2.ZERO
+	_revealed = false
+	_active = false
+	_can_play = CanPlay.NONE
+	_update_revealed()
 
 func _update_revealed() -> void:
 	_face.visible = _revealed

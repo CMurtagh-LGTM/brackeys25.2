@@ -11,21 +11,42 @@ const _hand_offsets: Array[Vector2] = [
 var _cards: Array[Card] = []
 var _compasses: Array[Hand.Compass] = []
 
-func lead_suit() -> Suit:
+func lead_suit(trump: Suit) -> Suit:
 	if _cards.is_empty():
 		return null
+	if _cards[0].is_bower(trump) == Card.Bower.LEFT:
+		return trump
 	return _cards[0].info.suit
 
 func card_count() -> int:
 	return _cards.size()
 
 func add_card(card: Card, compass: Hand.Compass) -> void:
-	card.position = _hand_offsets[compass]
-	card.rotation = Globals.hand_rotations[compass]
 	card.set_active(false)
+	await card.move_to(self, _hand_offsets[compass], Globals.hand_rotations[compass])
 	_cards.append(card)
 	_compasses.append(compass)
-	add_child(card)
+
+func is_higher(card1: Card, card2: Card, trump: Suit) -> bool:
+	# Check bower order first
+	if card1.is_bower(trump) > card2.is_bower(trump):
+		return true
+	if card1.is_bower(trump) < card2.is_bower(trump):
+		return false
+
+	# Check trump
+	if card1.info.suit == trump and card2.info.suit != trump:
+		return true
+
+	# Check lead suit
+	if card1.info.suit != card2.info.suit:
+		return false
+
+	# Check number
+	if card1.info.get_ordinal() > card2.info.get_ordinal():
+		return true
+
+	return false
 
 func get_winner(trump: Suit) -> Hand.Compass:
 	assert(!_cards.is_empty())
@@ -33,16 +54,15 @@ func get_winner(trump: Suit) -> Hand.Compass:
 	var best_card: Card = _cards[best_card_index]
 	for card_index: int in range(1, _cards.size()):
 		var card: Card = _cards[card_index]
-		if card.info.suit == trump and (best_card.info.suit != trump or card.info.get_ordinal() > best_card.info.get_ordinal()):
-			best_card_index = card_index
-			best_card = card
-		if card.info.suit == best_card.info.suit and card.info.get_ordinal() > best_card.info.get_ordinal():
+		if is_higher(card, best_card, trump):
 			best_card_index = card_index
 			best_card = card
 	return _compasses[best_card_index]
 
-func clear() -> void:
+func clear() -> Array[Card]:
+	var cards = _cards.duplicate()
 	for card: Card in _cards:
-		remove_child(card)
+		card.reset_state()
 	_cards.clear()
 	_compasses.clear()
+	return cards

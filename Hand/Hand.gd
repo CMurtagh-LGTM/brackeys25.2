@@ -7,10 +7,15 @@ enum Compass {
 	SOUTH, WEST, NORTH, EAST
 }
 
+@onready var _stack: Stack = $Stack
+@onready var _hand_score_label: Label = $HandScore
+@onready var _dealer_icon: Node2D = $Dealer
+
 var _cards: Array[Card] = []
 var _has_turn: bool = false
 var _ai: AI = AI.new()
 var _focus_index: int = 0
+var _hand_score: int = 0
 
 var _game_state: GameState
 
@@ -21,7 +26,7 @@ func add_card(card: Card, index: int = -1) -> void:
 		_cards.push_back(card)
 	else:
 		_cards.insert(index, card)
-	add_child(card)
+	await card.move_to(self, Vector2.ZERO, 0, Globals.card_move_time * 0.5)
 	card.reveal(globals.open_hands or _ai == null)
 	if _ai == null:
 		card.clicked.connect(_on_card_clicked.bind(card))
@@ -33,7 +38,6 @@ func remove_card(card: Card) -> void:
 		card.clicked.disconnect(_on_card_clicked)
 		card.hovered.disconnect(_on_card_hovered)
 	_cards.erase(card)
-	remove_child(card)
 	_position_cards()
 
 func get_is_player() -> bool:
@@ -47,6 +51,28 @@ func set_is_player() -> void:
 		card.reveal()
 		card.clicked.connect(_on_card_clicked.bind(card))
 		card.hovered.connect(_on_card_hovered.bind(card))
+
+func set_is_dealer() -> void:
+	_dealer_icon.visible = true
+
+func winning_trick(cards: Array[Card]) -> void:
+	_stack.append(cards)
+	_hand_score += 1
+	_hand_score_label.text = str(_hand_score)
+	_hand_score_label.visible = true
+
+func get_hand_score() -> int:
+	return _hand_score
+
+func clear() -> void:
+	for card: Card in _cards:
+		remove_child(card)
+	_cards.clear()
+	_stack.clear()
+	_focus_index = 0
+	_hand_score = 0
+	_hand_score_label.visible = false
+	_dealer_icon.visible = false
 
 func gain_turn(game_state: GameState) -> void:
 	_has_turn = true
@@ -85,6 +111,10 @@ func _position_cards() -> void:
 		card.position.y = _hand_arc(y) * 50
 		card.rotation = atan(_hand_arc_derivative(y/4.0))
 
+	_stack.position = Vector2.LEFT * (4.5 * (Card.width + _seperation)) / 2
+	_hand_score_label.position = _stack.position * 2 + Vector2.UP * Card.height/2
+	_dealer_icon.position = -_stack.position*2
+
 func _update_focused_card() -> void:
 	_position_cards()
 	for card: Card in _cards:
@@ -99,20 +129,34 @@ func _update_focused_card() -> void:
 		else:
 			focused_card.set_can_play(Card.CanPlay.NO)
 
-func _has_suit(suit: Suit) -> bool:
+func _has_suit(suit: Suit, trump: Suit) -> bool:
 	for card: Card in _cards:
-		if card.info.suit == suit:
+		if card.info.suit == suit and card.is_bower(trump) != Card.Bower.LEFT:
+			return true
+		if trump == suit and card.is_bower(trump) == Card.Bower.LEFT:
 			return true
 	return false
 
 func _can_play_card(card: Card) -> bool:
+	var card_suit: Suit = card.info.suit
+
+	# Left bower is a trump
+	if card.is_bower(_game_state.trump) == Card.Bower.LEFT:
+		card_suit = _game_state.trump
+
+	# Leading can play any
 	if _game_state.lead_suit == null:
 		return true
-	if card.info.suit == _game_state.trump or card.info.suit == _game_state.lead_suit:
+	# Need to follow suit
+	if card_suit == _game_state.lead_suit:
 		return true
-	if not _has_suit(_game_state.lead_suit):
+	if not _has_suit(_game_state.lead_suit, _game_state.trump):
 		return true
 	return false
+
+func _ready() -> void:
+	clear()
+	_position_cards()
 
 func _on_card_clicked(card: Card) -> void:
 	if _ai != null or not _has_turn:
