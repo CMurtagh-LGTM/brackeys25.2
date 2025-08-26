@@ -119,7 +119,7 @@ func _point_to_hand(compass: Hand.Compass) -> void:
 	_arrow.rotation = Globals.hand_rotations[compass]
 
 func _on_viewport_resize() -> void:
-	_next.position = globals.viewport_size + _next_position_offset
+	_next.position = globals.viewport_center() + _next_position_offset
 	for hand_index: int in _hands.size():
 		_hands[hand_index].position = globals.hand_position(_hand_index_to_compass(hand_index))
 
