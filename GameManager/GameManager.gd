@@ -35,7 +35,7 @@ func _ready() -> void:
 	add_child(_deck)
 
 	_trick = _trick_scene.instantiate()
-	_trick.position = get_viewport().size/2
+	_trick.position = Globals.viewport_size/2
 	add_child(_trick)
 
 	for compass: Hand.Compass in Globals.hand_compasses:
