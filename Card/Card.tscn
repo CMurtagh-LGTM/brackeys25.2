@@ -25,6 +25,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_1xywt")
 
 [node name="Face" type="Node2D" parent="."]
+visible = false
 
 [node name="Pip" type="Sprite2D" parent="Face"]
 modulate = Color(0.215686, 0.196078, 0.176471, 1)
@@ -45,7 +46,6 @@ scale = Vector2(0.45, 0.45)
 texture = ExtResource("4_hcyk8")
 
 [node name="Back" type="Node2D" parent="."]
-visible = false
 
 [node name="Sprite" type="Sprite2D" parent="Back"]
 modulate = Color(0, 0, 0, 1)

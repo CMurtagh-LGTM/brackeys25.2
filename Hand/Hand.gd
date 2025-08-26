@@ -26,7 +26,7 @@ func add_card(card: Card, index: int = -1) -> void:
 		_cards.push_back(card)
 	else:
 		_cards.insert(index, card)
-	await card.move_to(self, Vector2.ZERO, 0, Globals.card_move_time * 0.5)
+	await card.move_to(self, Vector2.ZERO, 0, Globals.card_deal_time)
 	card.reveal(globals.open_hands or _ai == null)
 	if _ai == null:
 		card.clicked.connect(_on_card_clicked.bind(card))
@@ -56,7 +56,7 @@ func set_is_dealer() -> void:
 	_dealer_icon.visible = true
 
 func winning_trick(cards: Array[Card]) -> void:
-	_stack.append(cards)
+	await _stack.append(cards)
 	_hand_score += 1
 	_hand_score_label.text = str(_hand_score)
 	_hand_score_label.visible = true
@@ -64,15 +64,17 @@ func winning_trick(cards: Array[Card]) -> void:
 func get_hand_score() -> int:
 	return _hand_score
 
-func clear() -> void:
-	for card: Card in _cards:
-		remove_child(card)
+func clear() -> Array[Card]:
+	var cards = _cards.duplicate()
+	for card: Card in cards:
+		card.reset_state()
 	_cards.clear()
-	_stack.clear()
+	cards.append_array(_stack.clear())
 	_focus_index = 0
 	_hand_score = 0
 	_hand_score_label.visible = false
 	_dealer_icon.visible = false
+	return cards
 
 func gain_turn(game_state: GameState) -> void:
 	_has_turn = true
@@ -111,9 +113,9 @@ func _position_cards() -> void:
 		card.position.y = _hand_arc(y) * 50
 		card.rotation = atan(_hand_arc_derivative(y/4.0))
 
-	_stack.position = Vector2.LEFT * (4.5 * (Card.width + _seperation)) / 2
-	_hand_score_label.position = _stack.position * 2 + Vector2.UP * Card.height/2
-	_dealer_icon.position = -_stack.position*2
+	_stack.position = Vector2.LEFT * 4.5 * (Card.width + _seperation)
+	_hand_score_label.position = _stack.position + Vector2.UP * Card.height/2
+	_dealer_icon.position = -_stack.position
 
 func _update_focused_card() -> void:
 	_position_cards()

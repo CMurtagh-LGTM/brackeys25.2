@@ -61,7 +61,7 @@ void fragment() {
 	vec2 uv_offset = vec2(cos(TIME*2.0)*0.01, sin(TIME*2.0)*0.01);
 	vec2 uv = SCREEN_UV + 0.001 * texture(noise_offset, SCREEN_UV + uv_offset).xy;
 	vec4 original_color = vec4(blur(screen_texture, uv, SCREEN_PIXEL_SIZE), 1.0);
-	
+
 	// Clouds
 	vec2 grain_uv = vec2(uv.x + TIME * 0.008, uv.y + TIME * 0.002) + vec2(cos(TIME)*0.005, sin(TIME)*0.01);
 	vec2 uv2 = vec2(uv.x + TIME * 0.006, uv.y + TIME * 0.001);
@@ -81,7 +81,7 @@ void fragment() {
 	float outer_radius = vignette_outer_radius + cos(TIME*0.66)*0.05;
 	float vignette = 1.0 - (1.0 - length(clip)/outer_radius)/(1.0 - inner_radius);
 	original_color.rgb = mix(original_color.rgb, vec3(0.0), vignette);
-	
+
 	COLOR = original_color;
 }
 

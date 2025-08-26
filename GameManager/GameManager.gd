@@ -93,7 +93,7 @@ func _end_trick() -> void:
 	await _next.pressed
 
 	_next.visible = false
-	_hands[_compass_to_hand_index(winner)].winning_trick(_trick.clear())
+	await _hands[_compass_to_hand_index(winner)].winning_trick(_trick.clear())
 	_tricks_remaining -= 1
 	if _tricks_remaining > 0:
 		_start_trick()
@@ -103,7 +103,6 @@ func _end_trick() -> void:
 func _deal() -> void:
 	_trump = null;
 	_on_update_trump()
-	_deck.reset()
 	_hands[_dealer].set_is_dealer()
 	for hand: Hand in _hands:
 		for _i in range(_deal_size):
@@ -116,10 +115,13 @@ func _deal() -> void:
 	_start_trick()
 
 func _end_deal() -> void:
+	var cards: Array[Card] = []
 	for hand: Hand in _hands:
-		hand.clear()
+		cards.append_array(hand.clear())
 	_dealer += 1
 	_dealer %= _hands.size()
+	await _deck.add_cards(cards)
+	_deck.shuffle()
 	_deal()
 
 func _on_update_trump() -> void:

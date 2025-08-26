@@ -29,6 +29,8 @@ const compass_direction: Array[Vector2] = [
 ]
 
 const card_move_time: float = 0.25
+const card_deal_time: float = 0.1
+const card_stack_time: float = 0.05
 
 const WHITE: Color = 0xF5DEB3FF #0.96, 0.87, 0.70
 const BLACK: Color = 0x37322DFF

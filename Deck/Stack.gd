@@ -6,15 +6,15 @@ var _cards: Array[Card]
 func push_card(card: Card) -> void:
 	_cards.push_back(card)
 	if card.get_parent():
-		card.get_parent().remove_child(card)
-	add_child(card)
+		await card.move_to(self, Vector2.ZERO, 0, Globals.card_stack_time)
+	else:
+		add_child(card)
 	_position_cards()
 
 func append(cards: Array[Card]) -> void:
 	_cards.append_array(cards)
 	for card: Card in cards:
-		card.get_parent().remove_child(card)
-		add_child(card)
+		await card.move_to(self, Vector2.ZERO, 0, Globals.card_stack_time)
 	_position_cards()
 
 func shuffle() -> void:
@@ -23,10 +23,10 @@ func shuffle() -> void:
 		move_child(_cards[card_index], card_index)
 	_position_cards()
 
-func clear() -> void:
-	for card: Card in _cards:
-		remove_child(card)
+func clear() -> Array[Card]:
+	var cards = _cards.duplicate()
 	_cards.clear()
+	return cards
 
 func draw_card() -> Card:
 	var card: Card = _cards.pop_back()
@@ -38,4 +38,4 @@ func peek_top() -> Card:
 
 func _position_cards() -> void:
 	for card_index: int in _cards.size():
-		_cards[card_index].position = position - Vector2.ONE * card_index / 3
+		_cards[card_index].position = - Vector2.ONE * card_index / 3

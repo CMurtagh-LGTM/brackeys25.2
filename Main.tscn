@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://duhu46r5y5yu2"]
+[gd_scene load_steps=19 format=3 uid="uid://duhu46r5y5yu2"]
 
 [ext_resource type="PackedScene" uid="uid://da5qnxmm2ylvk" path="res://GameManager/GameManager.tscn" id="1_glv2v"]
 [ext_resource type="Script" uid="uid://6dn2wx0g8imc" path="res://Resizer.gd" id="1_r0du0"]
 [ext_resource type="Shader" uid="uid://dx0cbr207o077" path="res://post_process.gdshader" id="2_uu6xs"]
+[ext_resource type="Resource" uid="uid://cjkwdiee8llaf" path="res://Resources/Decks/French32.tres" id="3_cm0pq"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3dxm6"]
 noise_type = 2
@@ -78,6 +79,7 @@ script = ExtResource("1_r0du0")
 metadata/_custom_type_script = "uid://6dn2wx0g8imc"
 
 [node name="GameManager" parent="." instance=ExtResource("1_glv2v")]
+deck_info = ExtResource("3_cm0pq")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

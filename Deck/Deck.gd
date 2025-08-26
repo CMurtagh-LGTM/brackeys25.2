@@ -8,8 +8,12 @@ var deck_info: DeckInfo
 func shuffle() -> void:
 	_cards.shuffle()
 
+func add_cards(cards: Array[Card]) -> void:
+	await _cards.append(cards)
+
 func reset() -> void:
-	_cards.clear()	
+	_cards.clear()
+	assert(deck_info)
 	for card_info: CardInfo in deck_info.cards:
 		_cards.push_card(Card.instantiate(card_info))
 	shuffle()
