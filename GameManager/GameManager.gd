@@ -19,6 +19,7 @@ const _arrow_offsets: Array[Vector2] = [
 	Vector2.UP * -Card.height,
 	Vector2.RIGHT * -Card.height,
 ]
+const _pip_offset: Vector2 = Vector2(46.0, 49.0)
 
 var _deal_size: int = 7
 
@@ -28,25 +29,30 @@ var _trick: Trick
 var _trump: Suit
 var _current_hand: int = 0
 var _dealer: int = 3 # TODO
+var _current_arrow_point: Hand.Compass
+
+var _next_position_offset: Vector2 = Vector2(74, 56)
 
 func _ready() -> void:
+	globals.viewport_resize.connect(_on_viewport_resize)
+
 	_deck = _deck_scene.instantiate()
 	_deck.deck_info = deck_info
 	add_child(_deck)
 
 	_trick = _trick_scene.instantiate()
-	_trick.position = Globals.viewport_size/2
 	add_child(_trick)
 
 	for compass: Hand.Compass in Globals.hand_compasses:
 		var hand: Hand = _hand_scene.instantiate()
 
-		hand.position = globals.hand_positions[compass]
 		hand.rotation = Globals.hand_rotations[compass]
 
 		_hands.push_back(hand)
 		add_child(hand)
 		hand.play.connect(_on_hand_play)
+
+	_on_viewport_resize()
 
 	_hands[0].set_is_player()
 	_deal()
@@ -73,7 +79,6 @@ func _end_trick() -> void:
 	_arrow.modulate = Globals.LIGHT_GREEN
 	_next.visible = true
 	await _next.pressed
-	_next.visible = false
 	_start_trick()
 
 func _deal() -> void:
@@ -88,6 +93,7 @@ func _deal() -> void:
 	_start_trick()
 
 func _start_trick() -> void:
+	_next.visible = false
 	_trick.clear()
 	_hands[_current_hand].gain_turn(_calculate_game_state())
 	_point_to_hand(_hand_index_to_compass(_current_hand))
@@ -106,7 +112,22 @@ func _compass_to_hand_index(compass: Hand.Compass) -> int:
 func _hand_index_to_compass(index: int) -> Hand.Compass:
 	return Globals.hand_compasses[index]
 
-func _point_to_hand(hand: Hand.Compass) -> void:
+func _point_to_hand(compass: Hand.Compass) -> void:
+	_current_arrow_point = compass
 	_arrow.modulate = Globals.BLACK
-	_arrow.position = Globals.hand_positions[hand] + _arrow_offsets[hand]
-	_arrow.rotation = Globals.hand_rotations[hand]
+	_arrow.position = globals.hand_position(compass) + _arrow_offsets[compass]
+	_arrow.rotation = Globals.hand_rotations[compass]
+
+func _on_viewport_resize() -> void:
+	_next.position = globals.viewport_size + _next_position_offset
+	for hand_index: int in _hands.size():
+		_hands[hand_index].position = globals.hand_position(_hand_index_to_compass(hand_index))
+
+	_trick.position = globals.viewport_center()
+	_pips[0].position = globals.viewport_center()
+	_pips[1].position = _pip_offset
+	_pips[2].position = Vector2(globals.viewport_size.x - _pip_offset.x, _pip_offset.y)
+	_pips[3].position = Vector2(_pip_offset.x, globals.viewport_size.y - _pip_offset.y)
+	_pips[4].position = Vector2(globals.viewport_size.x - _pip_offset.x, globals.viewport_size.y - _pip_offset.y)
+
+	_arrow.position = globals.hand_position(_current_arrow_point) + _arrow_offsets[_current_arrow_point]

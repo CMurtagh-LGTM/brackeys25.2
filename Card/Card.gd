@@ -16,8 +16,8 @@ enum CanPlay {
 @onready var _character_sprite: Sprite2D = $Face/Character
 @onready var _face: Node2D = $Face
 @onready var _back: Node2D = $Back
-@onready var _front: Polygon2D = $Front
-@onready var _front_border: Polygon2D = $FrontBorder
+@onready var _front: Node2D = $Front
+@onready var _front_border: Node2D = $FrontBorder
 
 const width: float = 58
 const height: float = 92
