@@ -62,7 +62,7 @@ func discard(new_hand_size: int, game_state: GameState, target: String = "") -> 
 		if _ai == null:
 			card_index = await  SignalGroup.new().one(click_signals)
 		else:
-			card_index = await _ai.worst_card(_cards, game_state)
+			card_index = await _ai.card_lowest_change_to_win(_cards, game_state)
 		cards_discarded.push_back(_cards[card_index])
 		_cards[card_index].conceal()
 		_cards.remove_at(card_index)
@@ -169,7 +169,7 @@ func _hand_arc_derivative(x: float) -> float:
 
 func _play_turn(game_state: GameState) -> void:
 	assert(_ai != null)
-	_play_card(await _ai.decide_card(game_state, _cards, _can_play_card))
+	_play_card(await _ai.decide_card(game_state, _cards.filter(_can_play_card)))
 
 func _play_card(card: Card) -> void:
 	remove_card(card)
@@ -214,18 +214,12 @@ func _set_bid_indicator() -> void:
 
 func _has_suit(suit: Suit, trump: Suit) -> bool:
 	for card: Card in _cards:
-		if card.info.suit == suit and card.is_bower(trump) != Card.Bower.LEFT:
-			return true
-		if trump and trump == suit and card.is_bower(trump) == Card.Bower.LEFT:
+		if card.suit(trump) == suit:
 			return true
 	return false
 
 func _can_play_card(card: Card) -> bool:
-	var card_suit: Suit = card.info.suit
-
-	# Left bower is a trump
-	if card.is_bower(_turn_game_state.trump) == Card.Bower.LEFT:
-		card_suit = _turn_game_state.trump
+	var card_suit: Suit = card.suit(_turn_game_state.trump)
 
 	# Leading can play any
 	if _turn_game_state.lead_suit == null:

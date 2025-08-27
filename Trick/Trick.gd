@@ -14,9 +14,7 @@ var _compasses: Array[Hand.Compass] = []
 func lead_suit(trump: Suit) -> Suit:
 	if _cards.is_empty():
 		return null
-	if _cards[0].is_bower(trump) == Card.Bower.LEFT:
-		return trump
-	return _cards[0].info.suit
+	return _cards[0].suit(trump)
 
 func card_count() -> int:
 	return _cards.size()
@@ -27,37 +25,30 @@ func add_card(card: Card, compass: Hand.Compass) -> void:
 	_cards.append(card)
 	_compasses.append(compass)
 
-func is_higher(card1: Card, card2: Card, trump: Suit) -> bool:
+static func is_higher(card1: Card, card2: Card, trump: Suit) -> bool:
 	# Check bower order first
-	if card1.is_bower(trump) > card2.is_bower(trump):
+	if card1.get_bower(trump) > card2.get_bower(trump):
 		return true
-	if card1.is_bower(trump) < card2.is_bower(trump):
+	if card1.get_bower(trump) < card2.get_bower(trump):
 		return false
 
 	# Check trump
-	if trump and card1.info.suit == trump and card2.info.suit != trump:
+	if trump and card1.suit(trump) == trump and card2.suit(trump) != trump:
 		return true
 
 	# Check lead suit
-	if card1.info.suit != card2.info.suit:
+	if card1.suit(trump) != card2.suit(trump):
 		return false
 
 	# Check number
-	if card1.info.get_ordinal() > card2.info.get_ordinal():
+	if card1.ordinal() > card2.ordinal():
 		return true
 
 	return false
 
 func get_winner(trump: Suit) -> Hand.Compass:
 	assert(!_cards.is_empty())
-	var best_card_index = 0
-	var best_card: Card = _cards[best_card_index]
-	for card_index: int in range(1, _cards.size()):
-		var card: Card = _cards[card_index]
-		if is_higher(card, best_card, trump):
-			best_card_index = card_index
-			best_card = card
-	return _compasses[best_card_index]
+	return _compasses[_current_winning_card_index(_cards, trump)]
 
 func clear() -> Array[Card]:
 	var cards = _cards.duplicate()
@@ -70,3 +61,17 @@ func clear() -> Array[Card]:
 func get_cards() -> Array[Card]:
 	return _cards.duplicate()
 
+static func current_winning_card(cards: Array[Card], trump: Suit) -> Card:
+	if cards.is_empty():
+		return null
+	return cards[_current_winning_card_index(cards, trump)]
+
+static func _current_winning_card_index(cards: Array[Card], trump: Suit) -> int:
+	var best_card_index = 0
+	var best_card: Card = cards[best_card_index]
+	for card_index: int in range(1, cards.size()):
+		var card: Card = cards[card_index]
+		if is_higher(card, best_card, trump):
+			best_card_index = card_index
+			best_card = card
+	return best_card_index

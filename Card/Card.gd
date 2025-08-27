@@ -14,7 +14,7 @@ enum Bower {
 	NONE, LEFT, RIGHT, BEST
 }
 
-@export var info: CardInfo
+@export var _info: CardInfo
 
 @onready var _pips: Array[Sprite2D] = [$Face/Pip, $Face/Pip2]
 @onready var _character_sprite: Sprite2D = $Face/Character
@@ -33,21 +33,29 @@ var _can_play: CanPlay = CanPlay.NONE
 signal clicked
 signal hovered
 
-func is_bower(trump: Suit) -> Bower:
+func get_bower(trump: Suit) -> Bower:
 	# If card is intrinsic bower
-	if info.get_bower() != Bower.NONE:
-		return info.get_bower()
+	if _info.get_bower() != Bower.NONE:
+		return _info.get_bower()
 	
 	# NT has no right or left
 	if trump == null:
 		return Bower.NONE
 
 	# Right or LEFT
-	if trump.colour == info.get_suit_colour() and info.get_ordinal() == Ordinal.JACK:
-		if trump == info.suit:
+	if trump.colour == _info.get_suit_colour() and _info.get_ordinal() == Ordinal.JACK:
+		if trump == _info.suit:
 			return Bower.RIGHT
 		return Bower.LEFT
 	return Bower.NONE
+
+func suit(trump: Suit) -> Suit:
+	if get_bower(trump) == Bower.LEFT:
+		return trump
+	return _info.suit
+
+func ordinal() -> Ordinal:
+	return _info.get_ordinal()
 
 func conceal() -> void:
 	reveal(false)
@@ -90,22 +98,22 @@ func _update_revealed() -> void:
 
 func _update_image() -> void:
 	for pip: Sprite2D in _pips:
-		pip.texture = info.get_pip()
-		pip.modulate = info.get_colour()
-	_character_sprite.texture = info.get_image()
-	_character_sprite.modulate = info.get_colour()
+		pip.texture = _info.get_pip()
+		pip.modulate = _info.get_colour()
+	_character_sprite.texture = _info.get_image()
+	_character_sprite.modulate = _info.get_colour()
 
 func _on_update_can_play() -> void:
 	if _revealed and _active:
 		if _can_play == CanPlay.YES:
-			_front.modulate = info.front_can_play_colour
+			_front.modulate = _info.front_can_play_colour
 		elif _can_play == CanPlay.NO:
-			_front.modulate = info.front_cant_play_colour
+			_front.modulate = _info.front_cant_play_colour
 		else:
-			_front.modulate = info.front_colour
+			_front.modulate = _info.front_colour
 	else:
-		_front.modulate = info.front_colour
-	_front_border.modulate = info.border_colour
+		_front.modulate = _info.front_colour
+	_front_border.modulate = _info.border_colour
 
 func _ready() -> void:
 	_update_image()
@@ -113,7 +121,7 @@ func _ready() -> void:
 	_on_update_can_play()
 
 func _process(_delta: float) -> void:
-	if Engine.is_editor_hint() and info:
+	if Engine.is_editor_hint() and _info:
 		_update_image()
 		_on_update_can_play()
 		return
@@ -121,7 +129,7 @@ func _process(_delta: float) -> void:
 const card_scene: PackedScene = preload("res://Card/Card.tscn")
 static func instantiate(card_info: CardInfo) -> Card:
 	var card: Card = card_scene.instantiate()
-	card.info = card_info
+	card._info = card_info
 	return card
 
 func _on_mouse_area_input_event(_viewport:Node, event:InputEvent, _shape_idx:int) -> void:

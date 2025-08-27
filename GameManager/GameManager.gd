@@ -13,7 +13,7 @@ var deck_info: DeckInfo = preload("res://Resources/Decks/French32.tres")
 @onready var _bonus_label: Label = $Bonus/Label
 @onready var _discard_pile: Stack = $Discard
 
-const over_under_bid_text: Array[String] = ["Underbid", "Overbid"]
+# const over_under_bid_text: Array[String] = ["Underbid", "Overbid"]
 
 @onready var _bid_info: Node2D = $BidInfo
 @onready var _total_bid_label: Label = $BidInfo/Total/Label
@@ -29,7 +29,9 @@ const _arrow_offsets: Array[Vector2] = [
 ]
 const _pip_offset: Vector2 = Vector2(46, 49)
 
-var _deal_size: int = 7
+var _deal_size: int = 7 # Number of cards to deal
+var _deal_packets: Array[int] = [2, 3, 2]
+var _deal_count: int = 3 # Number of times to deal
 
 var _deck: Deck
 var _hands: Array[Hand]
@@ -39,7 +41,7 @@ var _turnup: Card = null
 var _trump: Suit
 var _current_hand: int = 0
 var _dealer: int = 0
-var _tricks_remaining: int= 0
+var _tricks_remaining: int = 0
 
 var _current_arrow_point: Hand.Compass
 
@@ -87,7 +89,7 @@ func _ready() -> void:
 	_deal()
 
 func _calculate_game_state() -> GameState:
-	return GameState.new(_trump, _trick.lead_suit(_trump), _deck.deck_info, _trick.get_cards())
+	return GameState.new(_trump, _trick.lead_suit(_trump), _deck.deck_info, _trick.get_cards(), _trick.card_count() == _hands.size() - 1)
 
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
@@ -101,21 +103,27 @@ func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].gain_turn(_calculate_game_state())
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
+static func sum(accum, number):
+	return accum + number
+
 func _deal() -> void:
 	_trump = null;
 	_on_update_trump()
 	_hands[_dealer].set_is_dealer()
-	for hand: Hand in _hands:
-		for _i in range(_deal_size):
-			await hand.add_card(_deck.draw_card())
 	_current_hand = (_dealer + 1) % _hands.size()
+	assert(_deal_packets.reduce(sum) == _deal_size)
+	for packet: int in _deal_packets:
+		for relative_hand_index: int in _hands.size():
+			var hand = _hands[(relative_hand_index + _current_hand) % _hands.size()]
+			for _i in range(packet):
+				await hand.add_card(_deck.draw_card())
 
 	var turnup: Card = _deck.draw_card()
 	turnup.reveal()
 	await turnup.move_to(self, globals.viewport_center() + _turnup_position_offset, 0, Globals.card_deal_time)
 	_turnup = turnup
 
-	_trump = turnup.info.suit
+	_trump = turnup.suit(null)
 	_on_update_trump()
 
 	_tricks_remaining = _deal_size
@@ -133,6 +141,7 @@ func _start_bid() -> void:
 		_point_to_hand(_hand_index_to_compass(_current_hand))
 
 		# Make sure that the game is overcalled
+		# floor(amount_underbid / yet_to_bid_players)
 		@warning_ignore("integer_division")
 		var disallowed_bid: int = (_deal_size - current_total) / (_hands.size() - relative_bid_index)
 
@@ -150,10 +159,10 @@ func _start_bid() -> void:
 		_current_hand %= _hands.size()
 
 	# Display info
-	if current_total < _deal_size:
-		_call_info.text = over_under_bid_text[0]
-	elif current_total > _deal_size:
-		_call_info.text = over_under_bid_text[1]
+	# if current_total < _deal_size:
+	# 	_call_info.text = over_under_bid_text[0]
+	# elif current_total > _deal_size:
+	# 	_call_info.text = over_under_bid_text[1]
 
 	_point_to_hand(_hand_index_to_compass(highest_bidder_index))
 	_arrow.modulate = Globals.LIGHT_GREEN
@@ -196,12 +205,12 @@ func _end_trick() -> void:
 func _calculate_bonus_score() -> int:
 	var bonus: int = 0
 	for card: Card in _bonus_pile.get_cards():
-		if card.info.suit != _trump:
+		if card.suit(_trump) != _trump:
 			continue
 		bonus += 1
-		if card.info.get_ordinal() > Card.Ordinal.THIRTEEN:
+		if card.ordinal() > Card.Ordinal.THIRTEEN:
 			bonus += 1
-		if card.is_bower(_trump) != Card.Bower.NONE:
+		if card.get_bower(_trump) != Card.Bower.NONE:
 			bonus += 1
 	return bonus
 
