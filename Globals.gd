@@ -28,6 +28,8 @@ const compass_direction: Array[Vector2] = [
 	Vector2.RIGHT,
 ]
 
+const pip_offset: Vector2 = Vector2(46, 49)
+
 const card_move_time: float = 0.25
 const card_deal_time: float = 0.1
 const card_stack_time: float = 0.05

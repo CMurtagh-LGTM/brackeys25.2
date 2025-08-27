@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=3 format=3 uid="uid://c6gb7smpnwhg6"]
+
+[ext_resource type="Script" uid="uid://c2wr4vn8g6efw" path="res://GameManager/GameInfo.gd" id="1_1b81g"]
+[ext_resource type="Resource" uid="uid://cjkwdiee8llaf" path="res://Resources/Decks/FrenchPiquet.tres" id="1_qxism"]
+
+[resource]
+script = ExtResource("1_1b81g")
+deck_info = ExtResource("1_qxism")
+metadata/_custom_type_script = "uid://c2wr4vn8g6efw"

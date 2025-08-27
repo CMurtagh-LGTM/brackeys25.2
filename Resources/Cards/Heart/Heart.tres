@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_e1t15")
 name = "Heart"
+icon_path = "uid://dycxjfepc72ba"
 colour = 1
 texture = ExtResource("2_dj44a")
 metadata/_custom_type_script = "uid://drdg5d7rgrqhy"

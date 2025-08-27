@@ -105,6 +105,9 @@ func update_score(bonus: int = 0) -> void:
 	_total_score_label.text = str(_total_score)
 	_current_deal_score = 0
 
+func get_total_score() -> int:
+	return _total_score
+
 func player_bid(disallowed_bid: int, _max_allowed_bid: int) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
@@ -127,6 +130,7 @@ func ai_bid(disallowed_bid: int, max_allowed_bid: int, highest_bid: int, reveale
 func current_bid() -> int:
 	return _current_bid
 
+## end of a trick
 func clear() -> Array[Card]:
 	var cards = _cards.duplicate()
 	for card: Card in cards:
@@ -142,6 +146,13 @@ func clear() -> Array[Card]:
 	_bid_indicator.visible = false
 	_info_display.visible = false
 	return cards
+
+## end of a game
+func reset() -> void:
+	_total_score = 0
+	_total_score_label.text = str(_total_score)
+	clear()
+	
 
 func gain_turn(game_state: GameState) -> void:
 	_has_turn = true
@@ -227,7 +238,7 @@ func _update_focused_card() -> void:
 
 func _set_bid_indicator() -> void:
 	_bid_indicator.visible = true
-	_bid_indicator.modulate = Globals.LIGHT_RED
+	_bid_indicator.modulate = Globals.LIGHT_RED if _current_bid > 0 else Globals.LIGHT_GREEN
 	_bid_label.text = str(_current_bid)
 
 func _can_play_card(card: Card) -> bool:

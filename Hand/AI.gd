@@ -6,6 +6,8 @@ const _delay := 0.5
 const _mistake_chance: float = 0.0 if Globals.debug_ai else 0.1
 const _bid_deviation: float = 0.5 if Globals.debug_ai else 1.0
 
+const trump_bonus: float = 0.4
+
 # TODO calculate the threshold based on the deck
 const singleton_threshold: Card.Ordinal = Card.Ordinal.QUEEN
 const offsuit_threshold: Card.Ordinal = Card.Ordinal.ACE
@@ -239,13 +241,21 @@ func decide_bonus_discard(cards: Array[Card], game_state: GameState) -> int:
 
 	return _lowest_score_card_index(cards, low, high, game_state.trump, false)
 
-const trump_bonus: float = 0.4
-
-## Change this card may win a trick
+## Change this card may win a trick,
+## bowers give more because they could quite possibly gain the lead
 func _trick_score_win_change(card: Card, low: float, high: float, trump: Suit) -> float:
 	assert(low < high)
-	var ordinal_count: float = high - low
+	var bower: Card.Bower = card.get_bower(trump)
+	if (bower == Card.Bower.BEST):
+		return 1.1
+	if (bower == Card.Bower.RIGHT):
+		return 1.05
+	if (bower == Card.Bower.LEFT):
+		return 1.0
+
+	var ordinal_count: float = high - low + 1
 	var card_ordinal: float = card.ordinal() as int as float
+	# we don't add subtract one from ordinal count so bower ace is less than right bower
 	var score: float = (card_ordinal - low) / ordinal_count
 
 	if trump:
@@ -255,6 +265,9 @@ func _trick_score_win_change(card: Card, low: float, high: float, trump: Suit) -
 
 	return score
 
-func ai_print(value: String) -> void:
+func reset() -> void:
+	_stashing = false
+
+static func ai_print(value: String) -> void:
 	if Globals.debug_ai:
 		print(value)

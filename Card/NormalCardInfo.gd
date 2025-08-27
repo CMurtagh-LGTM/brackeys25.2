@@ -56,9 +56,16 @@ const ordinal_character: Array[Card.Ordinal] = [
 	Card.Ordinal.ACE
 ]
 
+const character_names: Array[String] = [
+	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "B", "J", "C", "Q", "K", "A"
+]
 
 func get_image() -> Texture2D:
 	return characters[character]
 
 func get_ordinal() -> Card.Ordinal:
 	return ordinal_character[character]
+
+func get_display_name() -> String:
+	return "[img=14 color=" + Suit.colours[suit.colour].to_html() + "]" + suit.icon_path + "[/img]" + character_names[character]
+

@@ -11,6 +11,7 @@ const colours: Array[Color] = [
 ]
 
 @export var name: String
+@export_file var icon_path: String
 @export var colour: SuitColour
 @export var texture: Texture2D
 

@@ -30,4 +30,3 @@ func highest_ordinal() -> Card.Ordinal:
 		if card.get_ordinal() > lowest:
 			lowest = card.get_ordinal()
 	return lowest
-

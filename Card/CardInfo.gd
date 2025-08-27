@@ -28,3 +28,6 @@ func get_ordinal() -> Card.Ordinal:
 func get_bower() -> Card.Bower:
 	return Card.Bower.NONE
 
+func get_display_name() -> String:
+	return ""
+

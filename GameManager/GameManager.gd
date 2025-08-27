@@ -1,7 +1,9 @@
 class_name GameManager
 extends Node2D
 
-var deck_info: DeckInfo = preload("res://Resources/Decks/French32.tres")
+var deck_info: DeckInfo = preload("res://Resources/Decks/FrenchPiquet.tres")
+
+signal finished(player_won: bool, player_score: int)
 
 @onready var _hand_scene: PackedScene = preload("res://Hand/Hand.tscn")
 @onready var _deck_scene: PackedScene = preload("res://Deck/Deck.tscn")
@@ -30,7 +32,8 @@ const _arrow_offsets: Array[Vector2] = [
 	Vector2.UP * -Card.height,
 	Vector2.RIGHT * -Card.height,
 ]
-const _pip_offset: Vector2 = Vector2(46, 49)
+
+var initialized: bool = false
 
 var _deal_size: int = 7 # Number of cards to deal
 var _deal_packets: Array[int] = [2, 3, 2]
@@ -43,6 +46,7 @@ var _trump: Suit
 var _current_hand: int = 0
 var _dealer: int = 0
 var _tricks_remaining: int = 0
+var _deals_remaining: int = 0
 
 var _current_arrow_point: Hand.Compass
 
@@ -54,16 +58,13 @@ const _turnup_position_offset: Vector2 = _deck_position_offset + Vector2.LEFT * 
 const _discard_pile_position_offset: Vector2 = - _deck_position_offset
 const _bonus_pile_position_offset: Vector2 = - _deck_position_offset + Vector2.RIGHT * (Card.width + _pile_seperation)
 
+func set_deal_count(count: int) -> void:
+	assert(not initialized)
+	_deal_count = count
+
 func _ready() -> void:
+	initialized = true
 	globals.viewport_resize.connect(_on_viewport_resize)
-
-	_next.visible = false
-	_bid_info.visible = false
-
-	_bonus_label.visible = false
-
-	for pip: Sprite2D in _pips:
-		pip.modulate.a = 0
 
 	for compass: Hand.Compass in Globals.hand_compasses:
 		var hand: Hand = _hand_scene.instantiate()
@@ -94,15 +95,35 @@ func _on_hand_play(card: Card) -> void:
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
 func _start_game() -> void:
+	_deals_remaining = _deal_count
+
+	_next.visible = false
+	_bid_info.visible = false
+	_bonus_label.visible = false
+	for pip: Sprite2D in _pips:
+		pip.modulate.a = 0
+
 	_deck.deck_info = deck_info
 	_deck.reset()
+
+	for hand: Hand in _hands:
+		hand.reset()
 
 	_hands[0].set_is_player()
 	_dealer = randi_range(0, _hands.size() - 1)
 	
 	_deal()
 
+func _end_game() -> void:
+	var winner: Hand = _hands[0]
+	for hand: Hand in _hands:
+		if hand.get_total_score() > winner.get_total_score():
+			winner = hand
+	finished.emit(winner == _hands[0], _hands[0].get_total_score())
+
 func _deal() -> void:
+	_deals_remaining -= 1
+
 	_trump = null;
 	_on_update_trump()
 	_hands[_dealer].set_is_dealer()
@@ -163,7 +184,6 @@ func _start_bid() -> void:
 	_point_to_hand(_hand_index_to_compass(highest_bidder_index))
 	_arrow.modulate = Globals.LIGHT_GREEN
 	await get_tree().create_timer(Globals.breath_time).timeout
-	_bid_info.visible = false
 
 	# Highest bidder gets right to card turned up
 	var highest_bidder: Hand = _hands[highest_bidder_index]
@@ -173,6 +193,7 @@ func _start_bid() -> void:
 	for card in _discarded_cards:
 		card.reveal()
 	await _bonus_pile.append(_discarded_cards)
+	_bid_info.visible = false
 	_bonus_label.text = str(_calculate_bonus_score())
 	_bonus_label.visible = true
 
@@ -214,7 +235,7 @@ func _end_deal() -> void:
 	var cards: Array[Card] = []
 
 	# Work out who should get bonus
-	var top_score_index: int = _dealer + 1 % _hands.size()
+	var top_score_index: int = (_dealer + 1) % _hands.size()
 	for relative_hand_index: int in _hands.size():
 		var hand_index: int = (relative_hand_index + _dealer + 1) % _hands.size()
 		if (_hands[hand_index].get_deal_score() >= _hands[top_score_index].get_deal_score() and
@@ -240,7 +261,10 @@ func _end_deal() -> void:
 
 	await get_tree().create_timer(Globals.breath_time).timeout
 
-	_deal()
+	if _deals_remaining >= 0:
+		_deal()
+	else: 
+		_end_game()
 
 func _on_update_trump() -> void:
 	for pip: Sprite2D in _pips:
@@ -283,9 +307,9 @@ func _on_viewport_resize() -> void:
 
 	_trick.position = globals.viewport_center()
 	_pips[0].position = globals.viewport_center()
-	_pips[1].position = _pip_offset
-	_pips[2].position = Vector2(globals.viewport_size.x - _pip_offset.x, _pip_offset.y)
-	_pips[3].position = Vector2(_pip_offset.x, globals.viewport_size.y - _pip_offset.y)
-	_pips[4].position = Vector2(globals.viewport_size.x - _pip_offset.x, globals.viewport_size.y - _pip_offset.y)
+	_pips[1].position = Globals.pip_offset
+	_pips[2].position = Vector2(globals.viewport_size.x - Globals.pip_offset.x, Globals.pip_offset.y)
+	_pips[3].position = Vector2(Globals.pip_offset.x, globals.viewport_size.y - Globals.pip_offset.y)
+	_pips[4].position = Vector2(globals.viewport_size.x - Globals.pip_offset.x, globals.viewport_size.y - Globals.pip_offset.y)
 
 	_arrow.position = globals.hand_position(_current_arrow_point) + _arrow_offsets[_current_arrow_point]
