@@ -25,6 +25,3 @@ func draw_card() -> Card:
 
 func peek_top() -> Card:
 	return _cards.peek_top()
-
-func _ready() -> void:
-	reset()

@@ -3,12 +3,21 @@ extends RefCounted
 
 const _delay := 0.5
 
-var _mistake_chance: float = 0.0 if Globals.debug_ai else 0.1
-var _bid_terribleness: float = 0.001 if Globals.debug_ai else 1.0
+const _mistake_chance: float = 0.0 if Globals.debug_ai else 0.1
+const _bid_deviation: float = 0.5 if Globals.debug_ai else 1.0
 
 # TODO calculate the threshold based on the deck
 const singleton_threshold: Card.Ordinal = Card.Ordinal.QUEEN
 const offsuit_threshold: Card.Ordinal = Card.Ordinal.ACE
+
+const stash_threshold: float = 1.5
+const high_bid: int = 3
+# How much to reduce score (highest_bid - high_bid + 1) * high_bid_penalty 
+const high_bid_penalty = 0.25
+const turnup_score_threshold: float = 0.5
+const turnup_reveal_threshold: float = 0.75
+
+var _stashing: bool = false
 
 func _best_card_ordinal(cards: Array[Card], trump: Suit, exclude_suit: Suit, threshold: Card.Ordinal, include_bowers: bool = false) -> Card:
 	var best_card: Card = null
@@ -171,7 +180,7 @@ func decide_card(game_state: GameState, cards: Array[Card]) -> Card:
 
 	return _last(game_state, cards)
 
-func decide_bid(disallowed_bid: int, highest_bid: int, revealed_card: Card, game_state: GameState, cards: Array[Card]) -> int:
+func decide_bid(min_allowed_bid: int, max_allowed_bid, highest_bid: int, revealed_card: Card, game_state: GameState, cards: Array[Card]) -> int:
 	await cards[0].get_tree().create_timer(_delay).timeout
 	
 	# Calculate these outside the loop to keep O(n)
@@ -182,38 +191,53 @@ func decide_bid(disallowed_bid: int, highest_bid: int, revealed_card: Card, game
 	for card: Card in cards:
 		score += _trick_score_win_change(card, low, high, game_state.trump)
 
-	# TODO reduce score if others have bid high
+	score += randfn(0, _bid_deviation)
 
-	score += randf_range(-_bid_terribleness, _bid_terribleness)
-	if int(score) == highest_bid and _trick_score_win_change(revealed_card, low, high, game_state.trump) > 0.5:
-		print("trying for turnup")
+	if highest_bid >= high_bid:
+		ai_print("lowering bid due to high bid")
+		score -= (highest_bid - high_bid + 1) * high_bid_penalty
+
+	if ((score == highest_bid + turnup_score_threshold or score == min_allowed_bid + turnup_score_threshold)
+		and _trick_score_win_change(revealed_card, low, high, game_state.trump) > turnup_reveal_threshold):
+		ai_print("trying for turnup")
 		score += 1
+
+	if (score > highest_bid + stash_threshold) and (score > min_allowed_bid + stash_threshold):
+		ai_print("trying for stash")
+		score -= 1
+		_stashing = true
 
 	if Globals.debug_ai:
 		print("bid score: ", score)
 
-	if disallowed_bid < int(score):
-		return int(score)
-	else:
-		return disallowed_bid + 1
+	@warning_ignore("narrowing_conversion")
+	return clampf(score, min_allowed_bid, max_allowed_bid)
 
+func _lowest_score_card_index(cards: Array[Card], low: float, high: float, trump: Suit, only_trumps: bool) -> int:
+	var worst_index: int = 0
+	var worst_score: float = INF
+	for index: int in cards.size():
+		if only_trumps and cards[index].suit(trump) != trump:
+			continue
 
-func card_lowest_change_to_win(cards: Array[Card], game_state: GameState) -> int:
+		var score: float = _trick_score_win_change(cards[index], low, high, trump)
+		if score < worst_score:
+			worst_score = score
+			worst_index = index
+	return worst_index
+
+func decide_bonus_discard(cards: Array[Card], game_state: GameState) -> int:
 	await cards[0].get_tree().create_timer(_delay).timeout
 	
 	# Calculate these outside the loop to keep O(n)
 	var low: Card.Ordinal = game_state.deck_info.lowest_ordinal()
 	var high: Card.Ordinal = game_state.deck_info.highest_ordinal()
 
-	var worst_index: int = 0
-	var worst_score: float = INF
-	for index: int in cards.size():
-		var score: float = _trick_score_win_change(cards[index], low, high, game_state.trump)
-		if score < worst_score:
-			worst_score = score
-			worst_index = index
+	if _stashing:
+		_stashing = false
+		return _lowest_score_card_index(cards, low, high, game_state.trump, true)
 
-	return worst_index
+	return _lowest_score_card_index(cards, low, high, game_state.trump, false)
 
 const trump_bonus: float = 0.4
 
@@ -234,4 +258,3 @@ func _trick_score_win_change(card: Card, low: float, high: float, trump: Suit) -
 func ai_print(value: String) -> void:
 	if Globals.debug_ai:
 		print(value)
-

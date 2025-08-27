@@ -20,7 +20,7 @@ enum Compass {
 
 var _cards: Array[Card] = []
 var _ai: AI = AI.new()
-var _focus_index: int = 0
+var _focus_index: int = -1
 var _current_deal_score: int = 0
 var _current_bid: int = 0
 var _total_score: int = 0
@@ -51,7 +51,7 @@ func remove_card(card: Card) -> void:
 	_cards.erase(card)
 	_position_cards()
 
-func discard(new_hand_size: int, game_state: GameState, target: String = "") -> Array[Card]:
+func discard_to_bonus(new_hand_size: int, game_state: GameState, target: String = "") -> Array[Card]:
 	_is_discarding = true
 	_info_display.visible = true
 	_info_display_label.text = "Discarding" + (" to " + target if target else "")
@@ -62,7 +62,7 @@ func discard(new_hand_size: int, game_state: GameState, target: String = "") -> 
 		if _ai == null:
 			card_index = await  SignalGroup.new().one(click_signals)
 		else:
-			card_index = await _ai.card_lowest_change_to_win(_cards, game_state)
+			card_index = await _ai.decide_bonus_discard(_cards, game_state)
 		cards_discarded.push_back(_cards[card_index])
 		_cards[card_index].conceal()
 		_cards.remove_at(card_index)
@@ -105,7 +105,7 @@ func update_score(bonus: int = 0) -> void:
 	_total_score_label.text = str(_total_score)
 	_current_deal_score = 0
 
-func player_bid(disallowed_bid: int) -> void:
+func player_bid(disallowed_bid: int, _max_allowed_bid: int) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
 
@@ -117,10 +117,10 @@ func player_bid(disallowed_bid: int) -> void:
 	_info_display.visible = false
 	_set_bid_indicator()
 
-func ai_bid(disallowed_bid: int, highest_bid: int, revealed_card: Card, game_state: GameState) -> void:
+func ai_bid(disallowed_bid: int, max_allowed_bid: int, highest_bid: int, revealed_card: Card, game_state: GameState) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
-	_current_bid = await _ai.decide_bid(disallowed_bid, highest_bid, revealed_card, game_state, _cards)
+	_current_bid = await _ai.decide_bid(disallowed_bid + 1, max_allowed_bid, highest_bid, revealed_card, game_state, _cards)
 	_info_display.visible = false
 	_set_bid_indicator()
 
@@ -133,7 +133,7 @@ func clear() -> Array[Card]:
 		card.reset_state()
 	_cards.clear()
 	cards.append_array(_stack.clear())
-	_focus_index = 0
+	_focus_index = -1
 	_current_deal_score = 0
 	_current_bid = 0
 	_hand_score_label.visible = false
@@ -159,6 +159,7 @@ func lose_turn() -> void:
 	_info_display.visible = false
 	for card: Card in _cards:
 		card.set_active(false)
+	_focus_index = -1
 	_position_cards()
 
 func _hand_arc(x: float) -> float:
@@ -176,6 +177,8 @@ func _play_card(card: Card) -> void:
 	play.emit(card)
 
 func _position_cards() -> void:
+	_sort_hand()
+
 	for card_index: int in _cards.size():
 		var card: Card = _cards[card_index]
 		var x: float = card_index - _cards.size()/2.0 + 0.5
@@ -192,7 +195,22 @@ func _position_cards() -> void:
 	_total_score_indicator.position = Vector2(-105, -Card.height)
 	_info_display.position = Vector2(70, -Card.height)
 
+func _sort_hand() -> void:
+	_cards.sort_custom(func(a: Card, b: Card) -> bool:
+		if a.suit(null).colour as int != b.suit(null).colour as int:
+			return a.suit(null).colour as int > b.suit(null).colour as int
+
+		if a.suit(null).name != b.suit(null).name:
+			return a.suit(null).name > b.suit(null).name
+
+		if a.get_bower(null) > b.get_bower(null):
+			return a.get_bower(null) > b.get_bower(null)
+
+		return a.ordinal() > b.ordinal()
+	)
+
 func _update_focused_card() -> void:
+	assert(_focus_index >= 0)
 	_position_cards()
 	for card: Card in _cards:
 		card.set_can_play(Card.CanPlay.NONE)
@@ -212,12 +230,6 @@ func _set_bid_indicator() -> void:
 	_bid_indicator.modulate = Globals.LIGHT_RED
 	_bid_label.text = str(_current_bid)
 
-func _has_suit(suit: Suit, trump: Suit) -> bool:
-	for card: Card in _cards:
-		if card.suit(trump) == suit:
-			return true
-	return false
-
 func _can_play_card(card: Card) -> bool:
 	var card_suit: Suit = card.suit(_turn_game_state.trump)
 
@@ -227,7 +239,7 @@ func _can_play_card(card: Card) -> bool:
 	# Need to follow suit
 	if card_suit == _turn_game_state.lead_suit:
 		return true
-	if not _has_suit(_turn_game_state.lead_suit, _turn_game_state.trump):
+	if not Utils.has_suit(_cards, _turn_game_state.lead_suit, _turn_game_state.trump):
 		return true
 	return false
 
@@ -244,5 +256,8 @@ func _on_card_clicked(card: Card) -> void:
 func _on_card_hovered(card: Card) -> void:
 	if not _has_turn and not _is_discarding:
 		return
-	_focus_index = _cards.find(card)
+	var new_focus_index: int = _cards.find(card)
+	if _focus_index == new_focus_index:
+		return
+	_focus_index = new_focus_index
 	_update_focused_card()
