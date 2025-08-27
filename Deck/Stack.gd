@@ -36,6 +36,10 @@ func draw_card() -> Card:
 func peek_top() -> Card:
 	return _cards.back()
 
+func get_cards() -> Array[Card]:
+	return _cards.duplicate()
+
 func _position_cards() -> void:
 	for card_index: int in _cards.size():
 		_cards[card_index].position = - Vector2.ONE * card_index / 3
+

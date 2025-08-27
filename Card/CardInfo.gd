@@ -24,3 +24,7 @@ func get_suit_colour() -> Suit.SuitColour:
 
 func get_ordinal() -> Card.Ordinal:
 	return Card.Ordinal.BOTTOM
+
+func get_bower() -> Card.Bower:
+	return Card.Bower.NONE
+

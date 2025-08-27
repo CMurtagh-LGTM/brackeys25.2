@@ -10,14 +10,25 @@ enum Compass {
 @onready var _stack: Stack = $Stack
 @onready var _hand_score_label: Label = $HandScore
 @onready var _dealer_icon: Node2D = $Dealer
+@onready var _bid: Bid = $Bid
+@onready var _bid_indicator: Node2D = $BidIndicator
+@onready var _bid_label: Label = $BidIndicator/Panel/Label
+@onready var _info_display: Node2D = $Info
+@onready var _info_display_label: Label = $Info/Label
+@onready var _total_score_indicator: Node2D = $TotalScore
+@onready var _total_score_label: Label = $TotalScore/Panel/Label
 
 var _cards: Array[Card] = []
-var _has_turn: bool = false
 var _ai: AI = AI.new()
 var _focus_index: int = 0
-var _hand_score: int = 0
+var _current_deal_score: int = 0
+var _current_bid: int = 0
+var _total_score: int = 0
 
-var _game_state: GameState
+var _has_turn: bool = false
+var _is_discarding: bool = false
+
+var _turn_game_state: GameState
 
 signal play(Card)
 
@@ -40,7 +51,27 @@ func remove_card(card: Card) -> void:
 	_cards.erase(card)
 	_position_cards()
 
-func get_is_player() -> bool:
+func discard(new_hand_size: int, game_state: GameState, target: String = "") -> Array[Card]:
+	_is_discarding = true
+	_info_display.visible = true
+	_info_display_label.text = "Discarding" + (" to " + target if target else "")
+	var cards_discarded: Array[Card] = []
+	while _cards.size() > new_hand_size:
+		var click_signals: Array = _cards.map(func(card: Card)->Signal: return card.clicked)
+		var card_index: int
+		if _ai == null:
+			card_index = await  SignalGroup.new().one(click_signals)
+		else:
+			card_index = await _ai.worst_card(_cards, game_state)
+		cards_discarded.push_back(_cards[card_index])
+		_cards[card_index].conceal()
+		_cards.remove_at(card_index)
+		_position_cards()
+	_is_discarding = false
+	_info_display.visible = false
+	return cards_discarded
+
+func is_player() -> bool:
 	return _ai == null
 
 func set_is_player() -> void:
@@ -57,12 +88,44 @@ func set_is_dealer() -> void:
 
 func winning_trick(cards: Array[Card]) -> void:
 	await _stack.append(cards)
-	_hand_score += 1
-	_hand_score_label.text = str(_hand_score)
+	_current_deal_score += 1
+	_hand_score_label.text = str(_current_deal_score)
 	_hand_score_label.visible = true
+	if _current_deal_score >= _current_bid:
+		_bid_indicator.modulate = Globals.LIGHT_GREEN
 
-func get_hand_score() -> int:
-	return _hand_score
+func get_deal_score() -> int:
+	return _current_deal_score
+
+func update_score(bonus: int = 0) -> void:
+	if _current_deal_score >= _current_bid:
+		_total_score += _current_bid + bonus
+	else:
+		_total_score -= _current_bid
+	_total_score_label.text = str(_total_score)
+	_current_deal_score = 0
+
+func player_bid(disallowed_bid: int) -> void:
+	_info_display.visible = true
+	_info_display_label.text = "Bidding"
+
+	_bid.reset_state()
+	_bid.disable_button(disallowed_bid)
+	_bid.visible = true
+	_current_bid = await _bid.bid
+	_bid.visible = false
+	_info_display.visible = false
+	_set_bid_indicator()
+
+func ai_bid(disallowed_bid: int, highest_bid: int, revealed_card: Card, game_state: GameState) -> void:
+	_info_display.visible = true
+	_info_display_label.text = "Bidding"
+	_current_bid = await _ai.decide_bid(disallowed_bid, highest_bid, revealed_card, game_state, _cards)
+	_info_display.visible = false
+	_set_bid_indicator()
+
+func current_bid() -> int:
+	return _current_bid
 
 func clear() -> Array[Card]:
 	var cards = _cards.duplicate()
@@ -71,21 +134,29 @@ func clear() -> Array[Card]:
 	_cards.clear()
 	cards.append_array(_stack.clear())
 	_focus_index = 0
-	_hand_score = 0
+	_current_deal_score = 0
+	_current_bid = 0
 	_hand_score_label.visible = false
 	_dealer_icon.visible = false
+	_bid.visible = false
+	_bid_indicator.visible = false
+	_info_display.visible = false
 	return cards
 
 func gain_turn(game_state: GameState) -> void:
 	_has_turn = true
-	_game_state = game_state
+	_info_display.visible = true
+	_info_display_label.text = "Playing"
+
+	_turn_game_state = game_state
 	for card: Card in _cards:
 		card.set_active(true)
 	if _ai != null:
-		_play_turn()
+		_play_turn(game_state)
 
 func lose_turn() -> void:
 	_has_turn = false
+	_info_display.visible = false
 	for card: Card in _cards:
 		card.set_active(false)
 	_position_cards()
@@ -96,9 +167,9 @@ func _hand_arc(x: float) -> float:
 func _hand_arc_derivative(x: float) -> float:
 	return 0.5 * x
 
-func _play_turn() -> void:
+func _play_turn(game_state: GameState) -> void:
 	assert(_ai != null)
-	_play_card(await _ai.decide_card(_cards, _can_play_card))
+	_play_card(await _ai.decide_card(game_state, _cards, _can_play_card))
 
 func _play_card(card: Card) -> void:
 	remove_card(card)
@@ -116,26 +187,36 @@ func _position_cards() -> void:
 	_stack.position = Vector2.LEFT * 4.5 * (Card.width + _seperation)
 	_hand_score_label.position = _stack.position + Vector2.UP * Card.height/2
 	_dealer_icon.position = -_stack.position
+	_bid.position = Vector2(0, -145)
+	_bid_indicator.position = Vector2(-60, -Card.height)
+	_total_score_indicator.position = Vector2(-105, -Card.height)
+	_info_display.position = Vector2(70, -Card.height)
 
 func _update_focused_card() -> void:
 	_position_cards()
 	for card: Card in _cards:
 		card.set_can_play(Card.CanPlay.NONE)
 
-	if _has_turn:
+	if _has_turn or _is_discarding:
 		var focused_card: Card = _cards[_focus_index]
 		focused_card.position += Vector2.UP.rotated(focused_card.rotation) * 5.0
 
-		if _can_play_card(focused_card):
-			focused_card.set_can_play(Card.CanPlay.YES)
-		else:
-			focused_card.set_can_play(Card.CanPlay.NO)
+		if _has_turn:
+			if _can_play_card(focused_card):
+				focused_card.set_can_play(Card.CanPlay.YES)
+			else:
+				focused_card.set_can_play(Card.CanPlay.NO)
+
+func _set_bid_indicator() -> void:
+	_bid_indicator.visible = true
+	_bid_indicator.modulate = Globals.LIGHT_RED
+	_bid_label.text = str(_current_bid)
 
 func _has_suit(suit: Suit, trump: Suit) -> bool:
 	for card: Card in _cards:
 		if card.info.suit == suit and card.is_bower(trump) != Card.Bower.LEFT:
 			return true
-		if trump == suit and card.is_bower(trump) == Card.Bower.LEFT:
+		if trump and trump == suit and card.is_bower(trump) == Card.Bower.LEFT:
 			return true
 	return false
 
@@ -143,16 +224,16 @@ func _can_play_card(card: Card) -> bool:
 	var card_suit: Suit = card.info.suit
 
 	# Left bower is a trump
-	if card.is_bower(_game_state.trump) == Card.Bower.LEFT:
-		card_suit = _game_state.trump
+	if card.is_bower(_turn_game_state.trump) == Card.Bower.LEFT:
+		card_suit = _turn_game_state.trump
 
 	# Leading can play any
-	if _game_state.lead_suit == null:
+	if _turn_game_state.lead_suit == null:
 		return true
 	# Need to follow suit
-	if card_suit == _game_state.lead_suit:
+	if card_suit == _turn_game_state.lead_suit:
 		return true
-	if not _has_suit(_game_state.lead_suit, _game_state.trump):
+	if not _has_suit(_turn_game_state.lead_suit, _turn_game_state.trump):
 		return true
 	return false
 
@@ -167,7 +248,7 @@ func _on_card_clicked(card: Card) -> void:
 		_play_card(card)
 
 func _on_card_hovered(card: Card) -> void:
-	if not _has_turn:
+	if not _has_turn and not _is_discarding:
 		return
 	_focus_index = _cards.find(card)
 	_update_focused_card()

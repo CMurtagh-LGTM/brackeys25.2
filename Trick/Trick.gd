@@ -35,7 +35,7 @@ func is_higher(card1: Card, card2: Card, trump: Suit) -> bool:
 		return false
 
 	# Check trump
-	if card1.info.suit == trump and card2.info.suit != trump:
+	if trump and card1.info.suit == trump and card2.info.suit != trump:
 		return true
 
 	# Check lead suit
@@ -66,3 +66,7 @@ func clear() -> Array[Card]:
 	_cards.clear()
 	_compasses.clear()
 	return cards
+
+func get_cards() -> Array[Card]:
+	return _cards.duplicate()
+

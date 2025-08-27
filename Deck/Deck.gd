@@ -9,6 +9,8 @@ func shuffle() -> void:
 	_cards.shuffle()
 
 func add_cards(cards: Array[Card]) -> void:
+	for card: Card in cards:
+		card.conceal()
 	await _cards.append(cards)
 
 func reset() -> void:

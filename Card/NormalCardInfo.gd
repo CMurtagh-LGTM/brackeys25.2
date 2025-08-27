@@ -62,4 +62,3 @@ func get_image() -> Texture2D:
 
 func get_ordinal() -> Card.Ordinal:
 	return ordinal_character[character]
-

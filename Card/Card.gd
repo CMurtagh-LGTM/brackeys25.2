@@ -34,6 +34,15 @@ signal clicked
 signal hovered
 
 func is_bower(trump: Suit) -> Bower:
+	# If card is intrinsic bower
+	if info.get_bower() != Bower.NONE:
+		return info.get_bower()
+	
+	# NT has no right or left
+	if trump == null:
+		return Bower.NONE
+
+	# Right or LEFT
 	if trump.colour == info.get_suit_colour() and info.get_ordinal() == Ordinal.JACK:
 		if trump == info.suit:
 			return Bower.RIGHT

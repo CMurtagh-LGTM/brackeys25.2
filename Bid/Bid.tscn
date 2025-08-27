@@ -1,0 +1,91 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgeuvmtmxcwnk"]
+
+[ext_resource type="Script" uid="uid://bi8hoql14qx5w" path="res://Bid/Bid.gd" id="1_il7qo"]
+
+[node name="Bid" type="Node2D"]
+script = ExtResource("1_il7qo")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = -134.0
+offset_top = -20.0
+offset_right = 134.0
+offset_bottom = 20.0
+alignment = 1
+
+[node name="0" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "0"
+
+[node name="1" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "1"
+
+[node name="2" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "2"
+
+[node name="3" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "3"
+
+[node name="4" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "4"
+
+[node name="5" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "5"
+
+[node name="6" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "6"
+
+[node name="7" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+focus_mode = 0
+text = "7"
+
+[node name="8" type="Button" parent="HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+text = "8"
+
+[node name="9" type="Button" parent="HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+text = "9"
+
+[node name="10" type="Button" parent="HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(30, 40)
+layout_mode = 2
+text = "10"
+
+[connection signal="pressed" from="HBoxContainer/0" to="." method="_on_0_pressed"]
+[connection signal="pressed" from="HBoxContainer/1" to="." method="_on_1_pressed"]
+[connection signal="pressed" from="HBoxContainer/2" to="." method="_on_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/3" to="." method="_on_3_pressed"]
+[connection signal="pressed" from="HBoxContainer/4" to="." method="_on_4_pressed"]
+[connection signal="pressed" from="HBoxContainer/5" to="." method="_on_5_pressed"]
+[connection signal="pressed" from="HBoxContainer/6" to="." method="_on_6_pressed"]
+[connection signal="pressed" from="HBoxContainer/7" to="." method="_on_7_pressed"]
+[connection signal="pressed" from="HBoxContainer/8" to="." method="_on_8_pressed"]
+[connection signal="pressed" from="HBoxContainer/9" to="." method="_on_9_pressed"]
+[connection signal="pressed" from="HBoxContainer/10" to="." method="_on_10_pressed"]

@@ -32,6 +32,8 @@ const card_move_time: float = 0.25
 const card_deal_time: float = 0.1
 const card_stack_time: float = 0.05
 
+const breath_time: float = 0.5
+
 const WHITE: Color = 0xF5DEB3FF #0.96, 0.87, 0.70
 const BLACK: Color = 0x37322DFF
 const RED: Color = 0xDC645AFF
@@ -40,9 +42,9 @@ const GREEN: Color = 0xD1DB5A
 
 const LIGHT_RED: Color = 0xF4BCB2FF
 const LIGHT_GREEN: Color = 0xEAF4B2FF
-const LIGHT_BLUE: Color = 0xB3CAF5FF
 
-var open_hands: bool = false
+const debug_ai: bool = false
+var open_hands: bool = debug_ai
 
 func _ready() -> void:
 	var viewport = get_viewport()

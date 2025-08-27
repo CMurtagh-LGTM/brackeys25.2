@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://da5qnxmm2ylvk"]
+[gd_scene load_steps=8 format=3 uid="uid://da5qnxmm2ylvk"]
 
 [ext_resource type="Texture2D" uid="uid://d2oodsnv6qt3m" path="res://Assets/plain-arrow.svg" id="1_jmty1"]
 [ext_resource type="Script" uid="uid://b4r4rffx3opro" path="res://GameManager/GameManager.gd" id="1_v4rul"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dycxjfepc72ba" path="res://Assets/Suits/Heart.svg" id="4_jhjwp"]
 [ext_resource type="Texture2D" uid="uid://b71j10i488kgw" path="res://Assets/Suits/Diamond.svg" id="5_hoh1d"]
 [ext_resource type="Texture2D" uid="uid://db1vhbyfchdln" path="res://Assets/Suits/Club.svg" id="6_6wl2n"]
+[ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="8_6wl2n"]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource("1_v4rul")
@@ -50,3 +51,47 @@ texture = ExtResource("3_pe3qf")
 modulate = Color(0.215686, 0.196078, 0.176471, 1)
 position = Vector2(41, 599)
 texture = ExtResource("6_6wl2n")
+
+[node name="BidInfo" type="Node2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="Total" type="Panel" parent="BidInfo"]
+custom_minimum_size = Vector2(40, 40)
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="Label" type="Label" parent="BidInfo/Total"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CallInfo" type="Label" parent="BidInfo"]
+custom_minimum_size = Vector2(90, 30)
+offset_left = -45.0
+offset_top = 45.0
+offset_right = 45.0
+offset_bottom = 75.0
+text = "Undercalled"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Discard" parent="." instance=ExtResource("8_6wl2n")]
+position = Vector2(760, 324)
+
+[node name="Bonus" parent="." instance=ExtResource("8_6wl2n")]
+position = Vector2(760, 324)
+
+[node name="Label" type="Label" parent="Bonus"]
+custom_minimum_size = Vector2(56, 30)
+offset_left = -28.0
+offset_top = 46.0
+offset_right = 28.0
+offset_bottom = 76.0
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1

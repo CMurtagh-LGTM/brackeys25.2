@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckta17078muxh"]
+[gd_scene load_steps=7 format=3 uid="uid://ckta17078muxh"]
 
 [ext_resource type="Script" uid="uid://bctw7rnd23ycv" path="res://Hand/Hand.gd" id="1_kj8sc"]
 [ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="2_wnkge"]
 [ext_resource type="Texture2D" uid="uid://dcvemtlnepedh" path="res://Assets/Circle.svg" id="3_p271h"]
 [ext_resource type="Texture2D" uid="uid://gf5ub6ytpvim" path="res://Assets/Characters/D.svg" id="4_217al"]
+[ext_resource type="PackedScene" uid="uid://bgeuvmtmxcwnk" path="res://Bid/Bid.tscn" id="5_217al"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p271h"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="Hand" type="Node2D"]
 script = ExtResource("1_kj8sc")
@@ -25,3 +29,55 @@ texture = ExtResource("3_p271h")
 self_modulate = Color(0.215686, 0.196078, 0.176471, 1)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_217al")
+
+[node name="BidIndicator" type="Node2D" parent="."]
+
+[node name="Panel" type="Panel" parent="BidIndicator"]
+custom_minimum_size = Vector2(40, 40)
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_p271h")
+
+[node name="Label" type="Label" parent="BidIndicator/Panel"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 27.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TotalScore" type="Node2D" parent="."]
+
+[node name="Panel" type="Panel" parent="TotalScore"]
+custom_minimum_size = Vector2(40, 40)
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="Label" type="Label" parent="TotalScore/Panel"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 27.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Info" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="Info"]
+custom_minimum_size = Vector2(80, 30)
+offset_left = -40.0
+offset_top = -15.0
+offset_right = 40.0
+offset_bottom = 15.0
+text = "Discarding"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bid" parent="." instance=ExtResource("5_217al")]
+position = Vector2(576, 424)
