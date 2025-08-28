@@ -29,6 +29,8 @@ const height: float = 92
 var _revealed: bool = false
 var _active: bool = false
 var _can_play: CanPlay = CanPlay.NONE
+var _highlight: Color
+var _highlighted: bool = false
 
 signal clicked
 signal hovered
@@ -64,6 +66,15 @@ func reveal(value: bool = true) -> void:
 	_revealed = value
 	_update_revealed()
 
+func highlight(colour: Color) -> void:
+	_highlighted = true
+	_highlight = colour
+	_colour_card()
+
+func unhighlight() -> void:
+	_highlighted = false
+	_colour_card()
+
 func set_active(value: bool) -> void:
 	_active = value
 	_update_revealed()
@@ -89,6 +100,7 @@ func reset_state() -> void:
 	_revealed = false
 	_active = false
 	_can_play = CanPlay.NONE
+	_highlighted = false
 	_update_revealed()
 
 func _update_revealed() -> void:
@@ -104,7 +116,12 @@ func _update_image() -> void:
 	_character_sprite.modulate = _info.get_colour()
 
 func _on_update_can_play() -> void:
-	if _revealed and _active:
+	_colour_card()
+
+func _colour_card() -> void:
+	if _highlighted:
+		_front.modulate = _highlight
+	elif _revealed and _active:
 		if _can_play == CanPlay.YES:
 			_front.modulate = _info.front_can_play_colour
 		elif _can_play == CanPlay.NO:

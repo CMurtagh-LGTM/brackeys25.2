@@ -85,7 +85,7 @@ func _calculate_game_state() -> GameState:
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
 	card.reveal()
-	await _trick.add_card(card, _hand_index_to_compass(_current_hand))
+	await _trick.add_card(card, _trump, _hand_index_to_compass(_current_hand))
 	_current_hand += 1
 	_current_hand %= _hands.size()
 	if _trick.card_count() >= _hands.size():

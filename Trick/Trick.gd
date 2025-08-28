@@ -19,11 +19,12 @@ func lead_suit(trump: Suit) -> Suit:
 func card_count() -> int:
 	return _cards.size()
 
-func add_card(card: Card, compass: Hand.Compass) -> void:
+func add_card(card: Card, trump: Suit, compass: Hand.Compass) -> void:
 	card.set_active(false)
 	await card.move_to(self, _hand_offsets[compass], Globals.hand_rotations[compass])
 	_cards.append(card)
 	_compasses.append(compass)
+	_highlight_winning(trump)
 
 static func is_higher(card1: Card, card2: Card, trump: Suit) -> bool:
 	# Check bower order first
@@ -75,3 +76,9 @@ static func _current_winning_card_index(cards: Array[Card], trump: Suit) -> int:
 			best_card_index = card_index
 			best_card = card
 	return best_card_index
+
+func _highlight_winning(trump: Suit) -> void:
+	for card: Card in _cards:
+		card.unhighlight()
+	current_winning_card(_cards, trump).highlight(Globals.LIGHT_GREEN)
+
