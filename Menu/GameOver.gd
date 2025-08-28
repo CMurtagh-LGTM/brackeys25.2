@@ -19,4 +19,3 @@ func _on_viewport_resize() -> void:
 
 func _on_main_menu_pressed() -> void:
 	main_menu_pressed.emit()
-

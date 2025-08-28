@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://bpejluo12ftan"]
+
+[ext_resource type="Script" uid="uid://brr1dwsjwqhw" path="res://Menu/TriumphChooser.gd" id="1_k4hj0"]
+[ext_resource type="Texture2D" uid="uid://dycxjfepc72ba" path="res://Assets/Suits/Heart.svg" id="2_s5nl3"]
+[ext_resource type="Texture2D" uid="uid://b71j10i488kgw" path="res://Assets/Suits/Diamond.svg" id="3_jgf78"]
+[ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="4_rjtxt"]
+[ext_resource type="Texture2D" uid="uid://db1vhbyfchdln" path="res://Assets/Suits/Club.svg" id="5_1x8rk"]
+
+[node name="TriumphChooser" type="Node2D"]
+script = ExtResource("1_k4hj0")
+
+[node name="Pips" type="Node2D" parent="."]
+
+[node name="Pip1" type="Sprite2D" parent="Pips"]
+modulate = Color(0.862745, 0.392157, 0.352941, 1)
+position = Vector2(46, 49)
+texture = ExtResource("2_s5nl3")
+
+[node name="Pip2" type="Sprite2D" parent="Pips"]
+modulate = Color(0.862745, 0.392157, 0.352941, 1)
+position = Vector2(1111, 49)
+texture = ExtResource("3_jgf78")
+
+[node name="Pip3" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+position = Vector2(1111, 599)
+texture = ExtResource("4_rjtxt")
+
+[node name="Pip4" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+position = Vector2(41, 599)
+texture = ExtResource("5_1x8rk")
+
+[node name="MenuButtons" type="Node2D" parent="."]
+position = Vector2(576, 324)
+
+[node name="TriumphList" type="HBoxContainer" parent="MenuButtons"]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1

@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlxb4f60m37q3"]
+
+[ext_resource type="Script" uid="uid://dwp4i3icru5bt" path="res://Menu/TriumphChoice.gd" id="1_k878m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k878m"]
+bg_color = Color(0.215686, 0.196078, 0.176471, 1)
+
+[node name="TriumphChoice" type="PanelContainer"]
+offset_right = 182.0
+offset_bottom = 78.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_k878m")
+script = ExtResource("1_k878m")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="CenterContainer2" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TriumphContainer" type="Container" parent="VBoxContainer/CenterContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Description" type="RichTextLabel" parent="VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(174, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "A test description"
+fit_content = true
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Choose" type="Button" parent="VBoxContainer/CenterContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Choose"
+
+[connection signal="pressed" from="VBoxContainer/CenterContainer/Choose" to="." method="_on_choose_pressed"]

@@ -31,6 +31,7 @@ var _is_discarding: bool = false
 var _turn_game_state: GameState
 
 signal play(Card)
+signal _discard_card(Card)
 
 func add_card(card: Card, index: int = -1) -> void:
 	if index == -1:
@@ -49,6 +50,7 @@ func remove_card(card: Card) -> void:
 		card.clicked.disconnect(_on_card_clicked)
 		card.hovered.disconnect(_on_card_hovered)
 	_cards.erase(card)
+	_focus_index = -1
 	_position_cards()
 
 func discard_to_bonus(new_hand_size: int, game_state: GameState, target: String = "") -> Array[Card]:
@@ -57,17 +59,15 @@ func discard_to_bonus(new_hand_size: int, game_state: GameState, target: String 
 	_info_display_label.text = "Discarding" + (" to " + target if target else "")
 	var cards_discarded: Array[Card] = []
 	while _cards.size() > new_hand_size:
-		var click_signals: Array = _cards.map(func(card: Card)->Signal: return card.clicked)
-		var card_index: int
+		var card: Card
 		if _ai == null:
-			card_index = await SignalGroup.new().one(click_signals)
-			print(card_index)
+			card = await _discard_card
+			print(card)
 		else:
-			card_index = await _ai.decide_bonus_discard(_cards, game_state)
-		cards_discarded.push_back(_cards[card_index])
-		_cards[card_index].conceal()
-		_cards.remove_at(card_index)
-		_position_cards()
+			card = _cards[await _ai.decide_bonus_discard(_cards, game_state)]
+		cards_discarded.push_back(card)
+		card.conceal()
+		remove_card(card)
 	_is_discarding = false
 	_info_display.visible = false
 	return cards_discarded
@@ -270,10 +270,12 @@ func _ready() -> void:
 	_position_cards()
 
 func _on_card_clicked(card: Card) -> void:
-	if _ai != null or not _has_turn:
+	if _ai != null:
 		return
-	if _can_play_card(card):
+	if _has_turn and _can_play_card(card):
 		_play_card(card)
+	if _is_discarding:
+		_discard_card.emit(card)
 
 func _on_card_hovered(card: Card) -> void:
 	if not _has_turn and not _is_discarding:

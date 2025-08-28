@@ -3,6 +3,7 @@ extends RefCounted
 
 signal _s(int)
 
+# I'm dubious of the correctness of this
 ## when one of the signals is emit returns the index
 func one(signals: Array) -> int:
 	if signals.is_empty():
