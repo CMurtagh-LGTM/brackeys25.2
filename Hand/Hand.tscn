@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ckta17078muxh"]
+[gd_scene load_steps=8 format=3 uid="uid://ckta17078muxh"]
 
 [ext_resource type="Script" uid="uid://bctw7rnd23ycv" path="res://Hand/Hand.gd" id="1_kj8sc"]
 [ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="2_wnkge"]
@@ -8,6 +8,10 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p271h"]
 bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_217al"]
+font_size = 8
+font_color = Color(0.215686, 0.196078, 0.176471, 1)
 
 [node name="Hand" type="Node2D"]
 script = ExtResource("1_kj8sc")
@@ -49,6 +53,13 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Label2" type="Label" parent="BidIndicator/Panel"]
+offset_right = 40.0
+offset_bottom = 27.0
+text = "Bid:"
+label_settings = SubResource("LabelSettings_217al")
+horizontal_alignment = 1
+
 [node name="TotalScore" type="Node2D" parent="."]
 
 [node name="Panel" type="Panel" parent="TotalScore"]
@@ -57,6 +68,14 @@ offset_left = -20.0
 offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
+
+[node name="Label2" type="Label" parent="TotalScore/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 27.0
+text = "Score:"
+label_settings = SubResource("LabelSettings_217al")
+horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="TotalScore/Panel"]
 custom_minimum_size = Vector2(40, 40)
