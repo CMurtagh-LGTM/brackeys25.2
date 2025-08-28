@@ -61,6 +61,7 @@ layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel"]
 layout_mode = 2
+alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
@@ -73,7 +74,17 @@ text = "Deck:"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="CardNames" type="HBoxContainer" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="DeckOrder" type="Label" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="CardNames" type="HBoxContainer" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel/VBoxContainer/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -94,11 +105,7 @@ text = "Tricks:"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel2/CenterContainer/HBoxContainer"]
-layout_mode = 2
-text = "Par:"
-
-[node name="Par" type="Label" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel2/CenterContainer/HBoxContainer"]
+[node name="WinCondition" type="Label" parent="Info/PanelContainer/MarginContainer/VBoxContainer/Panel2/CenterContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

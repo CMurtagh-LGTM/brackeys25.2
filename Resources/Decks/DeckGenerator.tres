@@ -9,7 +9,7 @@
 
 [resource]
 script = ExtResource("1_tyxxv")
-name = "A"
+name = "FrenchPiquet"
 suits = Array[ExtResource("2_hwysx")]([ExtResource("3_o4t2c"), ExtResource("4_gi1nf"), ExtResource("5_2fc51"), ExtResource("6_1kv4j")])
-characters = Array[int]([7, 8, 9, 10, 15, 17, 18, 19])
+characters = Array[int]([19, 18, 17, 15, 10, 9, 8, 7])
 metadata/_custom_type_script = "uid://c1gau4la6cbkj"

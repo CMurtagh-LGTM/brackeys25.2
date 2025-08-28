@@ -3,7 +3,7 @@ extends Node2D
 
 var deck_info: DeckInfo = preload("res://Resources/Decks/FrenchPiquet.tres")
 
-signal finished(player_won: bool, player_score: int)
+signal finished(player_position: int, player_score: int)
 
 @onready var _hand_scene: PackedScene = preload("res://Hand/Hand.tscn")
 @onready var _deck_scene: PackedScene = preload("res://Deck/Deck.tscn")
@@ -116,11 +116,14 @@ func _start_game() -> void:
 	_deal()
 
 func _end_game() -> void:
-	var winner: Hand = _hands[0]
-	for hand: Hand in _hands:
-		if hand.get_total_score() > winner.get_total_score():
-			winner = hand
-	finished.emit(winner == _hands[0], _hands[0].get_total_score())
+	var positions: Array[Hand] = _hands.duplicate()
+	positions.sort_custom(func(a: Hand, b:Hand):
+		if a.get_total_score() == b.get_deal_score():
+			return 
+		return a.get_total_score() > b.get_total_score()
+	)
+
+	finished.emit(positions.find(_hands[0]), _hands[0].get_total_score())
 
 func _deal() -> void:
 	_deals_remaining -= 1
@@ -262,7 +265,7 @@ func _end_deal() -> void:
 
 	await get_tree().create_timer(Globals.breath_time).timeout
 
-	if _deals_remaining >= 0:
+	if _deals_remaining > 0:
 		_deal()
 	else: 
 		_end_game()

@@ -4,8 +4,9 @@ extends Node2D
 @onready var _pips: Array[Sprite2D] = [$Pips/Pip1, $Pips/Pip2, $Pips/Pip3, $Pips/Pip4]
 @onready var _info_contaier: Node2D = $Info
 @onready var _deck_name: Label = %DeckName
+@onready var _deck_order: Label = %DeckOrder
 @onready var _card_names: Control = %CardNames
-@onready var _par: Label = %Par
+@onready var _win_condition: Label = %WinCondition
 @onready var _tricks: Label = %Tricks
 
 signal start_pressed()
@@ -26,6 +27,7 @@ func _on_start_pressed() -> void:
 
 func set_game_info(game_info: GameInfo) -> void:
 	_deck_name.text = game_info.deck_info.name
+	_deck_order.text = game_info.deck_info.deck_order
 
 	for child: Node in _card_names.get_children():
 		_card_names.remove_child(child)
@@ -41,5 +43,5 @@ func set_game_info(game_info: GameInfo) -> void:
 	for suit_container: VBoxContainer in suit_containers.values():
 		_card_names.add_child(suit_container)
 
-	_par.text = str(game_info.par)
+	_win_condition.text = game_info.win_condition.to_label()
 	_tricks.text = str(game_info.tricks)

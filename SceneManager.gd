@@ -39,7 +39,9 @@ func _play() -> bool:
 		var result: Array = await game_manager.finished
 		remove_child(game_manager)
 
-		if result[1] < game.par:
+		print(result)
+
+		if game.win_condition.has_won(result[0]):
 			return false
 	return true
 

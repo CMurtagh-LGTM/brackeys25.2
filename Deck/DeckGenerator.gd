@@ -13,12 +13,20 @@ func generate_deck() -> void:
 	var deck = DeckInfo.new()
 	deck.name = name
 
-	for suit in suits:
-		for character_index in characters:
-			var character_name = NormalCardInfo.Character.keys()[character_index]
+	characters.sort_custom(func(a, b): return a > b)
+
+	for suit: Suit in suits:
+		for character: NormalCardInfo.Character in characters:
+			var character_name = NormalCardInfo.Character.keys()[character]
 			prints("	Adding:", character_name + suit.name)
 			var card_info = load("res://Resources/Cards/" + suit.name + "/" + character_name + suit.name + ".tres")
 			deck.cards.push_back(card_info)
+	
+	# TODO why does this not save?
+	deck.deck_order = NormalCardInfo.character_names[characters[0]]
+	for character_index:int in range(1, characters.size()):
+		deck.deck_order += " > " + NormalCardInfo.character_names[characters[character_index]]
+	print(deck.deck_order)
 
-
+	name = name.replace(" ", "")
 	ResourceSaver.save(deck, "res://Resources/Decks/" + name + ".tres")
