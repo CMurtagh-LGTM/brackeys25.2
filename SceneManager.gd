@@ -32,7 +32,8 @@ func _play() -> bool:
 		_game_preview.visible = false
 
 		var game_manager = _game_scene.instantiate()
-		game_manager.deck_info = game.deck_info
+		game_manager.set_deck_info(game.deck_info)
+		game_manager.set_ai_info(game.ai_info)
 		game_manager.set_deal_count(game.rounds)
 		game_manager.set_trick_count(game.rounds)
 

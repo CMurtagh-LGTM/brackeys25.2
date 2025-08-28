@@ -6,20 +6,13 @@ const _delay := 0.5
 const _mistake_chance: float = 0.0 if Globals.debug_ai else 0.1
 const _bid_deviation: float = 0.5 if Globals.debug_ai else 1.0
 
-const trump_bonus: float = 0.4
-
-# TODO calculate the threshold based on the deck
-const singleton_threshold: Card.Ordinal = Card.Ordinal.QUEEN
-const offsuit_threshold: Card.Ordinal = Card.Ordinal.ACE
-
-const stash_threshold: float = 1.5
-const high_bid: int = 3
-# How much to reduce score (highest_bid - high_bid + 1) * high_bid_penalty 
-const high_bid_penalty = 0.25
-const turnup_score_threshold: float = 0.5
-const turnup_reveal_threshold: float = 0.75
+var _ai_info: AIInfo
 
 var _stashing: bool = false
+
+func _init(ai_info: AIInfo) -> void:
+	assert(ai_info != null)
+	_ai_info = ai_info
 
 func _best_card_ordinal(cards: Array[Card], trump: Suit, exclude_suit: Suit, threshold: Card.Ordinal, include_bowers: bool = false) -> Card:
 	var best_card: Card = null
@@ -77,7 +70,7 @@ func _lead(game_state: GameState, cards: Array[Card]) -> Card:
 			continue
 		if card.suit(game_state.trump) == game_state.trump:
 			continue
-		if card.ordinal() < singleton_threshold:
+		if card.ordinal() < _ai_info.singleton_threshold:
 			continue
 		if card.get_bower(game_state.trump) != Card.Bower.NONE:
 			continue
@@ -92,7 +85,7 @@ func _lead(game_state: GameState, cards: Array[Card]) -> Card:
 		return best_singleton
 
 	# Find high off suit
-	var best_decent_offsuit: Card = _best_card_ordinal(cards, game_state.trump, game_state.trump, offsuit_threshold)
+	var best_decent_offsuit: Card = _best_card_ordinal(cards, game_state.trump, game_state.trump, _ai_info.offsuit_threshold)
 	if best_decent_offsuit:
 		ai_print("lead decent offsuit")
 		return best_decent_offsuit
@@ -195,16 +188,16 @@ func decide_bid(min_allowed_bid: int, max_allowed_bid, highest_bid: int, reveale
 
 	score += randfn(0, _bid_deviation)
 
-	if highest_bid >= high_bid:
+	if highest_bid >= _ai_info.high_bid:
 		ai_print("lowering bid due to high bid")
-		score -= (highest_bid - high_bid + 1) * high_bid_penalty
+		score -= (highest_bid - _ai_info.high_bid + 1) * _ai_info.high_bid_penalty
 
-	if ((score == highest_bid + turnup_score_threshold or score == min_allowed_bid + turnup_score_threshold)
-		and _trick_score_win_change(revealed_card, low, high, game_state.trump) > turnup_reveal_threshold):
+	if ((score == highest_bid + _ai_info.turnup_score_threshold or score == min_allowed_bid + _ai_info.turnup_score_threshold)
+		and _trick_score_win_change(revealed_card, low, high, game_state.trump) > _ai_info.turnup_reveal_threshold):
 		ai_print("trying for turnup")
 		score += 1
 
-	if (score > highest_bid + stash_threshold) and (score > min_allowed_bid + stash_threshold):
+	if (score > highest_bid + _ai_info.stash_threshold) and (score > min_allowed_bid + _ai_info.stash_threshold):
 		ai_print("trying for stash")
 		score -= 1
 		_stashing = true
@@ -259,9 +252,9 @@ func _trick_score_win_change(card: Card, low: float, high: float, trump: Suit) -
 	var score: float = (card_ordinal - low) / ordinal_count
 
 	if trump:
-		score *= 1 - trump_bonus # make room for trump bonus
+		score *= 1 - _ai_info.trump_bonus # make room for trump bonus
 		if card.suit(trump) == trump:
-			score += trump_bonus
+			score += _ai_info.trump_bonus
 
 	return score
 

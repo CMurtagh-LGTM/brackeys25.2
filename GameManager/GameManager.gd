@@ -1,8 +1,6 @@
 class_name GameManager
 extends Node2D
 
-var deck_info: DeckInfo = preload("res://Resources/Decks/FrenchPiquet.tres")
-
 signal finished(player_position: int, player_score: int)
 
 @onready var _hand_scene: PackedScene = preload("res://Hand/Hand.tscn")
@@ -34,6 +32,9 @@ const _arrow_offsets: Array[Vector2] = [
 ]
 
 var initialized: bool = false
+
+var _deck_info: DeckInfo = preload("res://Resources/Decks/FrenchPiquet.tres")
+var _ai_info: AIInfo
 
 var _deal_size: int = 7 # Number of cards to deal
 var _deal_packets: Array = [
@@ -68,6 +69,14 @@ const _deck_position_offset: Vector2 = Vector2(-184, 0)
 const _turnup_position_offset: Vector2 = _deck_position_offset + Vector2.LEFT * (Card.width + _pile_seperation)
 const _discard_pile_position_offset: Vector2 = - _deck_position_offset
 const _bonus_pile_position_offset: Vector2 = - _deck_position_offset + Vector2.RIGHT * (Card.width + _pile_seperation)
+
+func set_deck_info(deck_info: DeckInfo) -> void:
+	assert(not initialized)
+	_deck_info = deck_info
+
+func set_ai_info(ai_info: AIInfo) -> void:
+	assert(not initialized)
+	_ai_info = ai_info
 
 func set_deal_count(count: int) -> void:
 	assert(not initialized)
@@ -119,7 +128,7 @@ func _start_game() -> void:
 	for pip: Sprite2D in _pips:
 		pip.modulate.a = 0
 
-	_deck.deck_info = deck_info
+	_deck.deck_info = _deck_info
 	_deck.reset()
 
 	for hand: Hand in _hands:
@@ -127,7 +136,7 @@ func _start_game() -> void:
 
 	_hands[0].set_is_player()
 	for hand_index: int in range(1, _hands.size()):
-		_hands[hand_index].set_ai(AI.new())
+		_hands[hand_index].set_ai(AI.new(_ai_info))
 	_dealer = randi_range(0, _hands.size() - 1)
 	
 	_deal()
