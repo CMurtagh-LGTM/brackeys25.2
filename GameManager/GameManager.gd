@@ -19,6 +19,7 @@ signal finished(player_position: int, player_score: int)
 @onready var _win_condition: Node2D = $WinCondition
 @onready var _win_condition_label: Label = $WinCondition/Label
 @onready var _triumph_chooser: TriumphChooser = $TriumphChooser
+@onready var _origin: Node2D = $Origin
 
 @onready var _pips: Array[Sprite2D] = [$Pips/Pip0, $Pips/Pip1, $Pips/Pip2, $Pips/Pip3, $Pips/Pip4]
 
@@ -121,7 +122,7 @@ func _calculate_game_state() -> GameState:
 	return GameState.new(_trump, _trick.lead_suit(_trump), _deck.deck_info, _trick.get_cards(), _trick.card_count() == _hands.size() - 1)
 
 func _calculate_triumph_game_state() -> TriumphGameState:
-	return TriumphGameState.new(_hands[0], _deck, _discard_pile)
+	return TriumphGameState.new(_hands[0], _deck, _discard_pile, _origin)
 
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
@@ -196,18 +197,26 @@ func _deal() -> void:
 	_triumphs_before_bid()
 
 func _triumphs_before_bid() -> void:
+	_point_to_hand(_hand_index_to_compass(0))
 	var triumphs_before_bid: Array[Triumph] = []
 	var game_state := _calculate_triumph_game_state()
+
 	for triumph: Triumph in _triumphs:
 		if not triumph.has_before_bid(game_state):
 			continue
 		triumphs_before_bid.append(triumph)
-	if not triumphs_before_bid.is_empty():
+
+	while not triumphs_before_bid.is_empty():
 		_triumph_chooser.visible = true
 		var triumph: Triumph = await _triumph_chooser.choose(triumphs_before_bid, 0.75)
+		_triumph_chooser.visible = false
+
+		triumphs_before_bid.erase(triumph)
+
 		if triumph != null:
 			await triumph.before_bid(game_state)
-		_triumph_chooser.visible = false
+		else:
+			break
 	_start_bid()
 
 func _start_bid() -> void:
@@ -366,6 +375,7 @@ func _on_viewport_resize() -> void:
 	_bid_info.position = globals.viewport_center()
 	_discard_pile.position = globals.viewport_center() + _discard_pile_position_offset
 	_win_condition.position = globals.viewport_center() + _win_condition_position_offset
+	_origin.position = globals.viewport_center()
 
 	if _turnup:
 		_turnup.position = globals.viewport_center() + _turnup_position_offset

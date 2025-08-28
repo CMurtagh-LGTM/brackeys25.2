@@ -31,6 +31,7 @@ var _active: bool = false
 var _can_play: CanPlay = CanPlay.NONE
 var _highlight: Color
 var _highlighted: bool = false
+var _transient: bool = false
 
 signal clicked
 signal hovered
@@ -106,6 +107,10 @@ func reset_state() -> void:
 	_highlighted = false
 	_update_revealed()
 
+## Transient cards cannot be added to the deck
+func transient() -> bool:
+	return _transient
+
 func _update_revealed() -> void:
 	_face.visible = _revealed
 	_back.visible = !_revealed
@@ -149,9 +154,10 @@ func _process(_delta: float) -> void:
 		return
 
 const card_scene: PackedScene = preload("res://Card/Card.tscn")
-static func instantiate(card_info: CardInfo) -> Card:
+static func instantiate(card_info: CardInfo, transient_: bool = false) -> Card:
 	var card: Card = card_scene.instantiate()
 	card._info = card_info
+	card._transient = transient_
 	return card
 
 func _on_mouse_area_input_event(_viewport:Node, event:InputEvent, _shape_idx:int) -> void:

@@ -11,6 +11,7 @@ func shuffle() -> void:
 func add_cards(cards: Array[Card]) -> void:
 	for card: Card in cards:
 		card.conceal()
+	cards = cards.filter(func(card: Card) -> bool: return not card.transient())
 	await _cards.append(cards)
 
 func reset() -> void:

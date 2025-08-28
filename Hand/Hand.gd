@@ -43,6 +43,10 @@ func add_card(card: Card, index: int = -1) -> void:
 	if _ai == null:
 		card.clicked.connect(_on_card_clicked.bind(card))
 		card.hovered.connect(_on_card_hovered.bind(card))
+
+		if _turn_game_state != null and card.get_bower(_turn_game_state.trump):
+			card.highlight(card.get_bower_colour())
+
 	_position_cards()
 
 func remove_card(card: Card) -> void:

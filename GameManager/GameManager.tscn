@@ -136,3 +136,5 @@ text = "Score par: 1"
 
 [node name="TriumphChooser" parent="." instance=ExtResource("10_nhcvl")]
 visible = false
+
+[node name="Origin" type="Node2D" parent="."]

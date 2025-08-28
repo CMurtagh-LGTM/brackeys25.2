@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=6 format=3 uid="uid://b6eaahwkvuxeo"]
+
+[ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_o32po"]
+[ext_resource type="Resource" uid="uid://cc7jga06gv7a8" path="res://Resources/Cards/Joker.tres" id="1_vn1ja"]
+[ext_resource type="Script" uid="uid://dvb5dodkuhx3o" path="res://Triumph/TriumphAction/MaterialiseAction.gd" id="2_ihh6r"]
+[ext_resource type="Texture2D" uid="uid://dnnwl6n3cry2n" path="res://Assets/Characters/I.svg" id="4_njhjn"]
+
+[sub_resource type="Resource" id="Resource_7wfuk"]
+script = ExtResource("2_ihh6r")
+card_info = ExtResource("1_vn1ja")
+metadata/_custom_type_script = "uid://dvb5dodkuhx3o"
+
+[resource]
+script = ExtResource("1_o32po")
+texture = ExtResource("4_njhjn")
+description = "Gain a transient Joker card, then discard a card."
+action = SubResource("Resource_7wfuk")
+metadata/_custom_type_script = "uid://chanul83o6q5u"
