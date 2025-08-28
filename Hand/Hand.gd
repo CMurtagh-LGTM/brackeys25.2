@@ -62,7 +62,6 @@ func discard_to_bonus(new_hand_size: int, game_state: GameState, target: String 
 		var card: Card
 		if _ai == null:
 			card = await _discard_card
-			print(card)
 		else:
 			card = _cards[await _ai.decide_bonus_discard(_cards, game_state)]
 		cards_discarded.push_back(card)

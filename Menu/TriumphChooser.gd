@@ -20,6 +20,7 @@ func initialise() -> void:
 
 func reset() -> void:
 	assert(_initialised)
+	_triumphs.clear()
 	for triumph_info: TriumphInfo in _triumph_infos:
 		_triumphs.append(Triumph.instantiate(triumph_info))
 
@@ -32,11 +33,15 @@ func choose() -> Triumph:
 		_triumph_choice.chosen.connect(_on_choose)
 		_triumph_list.add_child(_triumph_choice)
 	
-	return await chosen
-
-func _on_choose(triumph: Triumph) -> void:
+	var chosen_triumph = await chosen
+	for index: int in amount:
+		_triumphs[index].get_parent().remove_child(_triumphs[index])
 	for child: Node in _triumph_list.get_children():
 		_triumph_list.remove_child(child)
+	_triumphs.erase(chosen_triumph)
+	return chosen_triumph
+
+func _on_choose(triumph: Triumph) -> void:
 	chosen.emit(triumph)
 
 func _ready() -> void:

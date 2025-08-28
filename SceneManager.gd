@@ -18,7 +18,6 @@ func _ready() -> void:
 	_triumph_chooser.initialise()
 	while true:
 		await _show_main_menu()
-		_triumph_chooser.reset()
 		if await _play():
 			pass # Win
 		else:
@@ -37,6 +36,11 @@ func _play() -> bool:
 		_game_preview.visible = true
 		await _game_preview.start_pressed
 		_game_preview.visible = false
+
+		_triumph_chooser.visible = true
+		triumphs.append(await _triumph_chooser.choose())
+		print(triumphs)
+		_triumph_chooser.visible = false
 
 		var game_manager = _game_scene.instantiate()
 		game_manager.set_deck_info(game.deck_info)

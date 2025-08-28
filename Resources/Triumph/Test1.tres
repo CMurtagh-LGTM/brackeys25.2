@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="TriumphInfo" load_steps=2 format=3 uid="uid://6wrqljcjsoou"]
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=3 format=3 uid="uid://6wrqljcjsoou"]
 
 [ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_3slcu"]
+[ext_resource type="Texture2D" uid="uid://dnnwl6n3cry2n" path="res://Assets/Characters/I.svg" id="2_h2jbl"]
 
 [resource]
 script = ExtResource("1_3slcu")
+texture = ExtResource("2_h2jbl")
 description = "A"
 metadata/_custom_type_script = "uid://chanul83o6q5u"
