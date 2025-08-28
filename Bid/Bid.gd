@@ -16,10 +16,19 @@ signal bid(int)
 	$"HBoxContainer/9",
 ]
 
-func disable_button(index: int) -> void:
-	if index > -1 and index < _bid_buttons.size():
-		for button_index: int in index + 1:
+func disable_button(min_allowed_bid: int, max_allowed_bid: int) -> void:
+	assert(min_allowed_bid < _bid_buttons.size())
+	assert(max_allowed_bid < _bid_buttons.size())
+	assert(max_allowed_bid > min_allowed_bid)
+
+	if min_allowed_bid >= 0:
+		for button_index: int in range(min_allowed_bid):
 			_bid_buttons[button_index].disabled = true
+
+	for button_index: int in range(max_allowed_bid):
+		_bid_buttons[button_index].visible = true
+	for button_index: int in range(max_allowed_bid, _bid_buttons.size()):
+		_bid_buttons[button_index].visible = false
 
 func reset_state() -> void:
 	for bid_button: Button in _bid_buttons:

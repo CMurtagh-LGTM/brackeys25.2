@@ -2,7 +2,8 @@ class_name GameInfo
 extends Resource
 
 @export var deck_info: DeckInfo
-@export var tricks: int = 3
+@export var rounds: int = 3
+@export var tricks: int = 7
 
 @export var win_condition: WinCondition
 

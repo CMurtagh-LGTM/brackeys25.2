@@ -36,7 +36,18 @@ const _arrow_offsets: Array[Vector2] = [
 var initialized: bool = false
 
 var _deal_size: int = 7 # Number of cards to deal
-var _deal_packets: Array[int] = [2, 3, 2]
+var _deal_packets: Array = [
+	[1],
+	[2],
+	[3],
+	[2, 2],
+	[3, 2],
+	[2, 2, 2],
+	[2, 3, 2],
+	[3, 2, 3],
+	[3, 3, 3],
+	[3, 2, 2, 3],
+]
 var _deal_count: int = 3 # Number of times to deal
 
 var _hands: Array[Hand]
@@ -61,6 +72,10 @@ const _bonus_pile_position_offset: Vector2 = - _deck_position_offset + Vector2.R
 func set_deal_count(count: int) -> void:
 	assert(not initialized)
 	_deal_count = count
+
+func set_trick_count(count: int) -> void:
+	assert(not initialized)
+	_deal_size = count
 
 func _ready() -> void:
 	initialized = true
@@ -111,6 +126,8 @@ func _start_game() -> void:
 		hand.reset()
 
 	_hands[0].set_is_player()
+	for hand_index: int in range(1, _hands.size()):
+		_hands[hand_index].set_ai(AI.new())
 	_dealer = randi_range(0, _hands.size() - 1)
 	
 	_deal()
@@ -132,8 +149,8 @@ func _deal() -> void:
 	_on_update_trump()
 	_hands[_dealer].set_is_dealer()
 	_current_hand = (_dealer + 1) % _hands.size()
-	assert(_deal_packets.reduce(Utils.sum) == _deal_size)
-	for packet: int in _deal_packets:
+	assert(_deal_packets[_deal_size-1].reduce(Utils.sum) == _deal_size)
+	for packet: int in _deal_packets[_deal_size-1]:
 		for relative_hand_index: int in _hands.size():
 			var hand = _hands[(relative_hand_index + _current_hand) % _hands.size()]
 			for _i in range(packet):
@@ -167,9 +184,9 @@ func _start_bid() -> void:
 		var disallowed_bid: int = (_deal_size - current_total) / (_hands.size() - relative_bid_index)
 
 		if hand.is_player():
-			await hand.player_bid(disallowed_bid, _deal_size)
+			await hand.player_bid(disallowed_bid + 1, _deal_size)
 		else:
-			await hand.ai_bid(disallowed_bid, _deal_size, _hands[highest_bidder_index].current_bid(), _deck.peek_top(), _calculate_game_state())
+			await hand.ai_bid(disallowed_bid + 1, _deal_size, _hands[highest_bidder_index].current_bid(), _deck.peek_top(), _calculate_game_state())
 
 		if hand.current_bid() > _hands[highest_bidder_index].current_bid():
 			highest_bidder_index = _current_hand

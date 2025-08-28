@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://da5qnxmm2ylvk"]
+[gd_scene load_steps=11 format=3 uid="uid://da5qnxmm2ylvk"]
 
 [ext_resource type="Texture2D" uid="uid://d2oodsnv6qt3m" path="res://Assets/plain-arrow.svg" id="1_jmty1"]
 [ext_resource type="Script" uid="uid://b4r4rffx3opro" path="res://GameManager/GameManager.gd" id="1_v4rul"]
@@ -9,6 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="8_6wl2n"]
 [ext_resource type="PackedScene" uid="uid://wd0t3t1h80bu" path="res://Trick/Trick.tscn" id="8_tb2wi"]
 [ext_resource type="PackedScene" uid="uid://bmtthu0vjtlh3" path="res://Deck/Deck.tscn" id="9_tb2wi"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tb2wi"]
+font_size = 8
+font_color = Color(0.215686, 0.196078, 0.176471, 1)
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource("1_v4rul")
@@ -63,6 +67,14 @@ offset_left = -20.0
 offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
+
+[node name="Label2" type="Label" parent="BidInfo/Total"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 27.0
+text = "Total:"
+label_settings = SubResource("LabelSettings_tb2wi")
+horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="BidInfo/Total"]
 layout_mode = 0

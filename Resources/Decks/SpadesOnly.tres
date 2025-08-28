@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="DeckInfo" load_steps=17 format=3 uid="uid://cuw2vqww1hamn"]
+
+[ext_resource type="Script" uid="uid://dt6xaddnvq8te" path="res://Card/CardInfo.gd" id="1_xurbf"]
+[ext_resource type="Resource" uid="uid://r427wg28j26q" path="res://Resources/Cards/Spade/ACESpade.tres" id="2_aj61u"]
+[ext_resource type="Resource" uid="uid://b1g4hot8naok4" path="res://Resources/Cards/Spade/KINGSpade.tres" id="3_o5oil"]
+[ext_resource type="Resource" uid="uid://cvbm0h4qc5dmq" path="res://Resources/Cards/Spade/QUEENSpade.tres" id="4_3jq2s"]
+[ext_resource type="Resource" uid="uid://diiym7dh8cj8r" path="res://Resources/Cards/Spade/JACKSpade.tres" id="5_40thu"]
+[ext_resource type="Resource" uid="uid://37ychmkskwc6" path="res://Resources/Cards/Spade/TENSpade.tres" id="6_q8a7o"]
+[ext_resource type="Resource" uid="uid://ct67oe2m863hw" path="res://Resources/Cards/Spade/NINESpade.tres" id="7_6lvhc"]
+[ext_resource type="Resource" uid="uid://dw1jac0g5hqcn" path="res://Resources/Cards/Spade/EIGHTSpade.tres" id="8_phem5"]
+[ext_resource type="Resource" uid="uid://di6fy7tfrvmmi" path="res://Resources/Cards/Spade/SEVENSpade.tres" id="9_e8jct"]
+[ext_resource type="Resource" uid="uid://b25042jnduhau" path="res://Resources/Cards/Spade/SIXSpade.tres" id="10_kx47f"]
+[ext_resource type="Resource" uid="uid://cy6ddunij6tnf" path="res://Resources/Cards/Spade/FIVESpade.tres" id="11_18w5d"]
+[ext_resource type="Resource" uid="uid://bccl7hxqgrge3" path="res://Resources/Cards/Spade/FOURSpade.tres" id="12_4agwo"]
+[ext_resource type="Resource" uid="uid://bll4kgtkxd4ik" path="res://Resources/Cards/Spade/THREESpade.tres" id="13_nivif"]
+[ext_resource type="Resource" uid="uid://d4ishyxjeu251" path="res://Resources/Cards/Spade/TWOSpade.tres" id="14_gy60q"]
+[ext_resource type="Resource" uid="uid://cc7jga06gv7a8" path="res://Resources/Cards/Joker.tres" id="15_aj61u"]
+[ext_resource type="Script" uid="uid://be3ygj3xgbnk1" path="res://Deck/DeckInfo.gd" id="15_pw4p2"]
+
+[resource]
+script = ExtResource("15_pw4p2")
+name = "SpadesOnly"
+deck_order = "A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5 > 4 > 3 > 2"
+cards = Array[ExtResource("1_xurbf")]([ExtResource("2_aj61u"), ExtResource("3_o5oil"), ExtResource("4_3jq2s"), ExtResource("5_40thu"), ExtResource("6_q8a7o"), ExtResource("7_6lvhc"), ExtResource("8_phem5"), ExtResource("9_e8jct"), ExtResource("10_kx47f"), ExtResource("11_18w5d"), ExtResource("12_4agwo"), ExtResource("13_nivif"), ExtResource("14_gy60q"), ExtResource("15_aj61u")])

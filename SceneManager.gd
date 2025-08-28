@@ -33,7 +33,8 @@ func _play() -> bool:
 
 		var game_manager = _game_scene.instantiate()
 		game_manager.deck_info = game.deck_info
-		game_manager.set_deal_count(game.tricks)
+		game_manager.set_deal_count(game.rounds)
+		game_manager.set_trick_count(game.rounds)
 
 		add_child(game_manager)
 		var result: Array = await game_manager.finished

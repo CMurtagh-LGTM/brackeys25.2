@@ -7,6 +7,7 @@ extends Node2D
 @onready var _deck_order: Label = %DeckOrder
 @onready var _card_names: Control = %CardNames
 @onready var _win_condition: Label = %WinCondition
+@onready var _rounds: Label = %Rounds
 @onready var _tricks: Label = %Tricks
 
 signal start_pressed()
@@ -44,4 +45,5 @@ func set_game_info(game_info: GameInfo) -> void:
 		_card_names.add_child(suit_container)
 
 	_win_condition.text = game_info.win_condition.to_label()
+	_rounds.text = str(game_info.rounds)
 	_tricks.text = str(game_info.tricks)

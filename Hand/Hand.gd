@@ -19,7 +19,7 @@ enum Compass {
 @onready var _total_score_label: Label = $TotalScore/Panel/Label
 
 var _cards: Array[Card] = []
-var _ai: AI = AI.new()
+var _ai: AI
 var _focus_index: int = -1
 var _current_deal_score: int = 0
 var _current_bid: int = 0
@@ -74,6 +74,9 @@ func discard_to_bonus(new_hand_size: int, game_state: GameState, target: String 
 func is_player() -> bool:
 	return _ai == null
 
+func set_ai(ai: AI) -> void:
+	_ai = ai
+
 func set_is_player() -> void:
 	if _ai == null:
 		return
@@ -108,22 +111,22 @@ func update_score(bonus: int = 0) -> void:
 func get_total_score() -> int:
 	return _total_score
 
-func player_bid(disallowed_bid: int, _max_allowed_bid: int) -> void:
+func player_bid(min_allowed_bid: int, max_allowed_bid: int) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
 
 	_bid.reset_state()
-	_bid.disable_button(disallowed_bid)
+	_bid.disable_button(min_allowed_bid, max_allowed_bid)
 	_bid.visible = true
 	_current_bid = await _bid.bid
 	_bid.visible = false
 	_info_display.visible = false
 	_set_bid_indicator()
 
-func ai_bid(disallowed_bid: int, max_allowed_bid: int, highest_bid: int, revealed_card: Card, game_state: GameState) -> void:
+func ai_bid(min_allowed_bid: int, max_allowed_bid: int, highest_bid: int, revealed_card: Card, game_state: GameState) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
-	_current_bid = await _ai.decide_bid(disallowed_bid + 1, max_allowed_bid, highest_bid, revealed_card, game_state, _cards)
+	_current_bid = await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, game_state, _cards)
 	_info_display.visible = false
 	_set_bid_indicator()
 
