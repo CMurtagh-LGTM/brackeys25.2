@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="GameInfo" load_steps=5 format=3 uid="uid://c6gb7smpnwhg6"]
 
 [ext_resource type="Script" uid="uid://c2wr4vn8g6efw" path="res://GameManager/GameInfo.gd" id="1_1b81g"]
-[ext_resource type="Resource" uid="uid://cjkwdiee8llaf" path="res://Resources/Decks/FrenchPiquet.tres" id="1_qxism"]
+[ext_resource type="Resource" uid="uid://7u0h8e28bfup" path="res://Resources/Decks/French33.tres" id="1_sldb7"]
 [ext_resource type="Script" uid="uid://c7qrqga2d36hh" path="res://GameManager/WinConditions/ParWinCondition.gd" id="3_sldb7"]
 
 [sub_resource type="Resource" id="Resource_u6gwy"]
 script = ExtResource("3_sldb7")
-par = 3
+par = 1
 metadata/_custom_type_script = "uid://c7qrqga2d36hh"
 
 [resource]
 script = ExtResource("1_1b81g")
-deck_info = ExtResource("1_qxism")
+deck_info = ExtResource("1_sldb7")
 tricks = 1
 win_condition = SubResource("Resource_u6gwy")
 metadata/_custom_type_script = "uid://c2wr4vn8g6efw"

@@ -55,7 +55,7 @@ func get_bower_colour() -> Color:
 	return _info.bower_colour
 
 func suit(trump: Suit) -> Suit:
-	if get_bower(trump) == Bower.LEFT:
+	if get_bower(trump) != Bower.NONE:
 		return trump
 	return _info.suit
 

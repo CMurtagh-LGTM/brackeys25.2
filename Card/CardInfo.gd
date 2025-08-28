@@ -16,12 +16,16 @@ func get_image() -> Texture2D:
 	return Texture2D.new()
 
 func get_pip() -> Texture2D:
+	if suit == null:
+		return null
 	return suit.texture
 
 func get_colour() -> Color:
-	return Suit.colours[suit.colour]
+	return Suit.colours[get_suit_colour()]
 
 func get_suit_colour() -> Suit.SuitColour:
+	if suit == null:
+		return Suit.SuitColour.BLACK
 	return suit.colour 
 
 func get_ordinal() -> Card.Ordinal:

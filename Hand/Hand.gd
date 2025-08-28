@@ -214,14 +214,15 @@ func _position_cards() -> void:
 
 func _sort_hand() -> void:
 	_cards.sort_custom(func(a: Card, b: Card) -> bool:
-		if a.suit(null).colour as int != b.suit(null).colour as int:
-			return a.suit(null).colour as int > b.suit(null).colour as int
-
-		if a.suit(null).name != b.suit(null).name:
-			return a.suit(null).name > b.suit(null).name
-
-		if a.get_bower(null) > b.get_bower(null):
+		if a.get_bower(null) != b.get_bower(null):
 			return a.get_bower(null) > b.get_bower(null)
+		
+		if a.suit(null) != null and b.suit(null) != null:
+			if  a.suit(null).colour as int != b.suit(null).colour as int:
+				return a.suit(null).colour as int > b.suit(null).colour as int
+
+			if a.suit(null).name != b.suit(null).name:
+				return a.suit(null).name > b.suit(null).name
 
 		return a.ordinal() > b.ordinal()
 	)

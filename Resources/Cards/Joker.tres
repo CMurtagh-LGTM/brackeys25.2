@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="JokerInfo" load_steps=2 format=3 uid="uid://cc7jga06gv7a8"]
+
+[ext_resource type="Script" uid="uid://dh1jd4sush5km" path="res://Card/JokerInfo.gd" id="1_5rl5o"]
+
+[resource]
+script = ExtResource("1_5rl5o")
+front_colour = Color(0.960784, 0.870588, 0.701961, 1)
+border_colour = Color(0.215686, 0.196078, 0.176471, 1)
+front_can_play_colour = Color(0.917647, 0.956863, 0.698039, 1)
+front_cant_play_colour = Color(0.956863, 0.737255, 0.698039, 1)
+bower_colour = Color(0.701961, 0.792157, 0.960784, 1)
+metadata/_custom_type_script = "uid://dh1jd4sush5km"
