@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="DeckInfo" load_steps=23 format=3 uid="uid://41tctbqmfp8j"]
+
+[ext_resource type="Script" uid="uid://dt6xaddnvq8te" path="res://Card/CardInfo.gd" id="1_8ctfm"]
+[ext_resource type="Resource" uid="uid://r427wg28j26q" path="res://Resources/Cards/Spade/ACESpade.tres" id="2_hdvcx"]
+[ext_resource type="Resource" uid="uid://b1g4hot8naok4" path="res://Resources/Cards/Spade/KINGSpade.tres" id="3_aea3v"]
+[ext_resource type="Resource" uid="uid://cvbm0h4qc5dmq" path="res://Resources/Cards/Spade/QUEENSpade.tres" id="4_lm4x7"]
+[ext_resource type="Resource" uid="uid://diiym7dh8cj8r" path="res://Resources/Cards/Spade/JACKSpade.tres" id="5_tviyj"]
+[ext_resource type="Resource" uid="uid://37ychmkskwc6" path="res://Resources/Cards/Spade/TENSpade.tres" id="6_vxhom"]
+[ext_resource type="Resource" uid="uid://ct67oe2m863hw" path="res://Resources/Cards/Spade/NINESpade.tres" id="7_x6yn8"]
+[ext_resource type="Resource" uid="uid://dw1jac0g5hqcn" path="res://Resources/Cards/Spade/EIGHTSpade.tres" id="8_08he2"]
+[ext_resource type="Resource" uid="uid://di6fy7tfrvmmi" path="res://Resources/Cards/Spade/SEVENSpade.tres" id="9_q5g0f"]
+[ext_resource type="Resource" uid="uid://b25042jnduhau" path="res://Resources/Cards/Spade/SIXSpade.tres" id="10_1jleh"]
+[ext_resource type="Resource" uid="uid://cy6ddunij6tnf" path="res://Resources/Cards/Spade/FIVESpade.tres" id="11_pasnk"]
+[ext_resource type="Resource" uid="uid://u041jd7yf8pb" path="res://Resources/Cards/Club/ACEClub.tres" id="12_fsurn"]
+[ext_resource type="Resource" uid="uid://bmtoamvachg0o" path="res://Resources/Cards/Club/KINGClub.tres" id="13_62q24"]
+[ext_resource type="Resource" uid="uid://0426hs5qh4fk" path="res://Resources/Cards/Club/QUEENClub.tres" id="14_22fpp"]
+[ext_resource type="Resource" uid="uid://ds6nkjd7s853y" path="res://Resources/Cards/Club/JACKClub.tres" id="15_hetps"]
+[ext_resource type="Resource" uid="uid://b1tgfadpa66j5" path="res://Resources/Cards/Club/TENClub.tres" id="16_w3i2y"]
+[ext_resource type="Resource" uid="uid://5v8xeh8d8blb" path="res://Resources/Cards/Club/NINEClub.tres" id="17_77fvq"]
+[ext_resource type="Resource" uid="uid://br3rchm6nx0lp" path="res://Resources/Cards/Club/EIGHTClub.tres" id="18_hst73"]
+[ext_resource type="Resource" uid="uid://bqp8e5rlwljat" path="res://Resources/Cards/Club/SEVENClub.tres" id="19_h1sj7"]
+[ext_resource type="Resource" uid="uid://bxi35imn6b7o0" path="res://Resources/Cards/Club/SIXClub.tres" id="20_68uqp"]
+[ext_resource type="Resource" uid="uid://dbruxsmp3hg4g" path="res://Resources/Cards/Club/FIVEClub.tres" id="21_r4ams"]
+[ext_resource type="Script" uid="uid://be3ygj3xgbnk1" path="res://Deck/DeckInfo.gd" id="22_rn600"]
+
+[resource]
+script = ExtResource("22_rn600")
+name = "BlackOnly"
+deck_order = "A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5"
+cards = Array[ExtResource("1_8ctfm")]([ExtResource("2_hdvcx"), ExtResource("3_aea3v"), ExtResource("4_lm4x7"), ExtResource("5_tviyj"), ExtResource("6_vxhom"), ExtResource("7_x6yn8"), ExtResource("8_08he2"), ExtResource("9_q5g0f"), ExtResource("10_1jleh"), ExtResource("11_pasnk"), ExtResource("12_fsurn"), ExtResource("13_62q24"), ExtResource("14_22fpp"), ExtResource("15_hetps"), ExtResource("16_w3i2y"), ExtResource("17_77fvq"), ExtResource("18_hst73"), ExtResource("19_h1sj7"), ExtResource("20_68uqp"), ExtResource("21_r4ams")])

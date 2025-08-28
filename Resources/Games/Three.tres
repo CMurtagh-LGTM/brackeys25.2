@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=7 format=3 uid="uid://babyx5cidffvb"]
+
+[ext_resource type="Script" uid="uid://dte1rd2vlh44p" path="res://Hand/AIInfo.gd" id="1_a76fa"]
+[ext_resource type="Resource" uid="uid://7u0h8e28bfup" path="res://Resources/Decks/French33.tres" id="2_a76fa"]
+[ext_resource type="Script" uid="uid://c2wr4vn8g6efw" path="res://GameManager/GameInfo.gd" id="3_ktooy"]
+[ext_resource type="Script" uid="uid://c7qrqga2d36hh" path="res://GameManager/WinConditions/ParWinCondition.gd" id="4_a76fa"]
+
+[sub_resource type="Resource" id="Resource_txwsg"]
+script = ExtResource("1_a76fa")
+trump_bonus = 0.0
+singleton_threshold = 18
+offsuit_threshold = 20
+stash_threshold = 1.5
+high_bid = 1
+high_bid_penalty = 0.5
+turnup_score_threshold = 0.5
+turnup_reveal_threshold = 0.75
+metadata/_custom_type_script = "uid://dte1rd2vlh44p"
+
+[sub_resource type="Resource" id="Resource_yl7aq"]
+script = ExtResource("4_a76fa")
+par = 5
+metadata/_custom_type_script = "uid://c7qrqga2d36hh"
+
+[resource]
+script = ExtResource("3_ktooy")
+deck_info = ExtResource("2_a76fa")
+ai_info = SubResource("Resource_txwsg")
+rounds = 3
+tricks = 5
+win_condition = SubResource("Resource_yl7aq")
+metadata/_custom_type_script = "uid://c2wr4vn8g6efw"

@@ -13,5 +13,5 @@ func get_bower() -> Card.Bower:
 	return Card.Bower.BEST
 
 func get_display_name() -> String:
-	return "Joker"
+	return "[img=16 color=" + Globals.BLACK.to_html() + "]" + "res://Assets/Characters/Joker.svg" + "[/img]"
 

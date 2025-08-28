@@ -4,8 +4,6 @@ extends Node2D
 signal finished(player_position: int, player_score: int)
 
 @onready var _hand_scene: PackedScene = preload("res://Hand/Hand.tscn")
-@onready var _deck_scene: PackedScene = preload("res://Deck/Deck.tscn")
-@onready var _trick_scene: PackedScene = preload("res://Trick/Trick.tscn")
 
 @onready var _arrow: Node2D = $Arrow
 @onready var _next: Button = $Next
@@ -18,6 +16,8 @@ signal finished(player_position: int, player_score: int)
 @onready var _bid_info: Node2D = $BidInfo
 @onready var _total_bid_label: Label = $BidInfo/Total/Label
 @onready var _call_info: Label = $BidInfo/CallInfo
+@onready var _win_condition: Node2D = $WinCondition
+@onready var _win_condition_label: Label = $WinCondition/Label
 
 @onready var _pips: Array[Sprite2D] = [$Pips/Pip0, $Pips/Pip1, $Pips/Pip2, $Pips/Pip3, $Pips/Pip4]
 
@@ -60,6 +60,8 @@ var _dealer: int = 0
 var _tricks_remaining: int = 0
 var _deals_remaining: int = 0
 
+var _win_condition_text: String = ""
+
 var _current_arrow_point: Hand.Compass
 
 const _pile_seperation: float = 10
@@ -69,6 +71,7 @@ const _deck_position_offset: Vector2 = Vector2(-184, 0)
 const _turnup_position_offset: Vector2 = _deck_position_offset + Vector2.LEFT * (Card.width + _pile_seperation)
 const _discard_pile_position_offset: Vector2 = - _deck_position_offset
 const _bonus_pile_position_offset: Vector2 = - _deck_position_offset + Vector2.RIGHT * (Card.width + _pile_seperation)
+const _win_condition_position_offset: Vector2 = Vector2.UP * 110
 
 func set_deck_info(deck_info: DeckInfo) -> void:
 	assert(not initialized)
@@ -85,6 +88,10 @@ func set_deal_count(count: int) -> void:
 func set_trick_count(count: int) -> void:
 	assert(not initialized)
 	_deal_size = count
+
+func set_win_condition(text: String) -> void:
+	assert(not initialized)
+	_win_condition_text = text
 
 func _ready() -> void:
 	initialized = true
@@ -121,6 +128,8 @@ func _on_hand_play(card: Card) -> void:
 
 func _start_game() -> void:
 	_deals_remaining = _deal_count
+
+	_win_condition_label.text = _win_condition_text
 
 	_next.visible = false
 	_bid_info.visible = false
@@ -331,6 +340,7 @@ func _on_viewport_resize() -> void:
 	_deck.position = globals.viewport_center() + _deck_position_offset
 	_bid_info.position = globals.viewport_center()
 	_discard_pile.position = globals.viewport_center() + _discard_pile_position_offset
+	_win_condition.position = globals.viewport_center() + _win_condition_position_offset
 
 	if _turnup:
 		_turnup.position = globals.viewport_center() + _turnup_position_offset

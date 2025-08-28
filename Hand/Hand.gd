@@ -60,7 +60,8 @@ func discard_to_bonus(new_hand_size: int, game_state: GameState, target: String 
 		var click_signals: Array = _cards.map(func(card: Card)->Signal: return card.clicked)
 		var card_index: int
 		if _ai == null:
-			card_index = await  SignalGroup.new().one(click_signals)
+			card_index = await SignalGroup.new().one(click_signals)
+			print(card_index)
 		else:
 			card_index = await _ai.decide_bonus_discard(_cards, game_state)
 		cards_discarded.push_back(_cards[card_index])

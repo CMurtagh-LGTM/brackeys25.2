@@ -19,14 +19,14 @@ metadata/_custom_type_script = "uid://dte1rd2vlh44p"
 
 [sub_resource type="Resource" id="Resource_u6gwy"]
 script = ExtResource("3_sldb7")
-par = 1
+par = 0
 metadata/_custom_type_script = "uid://c7qrqga2d36hh"
 
 [resource]
 script = ExtResource("1_1b81g")
 deck_info = ExtResource("1_sldb7")
 ai_info = SubResource("Resource_txwsg")
-rounds = 3
+rounds = 2
 tricks = 3
 win_condition = SubResource("Resource_u6gwy")
 metadata/_custom_type_script = "uid://c2wr4vn8g6efw"

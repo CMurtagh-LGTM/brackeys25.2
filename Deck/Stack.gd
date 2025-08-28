@@ -29,6 +29,7 @@ func clear() -> Array[Card]:
 	return cards
 
 func draw_card() -> Card:
+	assert(not _cards.is_empty())
 	var card: Card = _cards.pop_back()
 	_position_cards()
 	return card

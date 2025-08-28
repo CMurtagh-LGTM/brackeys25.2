@@ -1,7 +1,9 @@
 extends Node
 
 const games: Array[GameInfo] = [
-	preload("res://Resources/Games/One.tres")
+	# preload("res://Resources/Games/One.tres"),
+	# preload("res://Resources/Games/Two.tres"),
+	preload("res://Resources/Games/Three.tres"),
 ]
 
 @onready var _main_menu: MainMenu = $MainMenu
@@ -35,15 +37,20 @@ func _play() -> bool:
 		game_manager.set_deck_info(game.deck_info)
 		game_manager.set_ai_info(game.ai_info)
 		game_manager.set_deal_count(game.rounds)
-		game_manager.set_trick_count(game.rounds)
+		game_manager.set_trick_count(game.tricks)
+		game_manager.set_win_condition(game.win_condition.to_label())
 
 		add_child(game_manager)
 		var result: Array = await game_manager.finished
 		remove_child(game_manager)
 
-		print(result)
+		var place: int = result[0]
+		var score: int = result[1]
 
-		if game.win_condition.has_won(result[0]):
+		print("place:", place + 1)
+		print("score:", score)
+
+		if not game.win_condition.has_won(place, score):
 			return false
 	return true
 

@@ -7,6 +7,7 @@ extends Resource
 @export var rounds: int = 3
 @export var tricks: int = 7
 @export var win_condition: WinCondition
+var hands = 4
 
 # TODO hands count
 # Normal 4
