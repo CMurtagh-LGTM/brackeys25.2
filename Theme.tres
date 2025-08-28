@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://dhu0scfiaody0"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://dhu0scfiaody0"]
 
 [ext_resource type="StyleBox" uid="uid://8a10x62nywww" path="res://main.stylebox" id="1_23v3e"]
 [ext_resource type="FontFile" uid="uid://c4mpmcg2nqhva" path="res://Assets/Sofia/Sofia-Regular.ttf" id="1_yd3fu"]
@@ -24,6 +24,8 @@ content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.215686, 0.196078, 0.176471, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_23v3e"]
+
 [resource]
 default_font = ExtResource("1_yd3fu")
 Button/colors/font_color = Color(0.215686, 0.196078, 0.176471, 1)
@@ -38,3 +40,4 @@ Label/colors/font_color = Color(0.215686, 0.196078, 0.176471, 1)
 Panel/styles/panel = ExtResource("1_23v3e")
 PanelContainer/styles/panel = ExtResource("1_23v3e")
 RichTextLabel/colors/default_color = Color(0.215686, 0.196078, 0.176471, 1)
+TabContainer/styles/panel = SubResource("StyleBoxEmpty_23v3e")

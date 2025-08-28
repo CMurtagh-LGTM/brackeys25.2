@@ -34,23 +34,116 @@ texture = ExtResource("4_um3lu")
 [node name="MenuButtons" type="Node2D" parent="."]
 position = Vector2(576, 324)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MenuButtons"]
+[node name="MenuTabs" type="TabContainer" parent="MenuButtons"]
+unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -21.5
-offset_top = -20.0
-offset_right = 21.5
-offset_bottom = 20.0
+offset_left = -114.0
+offset_top = -96.0
+offset_right = 114.0
+offset_bottom = 96.0
 grow_horizontal = 2
 grow_vertical = 2
+current_tab = 0
+tabs_visible = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuButtons/MenuTabs"]
+layout_mode = 2
+alignment = 1
+metadata/_tab_index = 0
+
+[node name="Label" type="Label" parent="MenuButtons/MenuTabs/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Game Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="MenuButtons/MenuTabs/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer"]
+layout_mode = 2
 alignment = 1
 
-[node name="Start" type="Button" parent="MenuButtons/VBoxContainer"]
+[node name="Start" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Start"
 
-[connection signal="pressed" from="MenuButtons/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[node name="HowToPlay" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "How To Play"
+
+[node name="Credits" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Credits"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MenuButtons/MenuTabs"]
+visible = false
+layout_mode = 2
+alignment = 1
+metadata/_tab_index = 1
+
+[node name="Panel" type="PanelContainer" parent="MenuButtons/MenuTabs/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="MenuButtons/MenuTabs/VBoxContainer2/Panel"]
+custom_minimum_size = Vector2(1050, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "To win the game you need to clear each level without getting game over. To clear the level there will be a condition, usually a minimum number of score or score placement. The main way to get score is to meet or exceed your bid. To meet or exceed your bid you need to win tricks. Each round you play you will make a bid then play a number of tricks equal to the cards dealt to each player.
+
+Each trick you play one card. The suit of the first card played is the lead card and its suit is the lead suit. If you are not leading you must play a card of the lead suit if able. The highest card played of the lead suit wins. e.g. If a [img=14 color=#DC645A]res://Assets/Suits/Diamond.svg[/img]7 is lead then a [img=14 color=#37322D]res://Assets/Suits/Spade.svg[/img]A is played next the [img=14 color=#DC645A]res://Assets/Suits/Diamond.svg[/img]7 will still win due to [img=14 color=#37322D]res://Assets/Suits/Spade.svg[/img]A not being of the lead suit. Each round will usually have a trump suit. The trump suit will always beat the lead suit. This is decided by the card turned up after all cards have been dealt. e.g. If [img=14 color=#37322D]res://Assets/Suits/Spade.svg[/img] is trumps a [img=14 color=#DC645A]res://Assets/Suits/Diamond.svg[/img]7 is lead then a [img=14 color=#37322D]res://Assets/Suits/Spade.svg[/img]A is played next the [img=14 color=#37322D]res://Assets/Suits/Spade.svg[/img]A will win due to being a trump. The [img=14 color=#37322D]res://Assets/Characters/Joker.svg[/img] is called the Best Bower is of the trump suit and will always win. The J of the trump suit is the Right Bower and is the second best card. The J not of the trump suit but of the same colour is the Left Bower and is the third best card. note that the suit of the Left Bower changes to the trump suit.
+
+Each round you place one bid, this is the minimum number of tricks you need to win this round. If you meet your bid you gain that many points. If you fail to meet your bid you lose that many points instead. Each round the sum of the bids of each player must exceed the number of tricks played. The onus to meet the bid total is divided among the remaining players. If you are unsure of the bid to place, two is usually good. The highest bidder draws the turned up card than discards one card to the bonus pile, if multiple players are highest bidder the first in play order among them gets the honour.
+The player with the most tricks each round scores an extra 1 for each pip trump, 2 for each face trump and 3 for each bower in the bonus pile. If you have an excellent hand you can try and gain bonus points by discarding a good card to the bonus pile."
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+justification_flags = 131
+
+[node name="CenterContainer" type="CenterContainer" parent="MenuButtons/MenuTabs/VBoxContainer2"]
+layout_mode = 2
+
+[node name="HowToPlayBack" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer2/CenterContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Back"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MenuButtons/MenuTabs"]
+visible = false
+layout_mode = 2
+alignment = 1
+metadata/_tab_index = 2
+
+[node name="Panel" type="PanelContainer" parent="MenuButtons/MenuTabs/VBoxContainer3"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="MenuButtons/MenuTabs/VBoxContainer3/Panel"]
+layout_mode = 2
+bbcode_enabled = true
+text = "TODO"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+justification_flags = 131
+
+[node name="CenterContainer" type="CenterContainer" parent="MenuButtons/MenuTabs/VBoxContainer3"]
+layout_mode = 2
+
+[node name="CreditsBackPressed" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer3/CenterContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Back"
+
+[connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/HowToPlay" to="." method="_on_how_to_play_pressed"]
+[connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer2/CenterContainer/HowToPlayBack" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer3/CenterContainer/CreditsBackPressed" to="." method="_on_back_pressed"]

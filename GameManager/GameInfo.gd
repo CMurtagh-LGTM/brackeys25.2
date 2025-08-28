@@ -11,5 +11,8 @@ extends Resource
 # Boss 2
 
 # TODO Victory conditions
-# Normal Pin
-# Boss Win
+# Placement
+
+# TODO Trick count
+
+# TODO? AI parameters
