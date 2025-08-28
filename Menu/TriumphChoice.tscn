@@ -23,6 +23,7 @@ layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Description" type="RichTextLabel" parent="VBoxContainer/PanelContainer"]
 unique_name_in_owner = true

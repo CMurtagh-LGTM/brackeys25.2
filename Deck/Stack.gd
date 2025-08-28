@@ -40,7 +40,9 @@ func peek_top() -> Card:
 func get_cards() -> Array[Card]:
 	return _cards.duplicate()
 
+func is_empty() -> bool:
+	return _cards.is_empty()
+
 func _position_cards() -> void:
 	for card_index: int in _cards.size():
 		_cards[card_index].position = - Vector2.ONE * card_index / 3
-

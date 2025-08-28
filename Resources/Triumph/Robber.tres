@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TriumphInfo" load_steps=5 format=3 uid="uid://cb4mq2342lhm3"]
 
-[ext_resource type="Script" uid="uid://yssxgene73yk" path="res://Triumph/TriumphAction/RobAction.gd" id="1_encf5"]
+[ext_resource type="Script" uid="uid://yssxgene73yk" path="res://Triumph/TriumphAction/DrawAction.gd" id="1_encf5"]
 [ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_t8pfu"]
 [ext_resource type="Texture2D" uid="uid://ca8cpw1agu4sh" path="res://Assets/Characters/IV.svg" id="2_22j4h"]
 

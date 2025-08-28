@@ -2,7 +2,7 @@ class_name TriumphChooser
 extends Node2D
 
 @onready var _menu_buttons: Node2D = $MenuButtons
-@onready var _triumph_list: HBoxContainer = %TriumphList
+@onready var _triumph_list: Container = %TriumphList
 @onready var _skip_button: Button = %Skip
 
 signal chosen(triumph: Triumph)

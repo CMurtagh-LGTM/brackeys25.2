@@ -60,6 +60,12 @@ func remove_card(card: Card) -> void:
 func get_hand_size() -> int:
 	return _cards.size()
 
+func discard_last_card() -> Card:
+	assert(not _cards.is_empty())
+	var card: Card = _cards[-1]
+	remove_card(card)
+	return card
+
 # TODO merge these two functions somehow in a neat way
 func player_discard(new_hand_size: int, target: String = "") -> Array[Card]:
 	assert(_ai == null)

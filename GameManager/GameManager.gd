@@ -150,6 +150,7 @@ func _start_game() -> void:
 
 	_deck.deck_info = _deck_info
 	_deck.reset()
+	_deck.set_discard_pile(_discard_pile)
 
 	for hand: Hand in _hands:
 		hand.reset()
@@ -183,9 +184,9 @@ func _deal() -> void:
 		for relative_hand_index: int in _hands.size():
 			var hand = _hands[(relative_hand_index + _current_hand) % _hands.size()]
 			for _i in range(packet):
-				await hand.add_card(_deck.draw_card())
+				await hand.add_card(await _deck.draw_card())
 
-	var turnup: Card = _deck.draw_card()
+	var turnup: Card = await _deck.draw_card()
 	turnup.reveal()
 	await turnup.move_to(self, globals.viewport_center() + _turnup_position_offset, 0, Globals.card_deal_time)
 	_turnup = turnup
