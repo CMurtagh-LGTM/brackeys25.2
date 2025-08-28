@@ -152,14 +152,19 @@ func reset() -> void:
 	_total_score = 0
 	_total_score_label.text = str(_total_score)
 	clear()
-	
 
+func set_game_state(game_state: GameState) -> void:
+	_turn_game_state = game_state
+	for card: Card in _cards:
+		if card.get_bower(game_state.trump) and _ai == null:
+			card.highlight(card.get_bower_colour())
+	
 func gain_turn(game_state: GameState) -> void:
 	_has_turn = true
 	_info_display.visible = true
 	_info_display_label.text = "Playing"
+	set_game_state(game_state)
 
-	_turn_game_state = game_state
 	for card: Card in _cards:
 		card.set_active(true)
 	if _ai != null:
@@ -185,6 +190,7 @@ func _play_turn(game_state: GameState) -> void:
 
 func _play_card(card: Card) -> void:
 	remove_card(card)
+	card.unhighlight()
 	play.emit(card)
 
 func _position_cards() -> void:

@@ -10,6 +10,8 @@ extends Resource
 @export var front_can_play_colour: Color = Globals.LIGHT_GREEN
 @export var front_cant_play_colour: Color = Globals.LIGHT_RED
 
+@export var bower_colour: Color = Globals.LIGHT_BLUE
+
 func get_image() -> Texture2D:
 	return Texture2D.new()
 

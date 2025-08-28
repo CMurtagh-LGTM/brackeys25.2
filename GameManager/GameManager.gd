@@ -79,6 +79,7 @@ func _ready() -> void:
 
 	_start_game()
 
+# Really this should just be one member that things have a ref to
 func _calculate_game_state() -> GameState:
 	return GameState.new(_trump, _trick.lead_suit(_trump), _deck.deck_info, _trick.get_cards(), _trick.card_count() == _hands.size() - 1)
 
@@ -279,6 +280,10 @@ func _on_update_trump() -> void:
 
 		target_colour.a = float(_trump != null)
 		create_tween().tween_property(pip, "modulate", target_colour, 0.2)
+
+	var game_state: GameState = _calculate_game_state()
+	for hand: Hand in _hands:
+		hand.set_game_state(game_state)
 
 func _compass_to_hand_index(compass: Hand.Compass) -> int:
 	return compass as int

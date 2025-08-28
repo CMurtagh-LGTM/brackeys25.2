@@ -51,6 +51,9 @@ func get_bower(trump: Suit) -> Bower:
 		return Bower.LEFT
 	return Bower.NONE
 
+func get_bower_colour() -> Color:
+	return _info.bower_colour
+
 func suit(trump: Suit) -> Suit:
 	if get_bower(trump) == Bower.LEFT:
 		return trump
@@ -119,15 +122,17 @@ func _on_update_can_play() -> void:
 	_colour_card()
 
 func _colour_card() -> void:
-	if _highlighted:
-		_front.modulate = _highlight
-	elif _revealed and _active:
+	if _revealed and _active:
 		if _can_play == CanPlay.YES:
 			_front.modulate = _info.front_can_play_colour
 		elif _can_play == CanPlay.NO:
 			_front.modulate = _info.front_cant_play_colour
+		elif _highlighted:
+			_front.modulate = _highlight
 		else:
 			_front.modulate = _info.front_colour
+	elif _highlighted:
+		_front.modulate = _highlight
 	else:
 		_front.modulate = _info.front_colour
 	_front_border.modulate = _info.border_colour
