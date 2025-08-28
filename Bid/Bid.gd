@@ -25,9 +25,9 @@ func disable_button(min_allowed_bid: int, max_allowed_bid: int) -> void:
 		for button_index: int in range(min_allowed_bid):
 			_bid_buttons[button_index].disabled = true
 
-	for button_index: int in range(max_allowed_bid):
+	for button_index: int in range(max_allowed_bid + 1):
 		_bid_buttons[button_index].visible = true
-	for button_index: int in range(max_allowed_bid, _bid_buttons.size()):
+	for button_index: int in range(max_allowed_bid + 1, _bid_buttons.size()):
 		_bid_buttons[button_index].visible = false
 
 func reset_state() -> void:
