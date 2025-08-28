@@ -13,9 +13,3 @@ var hands = 4
 # Normal 4
 # Boss 2
 
-# TODO Victory conditions
-# Placement
-
-# TODO Trick count
-
-# TODO? AI parameters
