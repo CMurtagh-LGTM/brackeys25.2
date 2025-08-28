@@ -5,7 +5,20 @@ const _triumphs_scene: PackedScene = preload("res://Triumph/Triumph.tscn")
 
 var _info: TriumphInfo
 
+var _exhausted: bool = false
+
 @onready var _image: Sprite2D = $Image
+
+func unexhaust() -> void:
+	_exhausted = false
+
+func before_bid(state: TriumphGameState) -> void:
+	@warning_ignore("redundant_await")
+	await _info.action.before_bid(state)
+	_exhausted = true
+
+func has_before_bid(state: TriumphGameState) -> bool:
+	return not _exhausted and _info.action.has_before_bid(state)
 
 func description() -> String:
 	return _info.description

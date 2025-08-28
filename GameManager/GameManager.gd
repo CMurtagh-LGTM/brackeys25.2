@@ -18,6 +18,7 @@ signal finished(player_position: int, player_score: int)
 @onready var _call_info: Label = $BidInfo/CallInfo
 @onready var _win_condition: Node2D = $WinCondition
 @onready var _win_condition_label: Label = $WinCondition/Label
+@onready var _triumph_chooser: TriumphChooser = $TriumphChooser
 
 @onready var _pips: Array[Sprite2D] = [$Pips/Pip0, $Pips/Pip1, $Pips/Pip2, $Pips/Pip3, $Pips/Pip4]
 
@@ -53,6 +54,7 @@ var _deal_count: int = 3 # Number of times to deal
 
 var _hands: Array[Hand]
 var _turnup: Card = null
+var _triumphs: Array[Triumph]
 
 var _trump: Suit
 var _current_hand: int = 0
@@ -93,6 +95,10 @@ func set_win_condition(text: String) -> void:
 	assert(not initialized)
 	_win_condition_text = text
 
+func set_triumphs(triumphs: Array[Triumph]) -> void:
+	assert(not initialized)
+	_triumphs = triumphs
+
 func _ready() -> void:
 	initialized = true
 	globals.viewport_resize.connect(_on_viewport_resize)
@@ -114,6 +120,9 @@ func _ready() -> void:
 func _calculate_game_state() -> GameState:
 	return GameState.new(_trump, _trick.lead_suit(_trump), _deck.deck_info, _trick.get_cards(), _trick.card_count() == _hands.size() - 1)
 
+func _calculate_triumph_game_state() -> TriumphGameState:
+	return TriumphGameState.new(_hands[0], _deck, _discard_pile)
+
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
 	card.reveal()
@@ -134,6 +143,7 @@ func _start_game() -> void:
 	_next.visible = false
 	_bid_info.visible = false
 	_bonus_label.visible = false
+	_triumph_chooser.visible = false
 	for pip: Sprite2D in _pips:
 		pip.modulate.a = 0
 
@@ -183,6 +193,21 @@ func _deal() -> void:
 	_on_update_trump()
 
 	_tricks_remaining = _deal_size
+	_triumphs_before_bid()
+
+func _triumphs_before_bid() -> void:
+	var triumphs_before_bid: Array[Triumph] = []
+	var game_state := _calculate_triumph_game_state()
+	for triumph: Triumph in _triumphs:
+		if not triumph.has_before_bid(game_state):
+			continue
+		triumphs_before_bid.append(triumph)
+	if not triumphs_before_bid.is_empty():
+		_triumph_chooser.visible = true
+		var triumph: Triumph = await _triumph_chooser.choose(triumphs_before_bid, 0.75)
+		if triumph != null:
+			await triumph.before_bid(game_state)
+		_triumph_chooser.visible = false
 	_start_bid()
 
 func _start_bid() -> void:
@@ -228,7 +253,7 @@ func _start_bid() -> void:
 	var highest_bidder: Hand = _hands[highest_bidder_index]
 	highest_bidder.add_card(_turnup)
 	_turnup = null
-	var _discarded_cards: Array[Card] = await highest_bidder.discard_to_bonus(_deal_size, _calculate_game_state(), "Bonus")
+	var _discarded_cards: Array[Card] = await highest_bidder.discard_to_bonus(_deal_size, _calculate_game_state())
 	for card in _discarded_cards:
 		card.reveal()
 	await _bonus_pile.append(_discarded_cards)

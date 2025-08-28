@@ -53,10 +53,29 @@ func remove_card(card: Card) -> void:
 	_focus_index = -1
 	_position_cards()
 
-func discard_to_bonus(new_hand_size: int, game_state: GameState, target: String = "") -> Array[Card]:
+func get_hand_size() -> int:
+	return _cards.size()
+
+# TODO merge these two functions somehow in a neat way
+func player_discard(new_hand_size: int, target: String = "") -> Array[Card]:
+	assert(_ai == null)
 	_is_discarding = true
 	_info_display.visible = true
 	_info_display_label.text = "Discarding" + (" to " + target if target else "")
+	var cards_discarded: Array[Card] = []
+	while _cards.size() > new_hand_size:
+		var card: Card  = await _discard_card
+		cards_discarded.push_back(card)
+		card.conceal()
+		remove_card(card)
+	_is_discarding = false
+	_info_display.visible = false
+	return cards_discarded
+
+func discard_to_bonus(new_hand_size: int, game_state: GameState) -> Array[Card]:
+	_is_discarding = true
+	_info_display.visible = true
+	_info_display_label.text = "Discarding to Bonus"
 	var cards_discarded: Array[Card] = []
 	while _cards.size() > new_hand_size:
 		var card: Card

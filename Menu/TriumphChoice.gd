@@ -13,7 +13,6 @@ signal chosen(triumph: Triumph)
 func _ready() -> void:
 	_triumph_container.add_child(_triumph)
 	_triumph_container.custom_minimum_size = Vector2(Card.width * 1.32, Card.height)
-	_triumph.scale = Vector2.ONE * 2
 	_triumph.position = _triumph_container.custom_minimum_size/2
 	_triumph_description.text = _triumph.description()
 

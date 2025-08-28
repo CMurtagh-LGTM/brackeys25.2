@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://qr7a56qi4ccv"]
+
+[ext_resource type="Texture2D" uid="uid://dycxjfepc72ba" path="res://Assets/Suits/Heart.svg" id="1_8qi8a"]
+[ext_resource type="Script" uid="uid://dgl4khuwls0of" path="res://Menu/menu_pips.gd" id="1_jfv5v"]
+[ext_resource type="Texture2D" uid="uid://b71j10i488kgw" path="res://Assets/Suits/Diamond.svg" id="2_jfv5v"]
+[ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="3_scylb"]
+[ext_resource type="Texture2D" uid="uid://db1vhbyfchdln" path="res://Assets/Suits/Club.svg" id="4_dj6fh"]
+
+[node name="MenuPips" type="Node2D"]
+z_index = -1
+script = ExtResource("1_jfv5v")
+
+[node name="Pips" type="Node2D" parent="."]
+
+[node name="Pip1" type="Sprite2D" parent="Pips"]
+modulate = Color(0.862745, 0.392157, 0.352941, 1)
+position = Vector2(46, 49)
+texture = ExtResource("1_8qi8a")
+
+[node name="Pip2" type="Sprite2D" parent="Pips"]
+modulate = Color(0.862745, 0.392157, 0.352941, 1)
+position = Vector2(1111, 49)
+texture = ExtResource("2_jfv5v")
+
+[node name="Pip3" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+position = Vector2(1111, 599)
+texture = ExtResource("3_scylb")
+
+[node name="Pip4" type="Sprite2D" parent="Pips"]
+modulate = Color(0.215686, 0.196078, 0.176471, 1)
+position = Vector2(41, 599)
+texture = ExtResource("4_dj6fh")

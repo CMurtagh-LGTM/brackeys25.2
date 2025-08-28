@@ -1,35 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://buuha4e7375vl"]
+[gd_scene load_steps=2 format=3 uid="uid://buuha4e7375vl"]
 
 [ext_resource type="Script" uid="uid://djf6lw2iyp7ww" path="res://Menu/MainMenu.gd" id="1_exbqw"]
-[ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="1_tpenk"]
-[ext_resource type="Texture2D" uid="uid://dycxjfepc72ba" path="res://Assets/Suits/Heart.svg" id="2_exbqw"]
-[ext_resource type="Texture2D" uid="uid://b71j10i488kgw" path="res://Assets/Suits/Diamond.svg" id="3_biqin"]
-[ext_resource type="Texture2D" uid="uid://db1vhbyfchdln" path="res://Assets/Suits/Club.svg" id="4_um3lu"]
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_exbqw")
-
-[node name="Pips" type="Node2D" parent="."]
-
-[node name="Pip1" type="Sprite2D" parent="Pips"]
-modulate = Color(0.862745, 0.392157, 0.352941, 1)
-position = Vector2(46, 49)
-texture = ExtResource("2_exbqw")
-
-[node name="Pip2" type="Sprite2D" parent="Pips"]
-modulate = Color(0.862745, 0.392157, 0.352941, 1)
-position = Vector2(1111, 49)
-texture = ExtResource("3_biqin")
-
-[node name="Pip3" type="Sprite2D" parent="Pips"]
-modulate = Color(0.215686, 0.196078, 0.176471, 1)
-position = Vector2(1111, 599)
-texture = ExtResource("1_tpenk")
-
-[node name="Pip4" type="Sprite2D" parent="Pips"]
-modulate = Color(0.215686, 0.196078, 0.176471, 1)
-position = Vector2(41, 599)
-texture = ExtResource("4_um3lu")
 
 [node name="MenuButtons" type="Node2D" parent="."]
 position = Vector2(576, 324)

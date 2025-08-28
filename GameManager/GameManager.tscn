@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://da5qnxmm2ylvk"]
+[gd_scene load_steps=12 format=3 uid="uid://da5qnxmm2ylvk"]
 
 [ext_resource type="Texture2D" uid="uid://d2oodsnv6qt3m" path="res://Assets/plain-arrow.svg" id="1_jmty1"]
 [ext_resource type="Script" uid="uid://b4r4rffx3opro" path="res://GameManager/GameManager.gd" id="1_v4rul"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="8_6wl2n"]
 [ext_resource type="PackedScene" uid="uid://wd0t3t1h80bu" path="res://Trick/Trick.tscn" id="8_tb2wi"]
 [ext_resource type="PackedScene" uid="uid://bmtthu0vjtlh3" path="res://Deck/Deck.tscn" id="9_tb2wi"]
+[ext_resource type="PackedScene" uid="uid://bpejluo12ftan" path="res://Menu/TriumphChooser.tscn" id="10_nhcvl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tb2wi"]
 font_size = 8
@@ -132,3 +133,6 @@ offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Score par: 1"
+
+[node name="TriumphChooser" parent="." instance=ExtResource("10_nhcvl")]
+visible = false
