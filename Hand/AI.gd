@@ -206,7 +206,10 @@ func decide_bid(min_allowed_bid: int, max_allowed_bid, highest_bid: int, reveale
 		print("bid score: ", score)
 
 	@warning_ignore("narrowing_conversion")
-	return clampf(score, min_allowed_bid, max_allowed_bid)
+	var iscore: int = clampf(score, min_allowed_bid, max_allowed_bid)
+	assert(iscore >= min_allowed_bid)
+	assert(iscore <= max_allowed_bid)
+	return iscore
 
 func _lowest_score_card_index(cards: Array[Card], low: float, high: float, trump: Suit, only_trumps: bool) -> int:
 	var worst_index: int = 0

@@ -40,7 +40,7 @@ var initialized: bool = false
 var _deck_info: DeckInfo = preload("res://Resources/Decks/French53.tres")
 var _ai_info: AIInfo
 
-var _deal_size: int = 7 # Number of cards to deal
+var _trick_count: int = 7 # Number of cards to deal
 var _deal_packets: Array = [
 	[1],
 	[2],
@@ -93,7 +93,7 @@ func set_deal_count(count: int) -> void:
 
 func set_trick_count(count: int) -> void:
 	assert(not initialized)
-	_deal_size = count
+	_trick_count = count
 
 func set_win_condition(text: String) -> void:
 	assert(not initialized)
@@ -144,7 +144,7 @@ func _start_game() -> void:
 	_deck.reset()
 	_deck.set_discard_pile(_discard_pile)
 
-	_game_state = GameState.new(_deck_info, _trick, _hand_count)
+	_game_state = GameState.new(_deck_info, _trick, _hand_count, _trick_count)
 	_game_state.trump_changed.connect(_on_update_game_state_trump)
 	_game_state.turnup_changed.connect(_on_turnup_changed)
 
@@ -168,7 +168,7 @@ func _start_game() -> void:
 		_hands[hand_index].set_ai(AI.new(_ai_info))
 	_dealer = randi_range(0, _hands.size() - 1)
 
-	for bid_index: int in _deal_size + 1:
+	for bid_index: int in _game_state.trick_count() + 1:
 		_game_state.add_bid(NormalBid.new(bid_index))
 	
 	for triumph: Triumph in _triumphs:
@@ -195,8 +195,8 @@ func _deal() -> void:
 	_game_state.set_trump(null);
 	_hands[_dealer].set_is_dealer()
 	_current_hand = (_dealer + 1) % _hands.size()
-	assert(_deal_packets[_deal_size-1].reduce(Utils.sum) == _deal_size)
-	for packet: int in _deal_packets[_deal_size-1]:
+	assert(_deal_packets[_game_state.trick_count()-1].reduce(Utils.sum) == _game_state.trick_count())
+	for packet: int in _deal_packets[_game_state.trick_count()-1]:
 		for relative_hand_index: int in _hands.size():
 			var hand = _hands[(relative_hand_index + _current_hand) % _hands.size()]
 			for _i in range(packet):
@@ -205,7 +205,7 @@ func _deal() -> void:
 	var turnup: Card = await _deck.draw_card()
 	_game_state.set_turnup(turnup)
 
-	_tricks_remaining = _deal_size
+	_tricks_remaining = _game_state.trick_count()
 	_triumphs_before_bid()
 
 func _on_turnup_changed() -> void:
@@ -254,26 +254,26 @@ func _start_bid() -> void:
 		# Make sure that the game is overcalled
 		# floor(amount_underbid / yet_to_bid_players)
 		@warning_ignore("narrowing_conversion")
-		var minimum_bid: int = ceilf((_deal_size - current_total + 1) / float(_hands.size() - relative_bid_index))
+		var minimum_bid: int = max(ceilf((_game_state.trick_count() - current_total + 1) / float(_hands.size() - relative_bid_index)), 0)
 
 		if hand.is_player():
 			await hand.player_bid(minimum_bid)
 		else:
-			var current_bid_score: int = _hands[highest_bidder_index].current_bid().score if _hands[highest_bidder_index].current_bid() else 0
-			await hand.ai_bid(minimum_bid, _deal_size, current_bid_score, _deck.peek_top())
+			var current_bid_score: int = _hands[highest_bidder_index].current_bid().score(_game_state) if _hands[highest_bidder_index].current_bid() else 0
+			await hand.ai_bid(minimum_bid, _game_state.trick_count() - 1, current_bid_score, _deck.peek_top())
 
-		if hand.current_bid().score > _hands[highest_bidder_index].current_bid().score:
+		if hand.current_bid().score(_game_state) > _hands[highest_bidder_index].current_bid().score(_game_state):
 			highest_bidder_index = _current_hand
 
-		current_total += hand.current_bid().score
+		current_total += hand.current_bid().score(_game_state)
 		_total_bid_label.text = str(current_total)
 		_current_hand += 1
 		_current_hand %= _hands.size()
 
 	# Display info
-	# if current_total < _deal_size:
+	# if current_total < _game_state.trick_count():
 	# 	_call_info.text = over_under_bid_text[0]
-	# elif current_total > _deal_size:
+	# elif current_total > _game_state.trick_count():
 	# 	_call_info.text = over_under_bid_text[1]
 
 	_point_to_hand(_hand_index_to_compass(highest_bidder_index))
@@ -284,7 +284,7 @@ func _start_bid() -> void:
 	var highest_bidder: Hand = _hands[highest_bidder_index]
 	highest_bidder.add_card(_game_state.turnup())
 	_game_state.set_turnup(null)
-	var _discarded_cards: Array[Card] = await highest_bidder.discard(_deal_size, Hand.DiscardTarget.BONUS)
+	var _discarded_cards: Array[Card] = await highest_bidder.discard(_game_state.trick_count(), Hand.DiscardTarget.BONUS)
 	await _bonus_pile.append(_discarded_cards)
 	_bid_info.visible = false
 
@@ -335,7 +335,7 @@ func _end_deal() -> void:
 		var hand_index: int = (relative_hand_index + _dealer + 1) % _hands.size()
 		if (_hands[hand_index].get_deal_score() >= _hands[top_score_index].get_deal_score() and
 			(_hands[hand_index].get_deal_score() > _hands[top_score_index].get_deal_score() or
-				_hands[hand_index].current_bid().score > _hands[top_score_index].current_bid().score)
+				_hands[hand_index].current_bid().score(_game_state) > _hands[top_score_index].current_bid().score(_game_state))
 		):
 			top_score_index = hand_index
 

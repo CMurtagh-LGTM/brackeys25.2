@@ -7,16 +7,18 @@ var _trump: Suit
 var _trick: Trick
 var _hand_count: int
 var _turnup: Card
+var _trick_count: int
 
 var _bids: Array[Bid] = []
 
 signal trump_changed
 signal turnup_changed
 
-func _init(deck_info_: DeckInfo, trick_: Trick, hand_count: int):
+func _init(deck_info_: DeckInfo, trick_: Trick, hand_count: int, trick_count_: int):
 	deck_info = deck_info_
 	_trick = trick_
 	_hand_count = hand_count
+	_trick_count = trick_count_
 
 func lead_suit() -> Suit:
 	return _trick.lead_suit(_trump)
@@ -53,3 +55,6 @@ func add_bid(bid: Bid) -> void:
 
 func bids() -> Array[Bid]:
 	return _bids
+
+func trick_count() -> int:
+	return _trick_count

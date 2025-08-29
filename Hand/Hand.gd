@@ -137,16 +137,16 @@ func winning_trick(cards_: Array[Card]) -> void:
 	_hand_score_label.text = str(_current_deal_score)
 	_hand_score_label.visible = true
 	if _current_bid.has_met(_current_deal_score):
-		_bid_indicator.modulate = Globals.LIGHT_GREEN
+		_bid_indicator.modulate = Globals.LIGHT_RED if not _current_bid.has_met(_current_deal_score) else Globals.LIGHT_GREEN
 
 func get_deal_score() -> int:
 	return _current_deal_score
 
 func update_score(bonus: int = 0) -> void:
 	if _current_bid.has_met(_current_deal_score):
-		_total_score += _current_bid.score + bonus
+		_total_score += _current_bid.score(_game_state) + bonus
 	else:
-		_total_score -= _current_bid.score
+		_total_score -= _current_bid.score(_game_state)
 	_total_score_label.text = str(_total_score)
 	_current_deal_score = 0
 
@@ -171,7 +171,8 @@ func player_bid(min_allowed_bid: int) -> void:
 func ai_bid(min_allowed_bid: int, max_allowed_bid: int, highest_bid: int, revealed_card: Card) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
-	_current_bid = _game_state.bids()[(await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, _game_state, _cards))]
+	var bid_index: int = await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, _game_state, _cards)
+	_current_bid = _game_state.bids()[bid_index]
 	_info_display.visible = false
 	_set_bid_indicator()
 
@@ -303,7 +304,7 @@ func _update_focused_card() -> void:
 
 func _set_bid_indicator() -> void:
 	_bid_indicator.visible = true
-	_bid_indicator.modulate = Globals.LIGHT_RED if _current_bid.score > 0 else Globals.LIGHT_GREEN
+	_bid_indicator.modulate = Globals.LIGHT_RED if not _current_bid.has_met(_current_deal_score) else Globals.LIGHT_GREEN
 	_bid_label.text = str(_current_bid.character)
 
 func _can_play_card(card: Card) -> bool:
