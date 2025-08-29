@@ -21,6 +21,8 @@ enum DiscardTarget {
 @onready var _info_display_label: Label = $Info/Label
 @onready var _total_score_indicator: Node2D = $TotalScore
 @onready var _total_score_label: Label = $TotalScore/Panel/Label
+@onready var _card_audio: AudioStreamPlayer = $CardAudio
+@onready var _bid_audio: AudioStreamPlayer = $BidAudio
 
 var _cards: Array[Card] = []
 var _ai: AI
@@ -37,12 +39,14 @@ var _game_state: GameState
 signal play(Card)
 signal _discard_card(Card)
 
-func add_card(card: Card, index: int = -1, time: float = Globals.card_deal_time) -> void:
+func add_card(card: Card, index: int = -1, time: float = Globals.card_deal_time, loud: bool = false) -> void:
 	if index == -1:
 		_cards.push_back(card)
 	else:
 		_cards.insert(index, card)
 	await card.move_to(self, Vector2.ZERO, 0, time)
+	if not globals.muted and loud:
+		_card_audio.play()
 	card.reveal(globals.open_hands or _ai == null)
 	if _ai == null:
 		card.clicked.connect(_on_card_clicked.bind(card))
@@ -147,6 +151,8 @@ func update_score(bonus: int = 0) -> void:
 		_total_score += _current_bid.score(_game_state) + bonus
 	else:
 		_total_score -= _current_bid.score(_game_state)
+	if _current_bid.has_met(_current_deal_score):
+		_bid_indicator.modulate = Globals.LIGHT_RED if not _current_bid.has_met(_current_deal_score) else Globals.LIGHT_GREEN
 	_total_score_label.text = str(_total_score)
 	_current_deal_score = 0
 
@@ -164,6 +170,8 @@ func player_bid(min_allowed_bid: int) -> void:
 
 	_bid.visible = true
 	_current_bid = await _bid.choose_bid(_game_state, min_allowed_bid)
+	if not globals.muted:
+		_bid_audio.play()
 	_bid.visible = false
 	_info_display.visible = false
 	_set_bid_indicator()
@@ -172,6 +180,8 @@ func ai_bid(min_allowed_bid: int, max_allowed_bid: int, highest_bid: int, reveal
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
 	var bid_index: int = await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, _game_state, _cards)
+	if not globals.muted:
+		_bid_audio.play()
 	_current_bid = _game_state.bids()[bid_index]
 	_info_display.visible = false
 	_set_bid_indicator()
@@ -187,6 +197,8 @@ func clear() -> Array[Card]:
 	var cards_ = _cards.duplicate()
 	for card: Card in cards_:
 		card.reset_state()
+	if _ai != null:
+		_ai.reset()
 	_cards.clear()
 	cards_.append_array(_stack.clear())
 	_focus_index = -1

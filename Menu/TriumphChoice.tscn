@@ -31,6 +31,7 @@ shader_parameter/noise = SubResource("NoiseTexture2D_ia3ss")
 shader_parameter/offset = Vector2(0, 0)
 
 [node name="TriumphChoice" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 250)
 offset_right = 182.0
 offset_bottom = 78.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_k878m")
@@ -55,7 +56,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(174, 0)
 layout_mode = 2
 bbcode_enabled = true
-text = "A test description"
+text = "Add an Excuse card to hand then discard a card. This card always looses but can always be played. It has a bonus value of 2."
 fit_content = true
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]

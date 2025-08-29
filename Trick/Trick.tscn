@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://wd0t3t1h80bu"]
+[gd_scene load_steps=3 format=3 uid="uid://wd0t3t1h80bu"]
 
 [ext_resource type="Script" uid="uid://bkn0pfs38aet8" path="res://Trick/Trick.gd" id="1_os458"]
+[ext_resource type="AudioStream" uid="uid://hfiq3gga5moc" path="res://Assets/card-slide-6.ogg" id="2_kv2s7"]
 
 [node name="Trick" type="Node2D"]
 script = ExtResource("1_os458")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_kv2s7")
+volume_db = -5.0

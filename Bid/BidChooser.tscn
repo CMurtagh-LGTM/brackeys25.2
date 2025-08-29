@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgeuvmtmxcwnk"]
+[gd_scene load_steps=3 format=3 uid="uid://bgeuvmtmxcwnk"]
 
 [ext_resource type="Script" uid="uid://bi8hoql14qx5w" path="res://Bid/BidChooser.gd" id="1_il7qo"]
+[ext_resource type="AudioStream" uid="uid://bhiuwednerasu" path="res://Assets/chip-lay-2.ogg" id="2_b1ooo"]
 
 [node name="Bid" type="Node2D"]
 script = ExtResource("1_il7qo")
@@ -11,3 +12,7 @@ offset_top = -20.0
 offset_right = 134.0
 offset_bottom = 20.0
 alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_b1ooo")
+volume_db = -5.0

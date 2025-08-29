@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://c767fye8y5ef1"]
+[gd_scene load_steps=4 format=3 uid="uid://c767fye8y5ef1"]
 
 [ext_resource type="Script" uid="uid://bllvrpou41863" path="res://Deck/Stack.gd" id="1_qu5wy"]
+[ext_resource type="AudioStream" uid="uid://dtpqd44uisggv" path="res://Assets/card-fan-1.ogg" id="2_144dk"]
+[ext_resource type="AudioStream" uid="uid://hfiq3gga5moc" path="res://Assets/card-slide-6.ogg" id="3_ni5ux"]
 
 [node name="Stack" type="Node2D"]
 script = ExtResource("1_qu5wy")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_144dk")
+volume_db = -5.0
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ni5ux")
+volume_db = -5.0

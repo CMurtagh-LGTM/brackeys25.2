@@ -58,6 +58,7 @@ layout_mode = 2
 
 [node name="TriumphList" type="HBoxContainer" parent="MenuButtons/VBoxContainer/CenterContainer2"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 alignment = 1
 
@@ -90,7 +91,7 @@ grow_vertical = 2
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-text = "Skip"
+text = "Pass"
 
 [node name="Mould" parent="MenuButtons/VBoxContainer/CenterContainer/HBoxContainer/Skip" instance=ExtResource("2_kbljl")]
 material = SubResource("ShaderMaterial_kbljl")

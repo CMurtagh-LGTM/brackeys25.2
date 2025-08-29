@@ -8,6 +8,8 @@ const _hand_offsets: Array[Vector2] = [
 	2.0/3.0 * Card.width * Vector2(1, -1),
 ]
 
+@onready var _audio: AudioStreamPlayer = $AudioStreamPlayer
+
 var _cards: Array[Card] = []
 var _compasses: Array[Hand.Compass] = []
 
@@ -23,6 +25,8 @@ func add_card(card: Card, trump: Suit, compass: Hand.Compass) -> void:
 	card.set_active(false)
 	card.reveal()
 	await card.move_to(self, _hand_offsets[compass], Globals.hand_rotations[compass])
+	if not globals.muted:
+		_audio.play()
 	_cards.append(card)
 	_compasses.append(compass)
 	_highlight_winning(trump)

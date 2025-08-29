@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://ckta17078muxh"]
+[gd_scene load_steps=21 format=3 uid="uid://ckta17078muxh"]
 
 [ext_resource type="Script" uid="uid://bctw7rnd23ycv" path="res://Hand/Hand.gd" id="1_kj8sc"]
 [ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="2_wnkge"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="5_4xcgc"]
 [ext_resource type="PackedScene" uid="uid://bgeuvmtmxcwnk" path="res://Bid/BidChooser.tscn" id="5_217al"]
 [ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="6_qdlwu"]
+[ext_resource type="AudioStream" uid="uid://hfiq3gga5moc" path="res://Assets/card-slide-6.ogg" id="9_c374h"]
+[ext_resource type="AudioStream" uid="uid://bhiuwednerasu" path="res://Assets/chip-lay-2.ogg" id="10_pdyud"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p271h"]
 bg_color = Color(1, 1, 1, 1)
@@ -181,3 +183,12 @@ vertical_alignment = 1
 
 [node name="Bid" parent="." instance=ExtResource("5_217al")]
 position = Vector2(576, 424)
+
+[node name="CardAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_c374h")
+volume_db = -5.0
+max_polyphony = 5
+
+[node name="BidAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_pdyud")
+volume_db = -5.0

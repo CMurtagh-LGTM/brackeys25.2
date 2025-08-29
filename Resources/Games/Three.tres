@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dte1rd2vlh44p" path="res://Hand/AIInfo.gd" id="1_a76fa"]
 [ext_resource type="Resource" uid="uid://7u0h8e28bfup" path="res://Resources/Decks/French33.tres" id="2_a76fa"]
 [ext_resource type="Script" uid="uid://c2wr4vn8g6efw" path="res://GameManager/GameInfo.gd" id="3_ktooy"]
-[ext_resource type="Script" uid="uid://c7qrqga2d36hh" path="res://GameManager/WinConditions/ParWinCondition.gd" id="4_a76fa"]
+[ext_resource type="Script" uid="uid://dh0njfgbt545i" path="res://GameManager/WinConditions/PlaceWinCondition.gd" id="4_a76fa"]
 
 [sub_resource type="Resource" id="Resource_txwsg"]
 script = ExtResource("1_a76fa")
@@ -19,8 +19,8 @@ metadata/_custom_type_script = "uid://dte1rd2vlh44p"
 
 [sub_resource type="Resource" id="Resource_yl7aq"]
 script = ExtResource("4_a76fa")
-par = 3
-metadata/_custom_type_script = "uid://c7qrqga2d36hh"
+minimum_place = 3
+metadata/_custom_type_script = "uid://dh0njfgbt545i"
 
 [resource]
 script = ExtResource("3_ktooy")

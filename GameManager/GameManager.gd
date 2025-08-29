@@ -52,6 +52,9 @@ var _deal_packets: Array = [
 	[3, 2, 3],
 	[3, 3, 3],
 	[3, 2, 2, 3],
+	[3, 3, 2, 3],
+	[3, 3, 3, 3],
+	[3, 2, 3, 2, 3],
 ]
 var _deal_count: int = 3 # Number of times to deal
 
@@ -175,6 +178,7 @@ func _start_game() -> void:
 		triumph.apply_game_modifier(_calculate_triumph_game_state())
 
 	call_deferred("_on_viewport_resize")
+	await _deck.shuffle()
 	_deal()
 
 func _end_game() -> void:
@@ -200,7 +204,7 @@ func _deal() -> void:
 		for relative_hand_index: int in _hands.size():
 			var hand = _hands[(relative_hand_index + _current_hand) % _hands.size()]
 			for _i in range(packet):
-				await hand.add_card(await _deck.draw_card())
+				await hand.add_card(await _deck.draw_card(), -1, Globals.card_deal_time, true)
 
 	var turnup: Card = await _deck.draw_card()
 	_game_state.set_turnup(turnup)
@@ -357,8 +361,8 @@ func _end_deal() -> void:
 	cards.append_array(_bonus_pile.clear())
 	_dealer += 1
 	_dealer %= _hands.size()
-	await _deck.add_cards(cards)
-	_deck.shuffle()
+	await _deck.add_cards(cards, true)
+	await _deck.shuffle()
 
 	await get_tree().create_timer(Globals.breath_time).timeout
 
