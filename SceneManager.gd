@@ -38,9 +38,6 @@ func _play() -> void:
 	for game: GameInfo in games:
 		await _show_game_preview(game)
 
-		# TODO move down
-		await _show_triumph_chooser(triumphs)
-
 		for triumph_: Triumph in triumphs:
 			triumph_.unexhaust()
 
@@ -65,6 +62,9 @@ func _play() -> void:
 		if not game.win_condition.has_won(place, score):
 			await _show_game_over(place, score, game.win_condition.to_label())
 			return
+
+		await _show_triumph_chooser(triumphs)
+
 	await _show_victory()
 
 func _show_game_preview(game: GameInfo) -> void:

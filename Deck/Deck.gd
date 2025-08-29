@@ -36,4 +36,3 @@ func set_discard_pile(pile: Stack) -> void:
 
 func peek_top() -> Card:
 	return _cards.peek_top()
-
