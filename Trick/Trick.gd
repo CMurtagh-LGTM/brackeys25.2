@@ -21,6 +21,7 @@ func card_count() -> int:
 
 func add_card(card: Card, trump: Suit, compass: Hand.Compass) -> void:
 	card.set_active(false)
+	card.reveal()
 	await card.move_to(self, _hand_offsets[compass], Globals.hand_rotations[compass])
 	_cards.append(card)
 	_compasses.append(compass)

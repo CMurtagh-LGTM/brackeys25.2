@@ -10,8 +10,6 @@ func shuffle() -> void:
 	_cards.shuffle()
 
 func add_cards(cards: Array[Card]) -> void:
-	for card: Card in cards:
-		card.conceal()
 	cards = cards.filter(func(card: Card) -> bool: return not card.transient())
 	await _cards.append(cards)
 
@@ -32,3 +30,4 @@ func set_discard_pile(pile: Stack) -> void:
 
 func peek_top() -> Card:
 	return _cards.peek_top()
+

@@ -3,18 +3,26 @@ extends Node2D
 
 var _cards: Array[Card]
 
+@export var _revealed: bool = false
+
+signal cards_updated
+
 func push_card(card: Card) -> void:
 	_cards.push_back(card)
 	if card.get_parent():
 		await card.move_to(self, Vector2.ZERO, 0, Globals.card_stack_time)
 	else:
 		add_child(card)
+	card.reveal(_revealed)
+	cards_updated.emit()
 	_position_cards()
 
 func append(cards: Array[Card]) -> void:
 	_cards.append_array(cards)
 	for card: Card in cards:
 		await card.move_to(self, Vector2.ZERO, 0, Globals.card_stack_time)
+		card.reveal(_revealed)
+	cards_updated.emit()
 	_position_cards()
 
 func shuffle() -> void:
@@ -26,12 +34,14 @@ func shuffle() -> void:
 func clear() -> Array[Card]:
 	var cards = _cards.duplicate()
 	_cards.clear()
+	cards_updated.emit()
 	return cards
 
 func draw_card() -> Card:
 	assert(not _cards.is_empty())
 	var card: Card = _cards.pop_back()
 	_position_cards()
+	cards_updated.emit()
 	return card
 
 func peek_top() -> Card:

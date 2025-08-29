@@ -57,11 +57,12 @@ var _hands: Array[Hand]
 var _turnup: Card = null
 var _triumphs: Array[Triumph]
 
-var _trump: Suit
 var _current_hand: int = 0
 var _dealer: int = 0
 var _tricks_remaining: int = 0
 var _deals_remaining: int = 0
+
+var _game_state: GameState
 
 var _win_condition_text: String = ""
 
@@ -117,23 +118,18 @@ func _ready() -> void:
 
 	_start_game()
 
-# Really this should just be one member that things have a ref to
-func _calculate_game_state() -> GameState:
-	return GameState.new(_trump, _trick.lead_suit(_trump), _deck.deck_info, _trick.get_cards(), _trick.card_count() == _hands.size() - 1)
-
 func _calculate_triumph_game_state() -> TriumphGameState:
-	return TriumphGameState.new(_hands[0], _hands, _deck, _discard_pile, _origin)
+	return TriumphGameState.new(_hands[0], _hands, _deck, _discard_pile, _bonus_pile, _origin)
 
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
-	card.reveal()
-	await _trick.add_card(card, _trump, _hand_index_to_compass(_current_hand))
+	await _trick.add_card(card, _game_state.trump(), _hand_index_to_compass(_current_hand))
 	_current_hand += 1
 	_current_hand %= _hands.size()
 	if _trick.card_count() >= _hands.size():
 		_end_trick()
 		return
-	_hands[_current_hand].gain_turn(_calculate_game_state())
+	_hands[_current_hand].gain_turn()
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
 func _start_game() -> void:
@@ -152,8 +148,14 @@ func _start_game() -> void:
 	_deck.reset()
 	_deck.set_discard_pile(_discard_pile)
 
+	_game_state = GameState.new(_deck_info, _trick, _hands.size())
+	_game_state.trump_changed.connect(_on_update_game_state_trump)
+
+	_bonus_pile.cards_updated.connect(_on_bonus_pile_changed)
+
 	for hand: Hand in _hands:
 		hand.reset()
+		hand.set_game_state(_game_state)
 
 	_hands[0].set_is_player()
 	for hand_index: int in range(1, _hands.size()):
@@ -175,8 +177,7 @@ func _end_game() -> void:
 func _deal() -> void:
 	_deals_remaining -= 1
 
-	_trump = null;
-	_on_update_trump()
+	_game_state.set_trump(null);
 	_hands[_dealer].set_is_dealer()
 	_current_hand = (_dealer + 1) % _hands.size()
 	assert(_deal_packets[_deal_size-1].reduce(Utils.sum) == _deal_size)
@@ -191,8 +192,7 @@ func _deal() -> void:
 	await turnup.move_to(self, globals.viewport_center() + _turnup_position_offset, 0, Globals.card_deal_time)
 	_turnup = turnup
 
-	_trump = turnup.suit(null)
-	_on_update_trump()
+	_game_state.set_trump(turnup.suit(null))
 
 	_tricks_remaining = _deal_size
 	_triumphs_before_bid()
@@ -239,7 +239,7 @@ func _start_bid() -> void:
 		if hand.is_player():
 			await hand.player_bid(disallowed_bid + 1, _deal_size)
 		else:
-			await hand.ai_bid(disallowed_bid + 1, _deal_size, _hands[highest_bidder_index].current_bid(), _deck.peek_top(), _calculate_game_state())
+			await hand.ai_bid(disallowed_bid + 1, _deal_size, _hands[highest_bidder_index].current_bid(), _deck.peek_top())
 
 		if hand.current_bid() > _hands[highest_bidder_index].current_bid():
 			highest_bidder_index = _current_hand
@@ -263,22 +263,22 @@ func _start_bid() -> void:
 	var highest_bidder: Hand = _hands[highest_bidder_index]
 	highest_bidder.add_card(_turnup)
 	_turnup = null
-	var _discarded_cards: Array[Card] = await highest_bidder.discard_to_bonus(_deal_size, _calculate_game_state())
-	for card in _discarded_cards:
-		card.reveal()
+	var _discarded_cards: Array[Card] = await highest_bidder.discard_to_bonus(_deal_size)
 	await _bonus_pile.append(_discarded_cards)
 	_bid_info.visible = false
-	_bonus_label.text = str(_calculate_bonus_score())
-	_bonus_label.visible = true
 
 	_start_trick()
 
+func _on_bonus_pile_changed() -> void:
+	_bonus_label.text = str(_calculate_bonus_score())
+	_bonus_label.visible = not _bonus_pile.is_empty()
+
 func _start_trick() -> void:
-	_hands[_current_hand].gain_turn(_calculate_game_state())
+	_hands[_current_hand].gain_turn()
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
 func _end_trick() -> void:
-	var winner: Hand.Compass = _trick.get_winner(_trump)
+	var winner: Hand.Compass = _trick.get_winner(_game_state.trump())
 	_point_to_hand(winner)
 	_current_hand = _compass_to_hand_index(winner)
 	_arrow.modulate = Globals.LIGHT_GREEN
@@ -296,12 +296,12 @@ func _end_trick() -> void:
 func _calculate_bonus_score() -> int:
 	var bonus: int = 0
 	for card: Card in _bonus_pile.get_cards():
-		if card.suit(_trump) != _trump:
+		if card.suit(_game_state.trump()) != _game_state.trump():
 			continue
 		bonus += 1
 		if card.ordinal() > Card.Ordinal.THIRTEEN:
 			bonus += 1
-		if card.get_bower(_trump) != Card.Bower.NONE:
+		if card.get_bower(_game_state.trump()) != Card.Bower.NONE:
 			bonus += 1
 	return bonus
 
@@ -340,23 +340,19 @@ func _end_deal() -> void:
 	else: 
 		_end_game()
 
-func _on_update_trump() -> void:
+func _on_update_game_state_trump() -> void:
 	for pip: Sprite2D in _pips:
 		var target_colour: Color = pip.modulate
-		if _trump != null:
-			pip.texture = _trump.texture
+		if _game_state.trump() != null:
+			pip.texture = _game_state.trump().texture
 
 			var a: float = pip.modulate.a
-			pip.modulate = Suit.colours[_trump.colour]
+			pip.modulate = Suit.colours[_game_state.trump().colour]
 			pip.modulate.a = a
-			target_colour = Suit.colours[_trump.colour]
+			target_colour = Suit.colours[_game_state.trump().colour]
 
-		target_colour.a = float(_trump != null)
+		target_colour.a = float(_game_state.trump != null)
 		create_tween().tween_property(pip, "modulate", target_colour, 0.2)
-
-	var game_state: GameState = _calculate_game_state()
-	for hand: Hand in _hands:
-		hand.set_game_state(game_state)
 
 func _compass_to_hand_index(compass: Hand.Compass) -> int:
 	return compass as int

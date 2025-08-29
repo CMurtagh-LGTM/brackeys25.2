@@ -28,7 +28,7 @@ var _total_score: int = 0
 var _has_turn: bool = false
 var _is_discarding: bool = false
 
-var _turn_game_state: GameState
+var _game_state: GameState
 
 signal play(Card)
 signal _discard_card(Card)
@@ -44,7 +44,7 @@ func add_card(card: Card, index: int = -1) -> void:
 		card.clicked.connect(_on_card_clicked.bind(card))
 		card.hovered.connect(_on_card_hovered.bind(card))
 
-		if _turn_game_state != null and card.get_bower(_turn_game_state.trump):
+		if _game_state != null and card.get_bower(_game_state.trump()):
 			card.highlight(card.get_bower_colour())
 
 	_position_cards()
@@ -81,13 +81,12 @@ func player_discard(new_hand_size: int, target: String = "") -> Array[Card]:
 	while _cards.size() > new_hand_size:
 		var card: Card  = await _discard_card
 		cards_discarded.push_back(card)
-		card.conceal()
 		remove_card(card)
 	_is_discarding = false
 	_info_display.visible = false
 	return cards_discarded
 
-func discard_to_bonus(new_hand_size: int, game_state: GameState) -> Array[Card]:
+func discard_to_bonus(new_hand_size: int) -> Array[Card]:
 	_is_discarding = true
 	_info_display.visible = true
 	_info_display_label.text = "Discarding to Bonus"
@@ -97,9 +96,8 @@ func discard_to_bonus(new_hand_size: int, game_state: GameState) -> Array[Card]:
 		if _ai == null:
 			card = await _discard_card
 		else:
-			card = _cards[await _ai.decide_bonus_discard(_cards, game_state)]
+			card = _cards[await _ai.decide_bonus_discard(_cards, _game_state)]
 		cards_discarded.push_back(card)
-		card.conceal()
 		remove_card(card)
 	_is_discarding = false
 	_info_display.visible = false
@@ -157,10 +155,10 @@ func player_bid(min_allowed_bid: int, max_allowed_bid: int) -> void:
 	_info_display.visible = false
 	_set_bid_indicator()
 
-func ai_bid(min_allowed_bid: int, max_allowed_bid: int, highest_bid: int, revealed_card: Card, game_state: GameState) -> void:
+func ai_bid(min_allowed_bid: int, max_allowed_bid: int, highest_bid: int, revealed_card: Card) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
-	_current_bid = await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, game_state, _cards)
+	_current_bid = await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, _game_state, _cards)
 	_info_display.visible = false
 	_set_bid_indicator()
 
@@ -191,21 +189,25 @@ func reset() -> void:
 	clear()
 
 func set_game_state(game_state: GameState) -> void:
-	_turn_game_state = game_state
+	if _game_state != null:
+		_game_state.trump_changed.disconnect(_on_trump_update)
+	_game_state = game_state
+	_game_state.trump_changed.connect(_on_trump_update)
+
+func _on_trump_update() -> void:
 	for card: Card in _cards:
-		if card.get_bower(game_state.trump) and _ai == null:
+		if card.get_bower(_game_state.trump()) and _ai == null:
 			card.highlight(card.get_bower_colour())
 	
-func gain_turn(game_state: GameState) -> void:
+func gain_turn() -> void:
 	_has_turn = true
 	_info_display.visible = true
 	_info_display_label.text = "Playing"
-	set_game_state(game_state)
 
 	for card: Card in _cards:
 		card.set_active(true)
 	if _ai != null:
-		_play_turn(game_state)
+		_play_turn()
 
 func lose_turn() -> void:
 	_has_turn = false
@@ -221,9 +223,9 @@ func _hand_arc(x: float) -> float:
 func _hand_arc_derivative(x: float) -> float:
 	return 0.5 * x
 
-func _play_turn(game_state: GameState) -> void:
+func _play_turn() -> void:
 	assert(_ai != null)
-	_play_card(await _ai.decide_card(game_state, _cards.filter(_can_play_card)))
+	_play_card(await _ai.decide_card(_game_state, _cards.filter(_can_play_card)))
 
 func _play_card(card: Card) -> void:
 	remove_card(card)
@@ -286,15 +288,15 @@ func _set_bid_indicator() -> void:
 	_bid_label.text = str(_current_bid)
 
 func _can_play_card(card: Card) -> bool:
-	var card_suit: Suit = card.suit(_turn_game_state.trump)
+	var card_suit: Suit = card.suit(_game_state.trump())
 
 	# Leading can play any
-	if _turn_game_state.lead_suit == null:
+	if _game_state.lead_suit() == null:
 		return true
 	# Need to follow suit
-	if card_suit == _turn_game_state.lead_suit:
+	if card_suit == _game_state.lead_suit():
 		return true
-	if not Utils.has_suit(_cards, _turn_game_state.lead_suit, _turn_game_state.trump):
+	if not Utils.has_suit(_cards, _game_state.lead_suit(), _game_state.trump()):
 		return true
 	return false
 

@@ -61,18 +61,18 @@ func _lead(game_state: GameState, cards: Array[Card]) -> Card:
 	# Find off suit singletons
 	var suit_count: Dictionary[Suit, int] = {}
 	for card: Card in cards:
-		suit_count.get_or_add(card.suit(game_state.trump), 0)
-		suit_count[card.suit(game_state.trump)] += 1
+		suit_count.get_or_add(card.suit(game_state.trump()), 0)
+		suit_count[card.suit(game_state.trump())] += 1
 
 	var decent_singletons: Array[Card] = []
 	for card: Card in cards:
-		if suit_count[card.suit(game_state.trump)] > 1:
+		if suit_count[card.suit(game_state.trump())] > 1:
 			continue
-		if card.suit(game_state.trump) == game_state.trump:
+		if card.suit(game_state.trump()) == game_state.trump():
 			continue
 		if card.ordinal() < _ai_info.singleton_threshold:
 			continue
-		if card.get_bower(game_state.trump) != Card.Bower.NONE:
+		if card.get_bower(game_state.trump()) != Card.Bower.NONE:
 			continue
 		decent_singletons.append(card)
 
@@ -85,25 +85,25 @@ func _lead(game_state: GameState, cards: Array[Card]) -> Card:
 		return best_singleton
 
 	# Find high off suit
-	var best_decent_offsuit: Card = _best_card_ordinal(cards, game_state.trump, game_state.trump, _ai_info.offsuit_threshold)
+	var best_decent_offsuit: Card = _best_card_ordinal(cards, game_state.trump(), game_state.trump(), _ai_info.offsuit_threshold)
 	if best_decent_offsuit:
 		ai_print("lead decent offsuit")
 		return best_decent_offsuit
 
 	# Go fishing for trumps
-	var best_bower: Card = _best_bower(cards, game_state.trump)
+	var best_bower: Card = _best_bower(cards, game_state.trump())
 	if best_bower:
 		ai_print("lead bower")
 		return best_bower
 
 	# Just pick the best off suit
-	var best_offsuit: Card = _best_card_ordinal(cards, game_state.trump, game_state.trump, Card.Ordinal.BOTTOM)
+	var best_offsuit: Card = _best_card_ordinal(cards, game_state.trump(), game_state.trump(), Card.Ordinal.BOTTOM)
 	if best_offsuit:
 		ai_print("lead offsuit")
 		return best_offsuit
 
 	# Somehow we have all trumps and no bowers
-	var best_card: Card = _best_card_ordinal(cards, game_state.trump, null, Card.Ordinal.BOTTOM)
+	var best_card: Card = _best_card_ordinal(cards, game_state.trump(), null, Card.Ordinal.BOTTOM)
 	if best_card == null:
 		@warning_ignore("assert_always_false")
 		assert(0)
@@ -134,31 +134,31 @@ func _potential_winners(current_winning_card: Card, cards: Array[Card], trump: S
 
 func _middle(game_state: GameState, cards: Array[Card]) -> Card:
 	# Best card if can win else worst card
-	var current_winning_card: Card = Trick.current_winning_card(game_state.trick, game_state.trump)
+	var current_winning_card: Card = Trick.current_winning_card(game_state.trick(), game_state.trump())
 
-	var potential_winners: Array[Card] = _potential_winners(current_winning_card, cards, game_state.trump, game_state.lead_suit)
-	var best_winning_card: Card = _best_card_ordinal(potential_winners, game_state.trump, null, Card.Ordinal.BOTTOM)
+	var potential_winners: Array[Card] = _potential_winners(current_winning_card, cards, game_state.trump(), game_state.lead_suit())
+	var best_winning_card: Card = _best_card_ordinal(potential_winners, game_state.trump(), null, Card.Ordinal.BOTTOM)
 
 	if best_winning_card != null:
 		ai_print("played best winning card")
 		return best_winning_card
 
 	ai_print("throw off")
-	return _worst_card_ordinal(cards, game_state.trump)
+	return _worst_card_ordinal(cards, game_state.trump())
 
 func _last(game_state: GameState, cards: Array[Card]) -> Card:
 	# Worst winning card if can win else worst card
-	var current_winning_card: Card = Trick.current_winning_card(game_state.trick, game_state.trump)
+	var current_winning_card: Card = Trick.current_winning_card(game_state.trick(), game_state.trump())
 
-	var potential_winners: Array[Card] = _potential_winners(current_winning_card, cards, game_state.trump, game_state.lead_suit)
-	var worst_winning_Card: Card = _worst_card_ordinal(potential_winners, game_state.trump)
+	var potential_winners: Array[Card] = _potential_winners(current_winning_card, cards, game_state.trump(), game_state.lead_suit())
+	var worst_winning_Card: Card = _worst_card_ordinal(potential_winners, game_state.trump())
 
 	if worst_winning_Card != null:
 		ai_print("played worst winning card")
 		return worst_winning_Card
 
 	ai_print("throw off")
-	return _worst_card_ordinal(cards, game_state.trump)
+	return _worst_card_ordinal(cards, game_state.trump())
 
 func decide_card(game_state: GameState, cards: Array[Card]) -> Card:
 	assert(not cards.is_empty())
@@ -167,10 +167,10 @@ func decide_card(game_state: GameState, cards: Array[Card]) -> Card:
 	if randf_range(0, 1) < _mistake_chance:
 		return cards[0]
 
-	if game_state.lead_suit == null:
+	if game_state.lead_suit() == null:
 		return _lead(game_state, cards)
 
-	if not game_state.last_play:
+	if not game_state.last_play():
 		return _middle(game_state, cards)
 
 	return _last(game_state, cards)
@@ -184,7 +184,7 @@ func decide_bid(min_allowed_bid: int, max_allowed_bid, highest_bid: int, reveale
 
 	var score: float = 0.0
 	for card: Card in cards:
-		score += _trick_score_win_change(card, low, high, game_state.trump)
+		score += _trick_score_win_change(card, low, high, game_state.trump())
 
 	score += randfn(0, _bid_deviation)
 
@@ -193,7 +193,7 @@ func decide_bid(min_allowed_bid: int, max_allowed_bid, highest_bid: int, reveale
 		score -= (highest_bid - _ai_info.high_bid + 1) * _ai_info.high_bid_penalty
 
 	if ((score == highest_bid + _ai_info.turnup_score_threshold or score == min_allowed_bid + _ai_info.turnup_score_threshold)
-		and _trick_score_win_change(revealed_card, low, high, game_state.trump) > _ai_info.turnup_reveal_threshold):
+		and _trick_score_win_change(revealed_card, low, high, game_state.trump()) > _ai_info.turnup_reveal_threshold):
 		ai_print("trying for turnup")
 		score += 1
 
@@ -230,9 +230,9 @@ func decide_bonus_discard(cards: Array[Card], game_state: GameState) -> int:
 
 	if _stashing:
 		_stashing = false
-		return _lowest_score_card_index(cards, low, high, game_state.trump, true)
+		return _lowest_score_card_index(cards, low, high, game_state.trump(), true)
 
-	return _lowest_score_card_index(cards, low, high, game_state.trump, false)
+	return _lowest_score_card_index(cards, low, high, game_state.trump(), false)
 
 ## Change this card may win a trick,
 ## bowers give more because they could quite possibly gain the lead
