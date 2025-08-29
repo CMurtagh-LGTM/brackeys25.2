@@ -13,7 +13,7 @@ metadata/_custom_type_script = "uid://dwf2alh2em4cu"
 [resource]
 script = ExtResource("1_l3isp")
 texture = ExtResource("3_fy5vb")
-description = "If you have both a queen and a king gain 3 points."
+description = "If you have both a queen and a king gain 3 points. Can be repeated."
 exhausts = false
 action = SubResource("Resource_oa3xn")
 metadata/_custom_type_script = "uid://chanul83o6q5u"

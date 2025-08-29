@@ -7,10 +7,10 @@ var _cards: Array[Card]
 
 signal cards_updated
 
-func push_card(card: Card) -> void:
+func push_card(card: Card, time: float= Globals.card_stack_time) -> void:
 	_cards.push_back(card)
 	if card.get_parent():
-		await card.move_to(self, Vector2.ZERO, 0, Globals.card_stack_time)
+		await card.move_to(self, Vector2.ZERO, 0, time)
 	else:
 		add_child(card)
 	card.reveal(_revealed)

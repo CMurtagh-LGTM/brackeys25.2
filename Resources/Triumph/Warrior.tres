@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=5 format=3 uid="uid://lqiqwoxv7suy"]
+
+[ext_resource type="Script" uid="uid://hpststgli0t" path="res://Triumph/TriumphAction/DeckBonus.gd" id="1_hin5v"]
+[ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_idogs"]
+[ext_resource type="Texture2D" uid="uid://k3vxvdq57eny" path="res://Assets/Characters/XI.svg" id="3_g61f0"]
+
+[sub_resource type="Resource" id="Resource_phtt7"]
+script = ExtResource("1_hin5v")
+cards = 2
+metadata/_custom_type_script = "uid://hpststgli0t"
+
+[resource]
+script = ExtResource("1_idogs")
+texture = ExtResource("3_g61f0")
+description = "Move top two cards of deck to bonus pile."
+exhausts = true
+action = SubResource("Resource_phtt7")
+metadata/_custom_type_script = "uid://chanul83o6q5u"

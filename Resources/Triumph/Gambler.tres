@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=5 format=3 uid="uid://dcs7l1i80khe5"]
+
+[ext_resource type="Script" uid="uid://byeu00vfqluxe" path="res://Triumph/TriumphAction/MulliganAction.gd" id="1_7eknr"]
+[ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="2_mi3p6"]
+[ext_resource type="Texture2D" uid="uid://ce103b575v24r" path="res://Assets/Characters/X.svg" id="3_vmxtu"]
+
+[sub_resource type="Resource" id="Resource_uyybq"]
+script = ExtResource("1_7eknr")
+metadata/_custom_type_script = "uid://byeu00vfqluxe"
+
+[resource]
+script = ExtResource("2_mi3p6")
+texture = ExtResource("3_vmxtu")
+description = "Discard your hand than draw that many cards."
+exhausts = true
+action = SubResource("Resource_uyybq")
+metadata/_custom_type_script = "uid://chanul83o6q5u"
