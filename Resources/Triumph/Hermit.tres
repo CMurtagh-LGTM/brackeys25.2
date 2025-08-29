@@ -13,7 +13,7 @@ metadata/_custom_type_script = "uid://l0iqyx3ofck"
 [resource]
 script = ExtResource("1_3k10k")
 texture = ExtResource("3_jhn2d")
-description = "Discard 3 cards than draw 3 cards."
+description = "Discard 3 cards then draw 3 cards."
 exhausts = true
 action = SubResource("Resource_qv1fd")
 metadata/_custom_type_script = "uid://chanul83o6q5u"

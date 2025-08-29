@@ -17,8 +17,10 @@ signal finished(player_position: int, player_score: int)
 @onready var _total_bid_label: Label = $BidInfo/Total/Label
 @onready var _call_info: Label = $BidInfo/CallInfo
 @onready var _win_condition: Node2D = $WinCondition
-@onready var _win_condition_label: Label = $WinCondition/Label
+@onready var _win_condition_label: Label = %WinConditionLabel
+@onready var _remaining_rounds_label: Label = %RemainingRounds
 @onready var _triumph_chooser: TriumphChooser = $TriumphChooser
+@onready var _deck_order_label: Label = %DeckOrder
 @onready var _origin: Node2D = $Origin
 
 @onready var _pips: Array[Sprite2D] = [$Pips/Pip0, $Pips/Pip1, $Pips/Pip2, $Pips/Pip3, $Pips/Pip4]
@@ -114,8 +116,6 @@ func _ready() -> void:
 		add_child(hand)
 		hand.play.connect(_on_hand_play)
 
-	_on_viewport_resize()
-
 	_start_game()
 
 func _calculate_triumph_game_state() -> TriumphGameState:
@@ -136,6 +136,7 @@ func _start_game() -> void:
 	_deals_remaining = _deal_count
 
 	_win_condition_label.text = _win_condition_text
+	_deck_order_label.text = _deck_info.deck_order
 
 	_next.visible = false
 	_bid_info.visible = false
@@ -165,6 +166,7 @@ func _start_game() -> void:
 	for triumph: Triumph in _triumphs:
 		triumph.apply_game_modifier(_calculate_triumph_game_state())
 
+	call_deferred("_on_viewport_resize")
 	_deal()
 
 func _end_game() -> void:
@@ -179,6 +181,8 @@ func _end_game() -> void:
 
 func _deal() -> void:
 	_deals_remaining -= 1
+
+	_remaining_rounds_label.text = str(_deals_remaining + 1)
 
 	_game_state.set_trump(null);
 	_hands[_dealer].set_is_dealer()
@@ -375,6 +379,7 @@ func _on_viewport_resize() -> void:
 	_bid_info.position = globals.viewport_center()
 	_discard_pile.position = globals.viewport_center() + _discard_pile_position_offset
 	_win_condition.position = globals.viewport_center() + _win_condition_position_offset
+	_deck_order_label.position = globals.viewport_size - _deck_order_label.size
 	_origin.position = globals.viewport_center()
 
 	if _turnup:
