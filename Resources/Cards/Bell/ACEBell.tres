@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="NormalCardInfo" load_steps=3 format=3 uid="uid://v3wxpo1w6o0o"]
+
+[ext_resource type="Script" uid="uid://0svpn7ag1d1u" path="res://Card/NormalCardInfo.gd" id="1_l1c6y"]
+[ext_resource type="Resource" uid="uid://egdtxwlerlbd" path="res://Resources/Cards/Bell/Bell.tres" id="2_nd0qc"]
+
+[resource]
+script = ExtResource("1_l1c6y")
+character = 19
+suit = ExtResource("2_nd0qc")
+front_colour = Color(0.960784, 0.870588, 0.701961, 1)
+border_colour = Color(0.215686, 0.196078, 0.176471, 1)
+front_can_play_colour = Color(0.917647, 0.956863, 0.698039, 1)
+front_cant_play_colour = Color(0.956863, 0.737255, 0.698039, 1)
+bower_colour = Color(0.701961, 0.792157, 0.960784, 1)

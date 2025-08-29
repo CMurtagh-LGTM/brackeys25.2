@@ -57,6 +57,6 @@
 
 [resource]
 script = ExtResource("54_a2u7m")
-name = "French53"
+name = "FrenchFull"
 deck_order = "A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5 > 4 > 3 > 2"
 cards = Array[ExtResource("1_bqcf4")]([ExtResource("2_0xgeu"), ExtResource("3_xd3bj"), ExtResource("4_t4dfp"), ExtResource("5_llb5y"), ExtResource("6_x1si4"), ExtResource("7_bfhqg"), ExtResource("8_y4xxu"), ExtResource("9_xl2hl"), ExtResource("10_07yi5"), ExtResource("11_8v7dh"), ExtResource("12_agq4j"), ExtResource("13_l1qvb"), ExtResource("14_181q5"), ExtResource("15_bowbf"), ExtResource("16_mdssy"), ExtResource("17_40wfq"), ExtResource("18_ma556"), ExtResource("19_s25in"), ExtResource("20_efduq"), ExtResource("21_m55j2"), ExtResource("22_qvafj"), ExtResource("23_d1hbw"), ExtResource("24_a0wr8"), ExtResource("25_ajiou"), ExtResource("26_y0llb"), ExtResource("27_f23aa"), ExtResource("28_amfwi"), ExtResource("29_eoob0"), ExtResource("30_gphhk"), ExtResource("31_8y6f5"), ExtResource("32_wvlis"), ExtResource("33_3igvn"), ExtResource("34_s4rr4"), ExtResource("35_aaegt"), ExtResource("36_h3ui0"), ExtResource("37_nlesg"), ExtResource("38_l4ujs"), ExtResource("39_df1md"), ExtResource("40_7af66"), ExtResource("41_uw8wt"), ExtResource("42_56dim"), ExtResource("43_dp0xl"), ExtResource("44_u2nwr"), ExtResource("45_phxtk"), ExtResource("46_f2h4p"), ExtResource("47_2v4wo"), ExtResource("48_k38tn"), ExtResource("49_kheks"), ExtResource("50_3ugky"), ExtResource("51_x3x3a"), ExtResource("52_cjhr4"), ExtResource("53_fkkkr")])

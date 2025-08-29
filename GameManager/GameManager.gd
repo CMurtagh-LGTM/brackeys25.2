@@ -35,7 +35,7 @@ const _arrow_offsets: Array[Vector2] = [
 
 var initialized: bool = false
 
-var _deck_info: DeckInfo = preload("res://Resources/Decks/FrenchPiquet.tres")
+var _deck_info: DeckInfo = preload("res://Resources/Decks/French53.tres")
 var _ai_info: AIInfo
 
 var _deal_size: int = 7 # Number of cards to deal

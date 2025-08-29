@@ -1,9 +1,10 @@
 extends Node
 
 const games: Array[GameInfo] = [
-	preload("res://Resources/Games/One.tres"),
-	preload("res://Resources/Games/Two.tres"),
-	preload("res://Resources/Games/Three.tres"),
+	# preload("res://Resources/Games/One.tres"),
+	# preload("res://Resources/Games/Two.tres"),
+	# preload("res://Resources/Games/Three.tres"),
+	preload("res://Resources/Games/Four.tres"),
 ]
 
 @onready var _main_menu: MainMenu = $MainMenu

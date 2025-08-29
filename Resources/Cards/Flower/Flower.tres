@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Suit" load_steps=3 format=3 uid="uid://dic0uohu5r12l"]
+
+[ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="1_ttif1"]
+[ext_resource type="Texture2D" uid="uid://d4efwsrapcgdj" path="res://Assets/Suits/Flower.svg" id="2_xjc4m"]
+
+[resource]
+script = ExtResource("1_ttif1")
+name = "Flower"
+icon_path = "uid://d4efwsrapcgdj"
+colour = 3
+texture = ExtResource("2_xjc4m")
+metadata/_custom_type_script = "uid://drdg5d7rgrqhy"

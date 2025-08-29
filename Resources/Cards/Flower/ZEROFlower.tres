@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="NormalCardInfo" load_steps=3 format=3 uid="uid://djayillmcatd6"]
+
+[ext_resource type="Script" uid="uid://0svpn7ag1d1u" path="res://Card/NormalCardInfo.gd" id="1_233g8"]
+[ext_resource type="Resource" uid="uid://dic0uohu5r12l" path="res://Resources/Cards/Flower/Flower.tres" id="2_65s0l"]
+
+[resource]
+script = ExtResource("1_233g8")
+character = 0
+suit = ExtResource("2_65s0l")
+front_colour = Color(0.960784, 0.870588, 0.701961, 1)
+border_colour = Color(0.215686, 0.196078, 0.176471, 1)
+front_can_play_colour = Color(0.917647, 0.956863, 0.698039, 1)
+front_cant_play_colour = Color(0.956863, 0.737255, 0.698039, 1)
+bower_colour = Color(0.701961, 0.792157, 0.960784, 1)

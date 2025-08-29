@@ -38,6 +38,6 @@
 
 [resource]
 script = ExtResource("34_qwrdj")
-name = "French33"
+name = "FrenchPiquet"
 deck_order = "A > K > Q > J > 10 > 9 > 8 > 7"
 cards = Array[ExtResource("1_jt7l0")]([ExtResource("2_yto01"), ExtResource("3_abm2s"), ExtResource("4_nc2h5"), ExtResource("5_ox6bb"), ExtResource("6_gsomo"), ExtResource("7_8hjfl"), ExtResource("8_rbg2r"), ExtResource("9_tarau"), ExtResource("10_0xlpu"), ExtResource("11_4cqqa"), ExtResource("12_ao6u0"), ExtResource("13_ykcrq"), ExtResource("14_4njg2"), ExtResource("15_jpgv4"), ExtResource("16_etb2m"), ExtResource("17_pfdci"), ExtResource("18_537hb"), ExtResource("19_yldy1"), ExtResource("20_q12ko"), ExtResource("21_7ljym"), ExtResource("22_cvjjb"), ExtResource("23_u5d2g"), ExtResource("24_4yvu6"), ExtResource("25_cvqm4"), ExtResource("26_t1d0b"), ExtResource("27_r0e75"), ExtResource("28_fgxrf"), ExtResource("29_eepml"), ExtResource("30_540x8"), ExtResource("31_23v35"), ExtResource("32_1vp27"), ExtResource("33_3ipx2"), ExtResource("34_yto01")])
