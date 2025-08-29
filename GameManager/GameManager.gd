@@ -212,25 +212,29 @@ func _on_turnup_changed() -> void:
 
 func _triumphs_before_bid() -> void:
 	_point_to_hand(_hand_index_to_compass(0))
-	var triumphs_before_bid: Array[Triumph] = []
 	var game_state := _calculate_triumph_game_state()
 
-	for triumph: Triumph in _triumphs:
-		if not triumph.has_before_bid(game_state):
-			continue
-		triumphs_before_bid.append(triumph)
+	_triumph_chooser.visible = true
+	while true:
+		var triumphs_before_bid: Array[Triumph] = []
+		for triumph: Triumph in _triumphs:
+			if not triumph.has_before_bid(game_state):
+				continue
+			triumphs_before_bid.append(triumph)
+		
+		# None left
+		if triumphs_before_bid.is_empty():
+			break
 
-	while not triumphs_before_bid.is_empty():
-		_triumph_chooser.visible = true
 		var triumph: Triumph = await _triumph_chooser.choose(triumphs_before_bid, 0.75, true)
-		_triumph_chooser.visible = false
 
-		triumphs_before_bid.erase(triumph)
-
+		# Check skip pressed
 		if triumph != null:
 			await triumph.before_bid(game_state)
 		else:
 			break
+	_triumph_chooser.visible = false
+
 	_start_bid()
 
 func _start_bid() -> void:

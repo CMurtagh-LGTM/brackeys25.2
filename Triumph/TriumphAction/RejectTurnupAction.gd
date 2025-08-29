@@ -1,4 +1,4 @@
-class_name RejectTurnup
+class_name RejectTurnupAction
 extends TriumphAction
 
 func before_bid(state: TriumphGameState) -> void:
