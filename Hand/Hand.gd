@@ -7,6 +7,10 @@ enum Compass {
 	SOUTH, WEST, NORTH, EAST
 }
 
+enum DiscardTarget {
+	DISCARD, BONUS
+}
+
 @onready var _stack: Stack = $Stack
 @onready var _hand_score_label: Label = $HandScore
 @onready var _dealer_icon: Node2D = $Dealer
@@ -74,33 +78,38 @@ func discard_last_card() -> Card:
 	return card
 
 # TODO merge these two functions somehow in a neat way
-func player_discard(new_hand_size: int, target: String = "") -> Array[Card]:
-	assert(_ai == null)
+func discard(new_hand_size: int, target: DiscardTarget) -> Array[Card]:
 	_is_discarding = true
 	_info_display.visible = true
-	_info_display_label.text = "Discarding" + (" to " + target if target else "")
-	var cards_discarded: Array[Card] = []
-	while _cards.size() > new_hand_size:
-		var card: Card  = await _discard_card
-		cards_discarded.push_back(card)
-		remove_card(card)
-	_is_discarding = false
-	_info_display.visible = false
-	return cards_discarded
 
-func discard_to_bonus(new_hand_size: int) -> Array[Card]:
-	_is_discarding = true
-	_info_display.visible = true
-	_info_display_label.text = "Discarding to Bonus"
+	var target_string: String = ""
+	if target == DiscardTarget.DISCARD:
+		target_string = "Discard Pile"
+	elif target == DiscardTarget.BONUS:
+		target_string = "Bonus Pile"
+	_info_display_label.text = "Discarding to " + target_string
+
 	var cards_discarded: Array[Card] = []
-	while _cards.size() > new_hand_size:
+	while _cards.size() - cards_discarded.size() > new_hand_size:
 		var card: Card
 		if _ai == null:
 			card = await _discard_card
+
+			card.clicked.disconnect(_on_card_clicked)
+			card.hovered.disconnect(_on_card_hovered)
 		else:
+			# Other targets are unimplemented
+			assert(target == DiscardTarget.BONUS)
 			card = _cards[await _ai.decide_bonus_discard(_cards, _game_state)]
 		cards_discarded.push_back(card)
-		remove_card(card)
+		card.conceal()
+		_focus_index = -1
+		_position_cards()
+
+	for card: Card in cards_discarded:
+		_cards.erase(card)
+	_position_cards()
+
 	_is_discarding = false
 	_info_display.visible = false
 	return cards_discarded

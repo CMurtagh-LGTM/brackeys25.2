@@ -263,7 +263,7 @@ func _start_bid() -> void:
 	var highest_bidder: Hand = _hands[highest_bidder_index]
 	highest_bidder.add_card(_turnup)
 	_turnup = null
-	var _discarded_cards: Array[Card] = await highest_bidder.discard_to_bonus(_deal_size)
+	var _discarded_cards: Array[Card] = await highest_bidder.discard(_deal_size, Hand.DiscardTarget.BONUS)
 	await _bonus_pile.append(_discarded_cards)
 	_bid_info.visible = false
 

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=5 format=3 uid="uid://d0vnc1gbp0wth"]
+
+[ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_3k10k"]
+[ext_resource type="Script" uid="uid://l0iqyx3ofck" path="res://Triumph/TriumphAction/DiscardAction.gd" id="1_08noj"]
+[ext_resource type="Texture2D" uid="uid://cijemlg8j14wg" path="res://Assets/Characters/IX.svg" id="3_jhn2d"]
+
+[sub_resource type="Resource" id="Resource_qv1fd"]
+script = ExtResource("1_08noj")
+target = 0
+cards = 3
+metadata/_custom_type_script = "uid://l0iqyx3ofck"
+
+[resource]
+script = ExtResource("1_3k10k")
+texture = ExtResource("3_jhn2d")
+description = "Discard 3 cards than draw 3 cards."
+exhausts = true
+action = SubResource("Resource_qv1fd")
+metadata/_custom_type_script = "uid://chanul83o6q5u"

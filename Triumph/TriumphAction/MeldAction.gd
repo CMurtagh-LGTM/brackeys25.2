@@ -5,7 +5,7 @@ extends TriumphAction
 @export var score: int = 2
 
 func before_bid(state: TriumphGameState) -> void:
-	state.player.add_score(2)
+	state.player.add_score(score)
 
 func _has_card(hand_cards: Array[Card], character: NormalCardInfo.Character) -> bool:
 	for card: Card in hand_cards:
