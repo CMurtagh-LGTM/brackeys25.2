@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgeuvmtmxcwnk"]
+
+[ext_resource type="Script" uid="uid://bi8hoql14qx5w" path="res://Bid/BidChooser.gd" id="1_il7qo"]
+
+[node name="Bid" type="Node2D"]
+script = ExtResource("1_il7qo")
+
+[node name="BidsContainer" type="HBoxContainer" parent="."]
+offset_left = -134.0
+offset_top = -20.0
+offset_right = 134.0
+offset_bottom = 20.0
+alignment = 1

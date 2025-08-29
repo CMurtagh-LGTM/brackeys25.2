@@ -1,68 +1,14 @@
 class_name Bid
-extends Node2D
+extends RefCounted
 
-signal bid(int)
+## The display on the button
+@export var character: String = ""
 
-@onready var _bid_buttons: Array[Button] = [
-	$"HBoxContainer/0",
-	$"HBoxContainer/1",
-	$"HBoxContainer/2",
-	$"HBoxContainer/3",
-	$"HBoxContainer/4",
-	$"HBoxContainer/5",
-	$"HBoxContainer/6",
-	$"HBoxContainer/7",
-	$"HBoxContainer/8",
-	$"HBoxContainer/9",
-]
+## The amount of score awarded when won
+@export var score: int = 0
+## If target is less than minimum bid is is disabled
+@export var target: int = 0
 
-func disable_button(min_allowed_bid: int, max_allowed_bid: int) -> void:
-	assert(min_allowed_bid < _bid_buttons.size())
-	assert(max_allowed_bid < _bid_buttons.size())
-	assert(max_allowed_bid > min_allowed_bid)
-
-	if min_allowed_bid >= 0:
-		for button_index: int in range(min_allowed_bid):
-			_bid_buttons[button_index].disabled = true
-
-	for button_index: int in range(max_allowed_bid + 1):
-		_bid_buttons[button_index].visible = true
-	for button_index: int in range(max_allowed_bid + 1, _bid_buttons.size()):
-		_bid_buttons[button_index].visible = false
-
-func reset_state() -> void:
-	for bid_button: Button in _bid_buttons:
-		bid_button.disabled = false
-
-func _on_10_pressed() -> void:
-	bid.emit(10)
-
-func _on_9_pressed() -> void:
-	bid.emit(9)
-
-func _on_8_pressed() -> void:
-	bid.emit(8)
-
-func _on_7_pressed() -> void:
-	bid.emit(7)
-
-func _on_6_pressed() -> void:
-	bid.emit(6)
-
-func _on_5_pressed() -> void:
-	bid.emit(5)
-
-func _on_4_pressed() -> void:
-	bid.emit(4)
-
-func _on_3_pressed() -> void:
-	bid.emit(3)
-
-func _on_2_pressed() -> void:
-	bid.emit(2)
-
-func _on_1_pressed() -> void:
-	bid.emit(1)
-
-func _on_0_pressed() -> void:
-	bid.emit(0)
+func has_met(_current_deal_score: int) -> bool:
+	assert(false)
+	return true

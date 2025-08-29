@@ -8,6 +8,8 @@ var _trick: Trick
 var _hand_count: int
 var _turnup: Card
 
+var _bids: Array[Bid] = []
+
 signal trump_changed
 signal turnup_changed
 
@@ -45,3 +47,9 @@ func set_turnup(card: Card) -> void:
 	if _turnup != null:
 		_turnup.reveal()
 	turnup_changed.emit()
+
+func add_bid(bid: Bid) -> void:
+	_bids.append(bid)
+
+func bids() -> Array[Bid]:
+	return _bids

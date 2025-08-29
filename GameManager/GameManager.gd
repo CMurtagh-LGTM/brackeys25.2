@@ -167,6 +167,9 @@ func _start_game() -> void:
 	for hand_index: int in range(1, _hands.size()):
 		_hands[hand_index].set_ai(AI.new(_ai_info))
 	_dealer = randi_range(0, _hands.size() - 1)
+
+	for bid_index: int in _deal_size + 1:
+		_game_state.add_bid(NormalBid.new(bid_index))
 	
 	for triumph: Triumph in _triumphs:
 		triumph.apply_game_modifier(_calculate_triumph_game_state())
@@ -254,14 +257,15 @@ func _start_bid() -> void:
 		var minimum_bid: int = ceilf((_deal_size - current_total + 1) / float(_hands.size() - relative_bid_index))
 
 		if hand.is_player():
-			await hand.player_bid(minimum_bid, _deal_size)
+			await hand.player_bid(minimum_bid)
 		else:
-			await hand.ai_bid(minimum_bid, _deal_size, _hands[highest_bidder_index].current_bid(), _deck.peek_top())
+			var current_bid_score: int = _hands[highest_bidder_index].current_bid().score if _hands[highest_bidder_index].current_bid() else 0
+			await hand.ai_bid(minimum_bid, _deal_size, current_bid_score, _deck.peek_top())
 
-		if hand.current_bid() > _hands[highest_bidder_index].current_bid():
+		if hand.current_bid().score > _hands[highest_bidder_index].current_bid().score:
 			highest_bidder_index = _current_hand
 
-		current_total += hand.current_bid()
+		current_total += hand.current_bid().score
 		_total_bid_label.text = str(current_total)
 		_current_hand += 1
 		_current_hand %= _hands.size()
@@ -330,7 +334,8 @@ func _end_deal() -> void:
 	for relative_hand_index: int in _hands.size():
 		var hand_index: int = (relative_hand_index + _dealer + 1) % _hands.size()
 		if (_hands[hand_index].get_deal_score() >= _hands[top_score_index].get_deal_score() and
-			(_hands[hand_index].get_deal_score() > _hands[top_score_index].get_deal_score() or _hands[hand_index].current_bid() > _hands[top_score_index].current_bid())
+			(_hands[hand_index].get_deal_score() > _hands[top_score_index].get_deal_score() or
+				_hands[hand_index].current_bid().score > _hands[top_score_index].current_bid().score)
 		):
 			top_score_index = hand_index
 

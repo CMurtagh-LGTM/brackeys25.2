@@ -14,7 +14,7 @@ enum DiscardTarget {
 @onready var _stack: Stack = $Stack
 @onready var _hand_score_label: Label = $HandScore
 @onready var _dealer_icon: Node2D = $Dealer
-@onready var _bid: Bid = $Bid
+@onready var _bid: BidChooser = $Bid
 @onready var _bid_indicator: Node2D = $BidIndicator
 @onready var _bid_label: Label = $BidIndicator/Panel/Label
 @onready var _info_display: Node2D = $Info
@@ -26,7 +26,7 @@ var _cards: Array[Card] = []
 var _ai: AI
 var _focus_index: int = -1
 var _current_deal_score: int = 0
-var _current_bid: int = 0
+var _current_bid: Bid = null
 var _total_score: int = 0
 
 var _has_turn: bool = false
@@ -131,22 +131,22 @@ func set_is_player() -> void:
 func set_is_dealer() -> void:
 	_dealer_icon.visible = true
 
-func winning_trick(cards: Array[Card]) -> void:
-	await _stack.append(cards)
+func winning_trick(cards_: Array[Card]) -> void:
+	await _stack.append(cards_)
 	_current_deal_score += 1
 	_hand_score_label.text = str(_current_deal_score)
 	_hand_score_label.visible = true
-	if _current_deal_score >= _current_bid:
+	if _current_bid.has_met(_current_deal_score):
 		_bid_indicator.modulate = Globals.LIGHT_GREEN
 
 func get_deal_score() -> int:
 	return _current_deal_score
 
 func update_score(bonus: int = 0) -> void:
-	if _current_deal_score >= _current_bid:
-		_total_score += _current_bid + bonus
+	if _current_bid.has_met(_current_deal_score):
+		_total_score += _current_bid.score + bonus
 	else:
-		_total_score -= _current_bid
+		_total_score -= _current_bid.score
 	_total_score_label.text = str(_total_score)
 	_current_deal_score = 0
 
@@ -158,14 +158,12 @@ func add_score(score: int) -> void:
 func get_total_score() -> int:
 	return _total_score
 
-func player_bid(min_allowed_bid: int, max_allowed_bid: int) -> void:
+func player_bid(min_allowed_bid: int) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
 
-	_bid.reset_state()
-	_bid.disable_button(min_allowed_bid, max_allowed_bid)
 	_bid.visible = true
-	_current_bid = await _bid.bid
+	_current_bid = await _bid.choose_bid(_game_state, min_allowed_bid)
 	_bid.visible = false
 	_info_display.visible = false
 	_set_bid_indicator()
@@ -173,11 +171,11 @@ func player_bid(min_allowed_bid: int, max_allowed_bid: int) -> void:
 func ai_bid(min_allowed_bid: int, max_allowed_bid: int, highest_bid: int, revealed_card: Card) -> void:
 	_info_display.visible = true
 	_info_display_label.text = "Bidding"
-	_current_bid = await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, _game_state, _cards)
+	_current_bid = _game_state.bids()[(await _ai.decide_bid(min_allowed_bid, max_allowed_bid, highest_bid, revealed_card, _game_state, _cards))]
 	_info_display.visible = false
 	_set_bid_indicator()
 
-func current_bid() -> int:
+func current_bid() -> Bid:
 	return _current_bid
 
 func cards() -> Array[Card]:
@@ -185,20 +183,20 @@ func cards() -> Array[Card]:
 
 ## end of a trick
 func clear() -> Array[Card]:
-	var cards = _cards.duplicate()
-	for card: Card in cards:
+	var cards_ = _cards.duplicate()
+	for card: Card in cards_:
 		card.reset_state()
 	_cards.clear()
-	cards.append_array(_stack.clear())
+	cards_.append_array(_stack.clear())
 	_focus_index = -1
 	_current_deal_score = 0
-	_current_bid = 0
+	_current_bid = null
 	_hand_score_label.visible = false
 	_dealer_icon.visible = false
 	_bid.visible = false
 	_bid_indicator.visible = false
 	_info_display.visible = false
-	return cards
+	return cards_
 
 ## end of a game
 func reset() -> void:
@@ -305,8 +303,8 @@ func _update_focused_card() -> void:
 
 func _set_bid_indicator() -> void:
 	_bid_indicator.visible = true
-	_bid_indicator.modulate = Globals.LIGHT_RED if _current_bid > 0 else Globals.LIGHT_GREEN
-	_bid_label.text = str(_current_bid)
+	_bid_indicator.modulate = Globals.LIGHT_RED if _current_bid.score > 0 else Globals.LIGHT_GREEN
+	_bid_label.text = str(_current_bid.character)
 
 func _can_play_card(card: Card) -> bool:
 	var card_suit: Suit = card.suit(_game_state.trump())

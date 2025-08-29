@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://gf5ub6ytpvim" path="res://Assets/Characters/D.svg" id="4_217al"]
 [ext_resource type="Material" uid="uid://l7l7mawnati2" path="res://Mould/Mould.tres" id="4_qdlwu"]
 [ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="5_4xcgc"]
-[ext_resource type="PackedScene" uid="uid://bgeuvmtmxcwnk" path="res://Bid/Bid.tscn" id="5_217al"]
+[ext_resource type="PackedScene" uid="uid://bgeuvmtmxcwnk" path="res://Bid/BidChooser.tscn" id="5_217al"]
 [ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="6_qdlwu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p271h"]
