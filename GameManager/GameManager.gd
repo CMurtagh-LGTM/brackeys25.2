@@ -236,13 +236,13 @@ func _start_bid() -> void:
 
 		# Make sure that the game is overcalled
 		# floor(amount_underbid / yet_to_bid_players)
-		@warning_ignore("integer_division")
-		var disallowed_bid: int = (_deal_size - current_total) / (_hands.size() - relative_bid_index)
+		@warning_ignore("narrowing_conversion")
+		var minimum_bid: int = ceilf((_deal_size - current_total + 1) / float(_hands.size() - relative_bid_index))
 
 		if hand.is_player():
-			await hand.player_bid(disallowed_bid + 1, _deal_size)
+			await hand.player_bid(minimum_bid, _deal_size)
 		else:
-			await hand.ai_bid(disallowed_bid + 1, _deal_size, _hands[highest_bidder_index].current_bid(), _deck.peek_top())
+			await hand.ai_bid(minimum_bid, _deal_size, _hands[highest_bidder_index].current_bid(), _deck.peek_top())
 
 		if hand.current_bid() > _hands[highest_bidder_index].current_bid():
 			highest_bidder_index = _current_hand
