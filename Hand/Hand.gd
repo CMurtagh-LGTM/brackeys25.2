@@ -77,7 +77,6 @@ func discard_last_card() -> Card:
 	remove_card(card)
 	return card
 
-# TODO merge these two functions somehow in a neat way
 func discard(new_hand_size: int, target: DiscardTarget) -> Array[Card]:
 	_is_discarding = true
 	_info_display.visible = true

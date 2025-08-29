@@ -22,6 +22,10 @@ func choices(n: int) -> Array[Triumph]:
 	var amount = min(_triumphs.size(), n)
 	for index: int in amount:
 		triumphs.append(_triumphs[index])
+
+	if Globals.forced_triumph != null:
+		triumphs.append(Triumph.instantiate(Globals.forced_triumph))
+
 	return triumphs
 
 func remove_choice(triumph: Triumph) -> void:

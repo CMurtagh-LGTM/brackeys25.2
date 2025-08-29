@@ -27,7 +27,6 @@ func generate_deck() -> void:
 		deck.cards.push_back(load("res://Resources/Cards/Joker.tres"))
 	
 	
-	# TODO why does this not save?
 	deck.deck_order = NormalCardInfo.character_names[characters[0]]
 	for character_index:int in range(1, characters.size()):
 		deck.deck_order += " > " + NormalCardInfo.character_names[characters[character_index]]

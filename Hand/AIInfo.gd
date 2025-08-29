@@ -3,7 +3,6 @@ extends Resource
 
 @export var trump_bonus: float = 0.4
 
-# TODO calculate the threshold based on the deck
 @export var singleton_threshold: Card.Ordinal = Card.Ordinal.QUEEN
 @export var offsuit_threshold: Card.Ordinal = Card.Ordinal.ACE
 

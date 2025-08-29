@@ -56,7 +56,6 @@ var _deal_packets: Array = [
 var _deal_count: int = 3 # Number of times to deal
 
 var _hands: Array[Hand]
-var _turnup: Card = null
 var _triumphs: Array[Triumph]
 
 var _current_hand: int = 0
@@ -147,6 +146,7 @@ func _start_game() -> void:
 
 	_game_state = GameState.new(_deck_info, _trick, _hand_count)
 	_game_state.trump_changed.connect(_on_update_game_state_trump)
+	_game_state.turnup_changed.connect(_on_turnup_changed)
 
 	_bonus_pile.cards_updated.connect(_on_bonus_pile_changed)
 
@@ -200,14 +200,15 @@ func _deal() -> void:
 				await hand.add_card(await _deck.draw_card())
 
 	var turnup: Card = await _deck.draw_card()
-	turnup.reveal()
-	await turnup.move_to(self, globals.viewport_center() + _turnup_position_offset, 0, Globals.card_deal_time)
-	_turnup = turnup
-
-	_game_state.set_trump(turnup.suit(null))
+	_game_state.set_turnup(turnup)
 
 	_tricks_remaining = _deal_size
 	_triumphs_before_bid()
+
+func _on_turnup_changed() -> void:
+	if _game_state.turnup() != null:
+		_game_state.set_trump(_game_state.turnup().suit(null))
+		await _game_state.turnup().move_to(self, globals.viewport_center() + _turnup_position_offset, 0, Globals.card_deal_time)
 
 func _triumphs_before_bid() -> void:
 	_point_to_hand(_hand_index_to_compass(0))
@@ -273,8 +274,8 @@ func _start_bid() -> void:
 
 	# Highest bidder gets right to card turned up
 	var highest_bidder: Hand = _hands[highest_bidder_index]
-	highest_bidder.add_card(_turnup)
-	_turnup = null
+	highest_bidder.add_card(_game_state.turnup())
+	_game_state.set_turnup(null)
 	var _discarded_cards: Array[Card] = await highest_bidder.discard(_deal_size, Hand.DiscardTarget.BONUS)
 	await _bonus_pile.append(_discarded_cards)
 	_bid_info.visible = false
@@ -404,8 +405,8 @@ func _on_viewport_resize() -> void:
 	_deck_order_label.position = globals.viewport_size - _deck_order_label.size
 	_origin.position = globals.viewport_center()
 
-	if _turnup:
-		_turnup.position = globals.viewport_center() + _turnup_position_offset
+	if _game_state.turnup():
+		_game_state.turnup().position = globals.viewport_center() + _turnup_position_offset
 
 	_bonus_pile.position = globals.viewport_center() + _bonus_pile_position_offset
 	for hand_index: int in _hands.size():
