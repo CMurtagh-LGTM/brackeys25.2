@@ -10,7 +10,7 @@ const games: Array[GameInfo] = [
 @onready var _main_menu: MainMenu = $MainMenu
 @onready var _game_preview: GamePreview = $GamePreview
 @onready var _game_over: GameOver = $GameOver
-@onready var _victory: GameOver = $Victory
+@onready var _victory: Victory = $Victory
 @onready var _triumph_chooser: TriumphChooser = $TriumphChooser
 
 var _triumph_pool: TriumphPool

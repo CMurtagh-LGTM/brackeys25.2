@@ -180,7 +180,7 @@ text = "Score par: 1"
 
 [node name="Label" type="Label" parent="WinCondition/HBoxContainer"]
 layout_mode = 2
-text = " Rounds Remaining:"
+text = ", Rounds Remaining:"
 
 [node name="RemainingRounds" type="Label" parent="WinCondition/HBoxContainer"]
 unique_name_in_owner = true

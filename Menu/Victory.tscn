@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://clb7npp5n07pm"]
 
-[ext_resource type="Script" uid="uid://x2olliuvlunk" path="res://Menu/GameOver.gd" id="1_2vv51"]
+[ext_resource type="Script" uid="uid://b7qao78xm6a2r" path="res://Menu/Victory.gd" id="1_0f677"]
 [ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="2_0f677"]
 [ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="3_sw7ka"]
 
@@ -28,7 +28,7 @@ shader_parameter/noise = SubResource("NoiseTexture2D_yrn1y")
 shader_parameter/offset = Vector2(0, 0)
 
 [node name="Victory" type="Node2D"]
-script = ExtResource("1_2vv51")
+script = ExtResource("1_0f677")
 
 [node name="MenuButtons" type="Node2D" parent="."]
 position = Vector2(576, 324)

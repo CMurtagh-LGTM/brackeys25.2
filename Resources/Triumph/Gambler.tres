@@ -11,7 +11,7 @@ metadata/_custom_type_script = "uid://byeu00vfqluxe"
 [resource]
 script = ExtResource("2_mi3p6")
 texture = ExtResource("3_vmxtu")
-description = "Discard your hand than draw that many cards."
+description = "Discard your hand then draw that many cards."
 exhausts = true
 action = SubResource("Resource_uyybq")
 metadata/_custom_type_script = "uid://chanul83o6q5u"
