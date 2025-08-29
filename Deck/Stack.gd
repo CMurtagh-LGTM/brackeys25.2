@@ -35,6 +35,8 @@ func draw_card() -> Card:
 	return card
 
 func peek_top() -> Card:
+	if _cards.is_empty():
+		return null
 	return _cards.back()
 
 func get_cards() -> Array[Card]:

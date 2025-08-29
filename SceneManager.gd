@@ -9,6 +9,7 @@ const games: Array[GameInfo] = [
 @onready var _main_menu: MainMenu = $MainMenu
 @onready var _game_preview: GamePreview = $GamePreview
 @onready var _game_over: GameOver = $GameOver
+@onready var _victory: GameOver = $Victory
 @onready var _triumph_chooser: TriumphChooser = $TriumphChooser
 
 var _triumph_pool: TriumphPool
@@ -21,7 +22,7 @@ func _ready() -> void:
 	while true:
 		await _show_main_menu()
 		if await _play():
-			pass # Win
+			await _show_victory()
 		else:
 			await _show_game_over()
 
@@ -79,5 +80,12 @@ func _show_game_over() -> void:
 	_game_over.visible = true
 	await _game_over.main_menu_pressed
 	_game_over.visible = false
+	
+	_show_main_menu()
+
+func _show_victory() -> void:
+	_victory.visible = true
+	await _victory.main_menu_pressed
+	_victory.visible = false
 	
 	_show_main_menu()

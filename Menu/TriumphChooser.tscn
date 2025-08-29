@@ -22,7 +22,10 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="TriumphList" type="HBoxContainer" parent="MenuButtons/VBoxContainer"]
+[node name="CenterContainer2" type="CenterContainer" parent="MenuButtons/VBoxContainer"]
+layout_mode = 2
+
+[node name="TriumphList" type="HBoxContainer" parent="MenuButtons/VBoxContainer/CenterContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1

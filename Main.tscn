@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://duhu46r5y5yu2"]
+[gd_scene load_steps=24 format=3 uid="uid://duhu46r5y5yu2"]
 
 [ext_resource type="Script" uid="uid://dwor16eunpxo2" path="res://SceneManager.gd" id="1_cm0pq"]
 [ext_resource type="Script" uid="uid://6dn2wx0g8imc" path="res://Resizer.gd" id="1_r0du0"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b0r74jwx1lv1" path="res://Menu/GameOver.tscn" id="5_3dxm6"]
 [ext_resource type="PackedScene" uid="uid://cyqxa1amls0et" path="res://Menu/GamePreview.tscn" id="5_fos0i"]
 [ext_resource type="PackedScene" uid="uid://bpejluo12ftan" path="res://Menu/TriumphChooser.tscn" id="6_lgr22"]
+[ext_resource type="PackedScene" uid="uid://clb7npp5n07pm" path="res://Menu/Victory.tscn" id="8_03owx"]
 [ext_resource type="PackedScene" uid="uid://qr7a56qi4ccv" path="res://Menu/MenuPips.tscn" id="8_trn2v"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3dxm6"]
@@ -102,6 +103,11 @@ visible = false
 visible = false
 
 [node name="MenuPips" parent="TriumphChooser" instance=ExtResource("8_trn2v")]
+
+[node name="Victory" parent="." instance=ExtResource("8_03owx")]
+visible = false
+
+[node name="MenuPips" parent="Victory" instance=ExtResource("8_trn2v")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
