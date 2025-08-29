@@ -1,9 +1,21 @@
-[gd_resource type="Resource" script_class="GameInfo" load_steps=6 format=3 uid="uid://dq3343ofiqv2v"]
+[gd_resource type="Resource" script_class="GameInfo" load_steps=7 format=3 uid="uid://dq3343ofiqv2v"]
 
-[ext_resource type="Resource" uid="uid://bgx4ktq1f8uqi" path="res://Resources/AI/Default.tres" id="1_hj7ah"]
+[ext_resource type="Script" uid="uid://dte1rd2vlh44p" path="res://Hand/AIInfo.gd" id="1_hj7ah"]
 [ext_resource type="Script" uid="uid://c2wr4vn8g6efw" path="res://GameManager/GameInfo.gd" id="1_y6e82"]
 [ext_resource type="Resource" uid="uid://k5ejtvu0jrm7" path="res://Resources/Decks/Swiss.tres" id="2_3l58e"]
 [ext_resource type="Script" uid="uid://dh0njfgbt545i" path="res://GameManager/WinConditions/PlaceWinCondition.gd" id="4_6y164"]
+
+[sub_resource type="Resource" id="Resource_3l58e"]
+script = ExtResource("1_hj7ah")
+trump_bonus = 0.4
+singleton_threshold = 17
+offsuit_threshold = 20
+stash_threshold = 1.5
+high_bid = 3
+high_bid_penalty = 0.25
+turnup_score_threshold = 0.5
+turnup_reveal_threshold = 0.75
+metadata/_custom_type_script = "uid://dte1rd2vlh44p"
 
 [sub_resource type="Resource" id="Resource_50287"]
 script = ExtResource("4_6y164")
@@ -13,8 +25,8 @@ metadata/_custom_type_script = "uid://dh0njfgbt545i"
 [resource]
 script = ExtResource("1_y6e82")
 deck_info = ExtResource("2_3l58e")
-ai_info = ExtResource("1_hj7ah")
-rounds = 3
+ai_info = SubResource("Resource_3l58e")
+rounds = 2
 tricks = 7
 win_condition = SubResource("Resource_50287")
 metadata/_custom_type_script = "uid://c2wr4vn8g6efw"

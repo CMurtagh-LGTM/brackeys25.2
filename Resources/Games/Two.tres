@@ -7,7 +7,7 @@
 
 [sub_resource type="Resource" id="Resource_txwsg"]
 script = ExtResource("1_ve83l")
-trump_bonus = 0.0
+trump_bonus = 0.4
 singleton_threshold = 18
 offsuit_threshold = 20
 stash_threshold = 1.5

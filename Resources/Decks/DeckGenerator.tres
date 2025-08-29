@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DeckGenerator" load_steps=7 format=3 uid="uid://ceov0djbfpfbm"]
+[gd_resource type="Resource" script_class="DeckGenerator" load_steps=11 format=3 uid="uid://ceov0djbfpfbm"]
 
 [ext_resource type="Script" uid="uid://c1gau4la6cbkj" path="res://Deck/DeckGenerator.gd" id="1_tyxxv"]
 [ext_resource type="Script" uid="uid://drdg5d7rgrqhy" path="res://Card/Suit.gd" id="2_hwysx"]
@@ -6,10 +6,15 @@
 [ext_resource type="Resource" uid="uid://egdtxwlerlbd" path="res://Resources/Cards/Bell/Bell.tres" id="4_gi1nf"]
 [ext_resource type="Resource" uid="uid://dic0uohu5r12l" path="res://Resources/Cards/Flower/Flower.tres" id="5_2fc51"]
 [ext_resource type="Resource" uid="uid://bimjsfjv3x5cn" path="res://Resources/Cards/Sheild/Sheild.tres" id="6_1kv4j"]
+[ext_resource type="Resource" uid="uid://drwbm7qviinbf" path="res://Resources/Cards/Club/Club.tres" id="7_dwmks"]
+[ext_resource type="Resource" uid="uid://brhwwsuf10j7s" path="res://Resources/Cards/Diamond/Diamond.tres" id="8_va2v7"]
+[ext_resource type="Resource" uid="uid://b10nvne5yvyf3" path="res://Resources/Cards/Heart/Heart.tres" id="9_c5msf"]
+[ext_resource type="Resource" uid="uid://osieuolj3rel" path="res://Resources/Cards/Spade/Spade.tres" id="10_twqav"]
 
 [resource]
 script = ExtResource("1_tyxxv")
-name = "Swiss"
-suits = Array[ExtResource("2_hwysx")]([ExtResource("3_o4t2c"), ExtResource("4_gi1nf"), ExtResource("5_2fc51"), ExtResource("6_1kv4j")])
-characters = Array[int]([19, 18, 16, 15, 14, 9, 8, 7, 6, 5, 4, 3])
+name = "BigOne"
+suits = Array[ExtResource("2_hwysx")]([ExtResource("3_o4t2c"), ExtResource("4_gi1nf"), ExtResource("5_2fc51"), ExtResource("6_1kv4j"), ExtResource("7_dwmks"), ExtResource("8_va2v7"), ExtResource("9_c5msf"), ExtResource("10_twqav")])
+characters = Array[int]([19, 18, 17, 16, 15, 10, 9, 8, 7, 6, 5, 4, 3, 2])
+include_joker = true
 metadata/_custom_type_script = "uid://c1gau4la6cbkj"

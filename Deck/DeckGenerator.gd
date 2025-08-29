@@ -5,6 +5,7 @@ extends Resource
 @export var name: String
 @export var suits: Array[Suit]
 @export var characters: Array[NormalCardInfo.Character]
+@export var include_joker: bool = true
 
 @export_tool_button("GenerateDeck", "Callable") var generate_deck_action : Callable = generate_deck
 
@@ -19,8 +20,12 @@ func generate_deck() -> void:
 		for character: NormalCardInfo.Character in characters:
 			var character_name = NormalCardInfo.Character.keys()[character]
 			prints("	Adding:", character_name + suit.name)
-			var card_info = load("res://Resources/Cards/" + suit.name + "/" + character_name + suit.name + ".tres")
+			var card_info: CardInfo = load("res://Resources/Cards/" + suit.name + "/" + character_name + suit.name + ".tres")
 			deck.cards.push_back(card_info)
+
+	if include_joker:
+		deck.cards.push_back(load("res://Resources/Cards/Joker.tres"))
+	
 	
 	# TODO why does this not save?
 	deck.deck_order = NormalCardInfo.character_names[characters[0]]
