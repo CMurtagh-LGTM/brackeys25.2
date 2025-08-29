@@ -60,6 +60,7 @@ var _turnup: Card = null
 var _triumphs: Array[Triumph]
 
 var _current_hand: int = 0
+var _hand_count: int = 4
 var _dealer: int = 0
 var _tricks_remaining: int = 0
 var _deals_remaining: int = 0
@@ -99,6 +100,10 @@ func set_win_condition(text: String) -> void:
 	assert(not initialized)
 	_win_condition_text = text
 
+func set_hand_count(count: int) -> void:
+	assert(count >= 2 and count <= 4)
+	_hand_count = count
+
 func set_triumphs(triumphs: Array[Triumph]) -> void:
 	assert(not initialized)
 	_triumphs = triumphs
@@ -106,15 +111,6 @@ func set_triumphs(triumphs: Array[Triumph]) -> void:
 func _ready() -> void:
 	initialized = true
 	globals.viewport_resize.connect(_on_viewport_resize)
-
-	for compass: Hand.Compass in Globals.hand_compasses:
-		var hand: Hand = _hand_scene.instantiate()
-
-		hand.rotation = Globals.hand_rotations[compass]
-
-		_hands.push_back(hand)
-		add_child(hand)
-		hand.play.connect(_on_hand_play)
 
 	_start_game()
 
@@ -149,12 +145,21 @@ func _start_game() -> void:
 	_deck.reset()
 	_deck.set_discard_pile(_discard_pile)
 
-	_game_state = GameState.new(_deck_info, _trick, _hands.size())
+	_game_state = GameState.new(_deck_info, _trick, _hand_count)
 	_game_state.trump_changed.connect(_on_update_game_state_trump)
 
 	_bonus_pile.cards_updated.connect(_on_bonus_pile_changed)
 
-	for hand: Hand in _hands:
+	for index: int in _hand_count:
+		var hand: Hand = _hand_scene.instantiate()
+		var compass: Hand.Compass = _hand_index_to_compass(index)
+
+		hand.rotation = Globals.hand_rotations[compass]
+
+		_hands.push_back(hand)
+		add_child(hand)
+		hand.play.connect(_on_hand_play)
+
 		hand.reset()
 		hand.set_game_state(_game_state)
 
@@ -362,10 +367,27 @@ func _on_update_game_state_trump() -> void:
 		create_tween().tween_property(pip, "modulate", target_colour, 0.2)
 
 func _compass_to_hand_index(compass: Hand.Compass) -> int:
-	return compass as int
+	if _hand_count == 4:
+		return compass as int
+	if _hand_count == 3:
+		assert(compass != Hand.Compass.NORTH)
+		return [0, 1, -1, 2][compass]
+	if _hand_count == 2:
+		assert(compass != Hand.Compass.EAST)
+		assert(compass != Hand.Compass.WEST)
+		return [0, -1, 1, -1][compass]
+	assert(false)
+	return -1
 
 func _hand_index_to_compass(index: int) -> Hand.Compass:
-	return Globals.hand_compasses[index]
+	if _hand_count == 4:
+		return Globals.hand_compasses[index]
+	if _hand_count == 3:
+		return [Hand.Compass.SOUTH, Hand.Compass.WEST, Hand.Compass.EAST][index]
+	if _hand_count == 2:
+		return [Hand.Compass.SOUTH, Hand.Compass.NORTH][index]
+	assert(false)
+	return Hand.Compass.SOUTH
 
 func _point_to_hand(compass: Hand.Compass) -> void:
 	_current_arrow_point = compass

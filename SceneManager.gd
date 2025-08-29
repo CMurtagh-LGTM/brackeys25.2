@@ -7,6 +7,7 @@ const games: Array[GameInfo] = [
 	preload("res://Resources/Games/Four.tres"),
 	preload("res://Resources/Games/Five.tres"),
 	preload("res://Resources/Games/Six.tres"),
+	preload("res://Resources/Games/Seven.tres"),
 ]
 
 @onready var _main_menu: MainMenu = $MainMenu
@@ -49,6 +50,7 @@ func _play() -> void:
 		game_manager.set_deal_count(game.rounds)
 		game_manager.set_trick_count(game.tricks)
 		game_manager.set_win_condition(game.win_condition.to_label())
+		game_manager.set_hand_count(game.hands)
 		game_manager.set_triumphs(triumphs)
 
 		add_child(game_manager)

@@ -29,4 +29,5 @@ ai_info = SubResource("Resource_eaiub")
 rounds = 1
 tricks = 13
 win_condition = SubResource("Resource_j40hr")
+hands = 4
 metadata/_custom_type_script = "uid://c2wr4vn8g6efw"
