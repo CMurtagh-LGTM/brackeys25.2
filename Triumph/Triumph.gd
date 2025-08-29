@@ -15,7 +15,7 @@ func unexhaust() -> void:
 func before_bid(state: TriumphGameState) -> void:
 	@warning_ignore("redundant_await")
 	await _info.action.before_bid(state)
-	_exhausted = true
+	_exhausted = _info.exhausts
 
 func has_before_bid(state: TriumphGameState) -> bool:
 	return not _exhausted and _info.action.has_before_bid(state)

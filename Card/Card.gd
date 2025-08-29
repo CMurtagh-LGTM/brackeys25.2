@@ -111,6 +111,9 @@ func reset_state() -> void:
 func transient() -> bool:
 	return _transient
 
+func info() -> CardInfo:
+	return _info
+
 func _update_revealed() -> void:
 	_face.visible = _revealed
 	_back.visible = !_revealed

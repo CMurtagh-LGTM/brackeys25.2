@@ -5,5 +5,7 @@ extends Resource
 
 @export var description: String
 
+@export var exhausts: bool = true
+
 @export var action: TriumphAction
 

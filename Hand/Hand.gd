@@ -142,6 +142,11 @@ func update_score(bonus: int = 0) -> void:
 	_total_score_label.text = str(_total_score)
 	_current_deal_score = 0
 
+# To be used by triumphs
+func add_score(score: int) -> void:
+	_total_score += score
+	_total_score_label.text = str(_total_score)
+
 func get_total_score() -> int:
 	return _total_score
 
@@ -166,6 +171,9 @@ func ai_bid(min_allowed_bid: int, max_allowed_bid: int, highest_bid: int, reveal
 
 func current_bid() -> int:
 	return _current_bid
+
+func cards() -> Array[Card]:
+	return _cards.duplicate()
 
 ## end of a trick
 func clear() -> Array[Card]:
