@@ -209,7 +209,7 @@ func _triumphs_before_bid() -> void:
 
 	while not triumphs_before_bid.is_empty():
 		_triumph_chooser.visible = true
-		var triumph: Triumph = await _triumph_chooser.choose(triumphs_before_bid, 0.75)
+		var triumph: Triumph = await _triumph_chooser.choose(triumphs_before_bid, 0.75, true)
 		_triumph_chooser.visible = false
 
 		triumphs_before_bid.erase(triumph)

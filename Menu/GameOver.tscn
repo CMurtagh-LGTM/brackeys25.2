@@ -22,14 +22,19 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MenuButtons/VBoxContainer"]
+[node name="Label2" type="Label" parent="MenuButtons/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 50
 text = "Game Over"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="MainMenu" type="Button" parent="MenuButtons/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="MenuButtons/VBoxContainer"]
+layout_mode = 2
+
+[node name="MainMenu" type="Button" parent="MenuButtons/VBoxContainer/CenterContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Return to Main Menu"
 
-[connection signal="pressed" from="MenuButtons/VBoxContainer/MainMenu" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="MenuButtons/VBoxContainer/CenterContainer/MainMenu" to="." method="_on_main_menu_pressed"]
