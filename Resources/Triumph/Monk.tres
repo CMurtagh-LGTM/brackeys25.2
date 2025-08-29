@@ -19,7 +19,7 @@ metadata/_custom_type_script = "uid://d0iblforjduda"
 [resource]
 script = ExtResource("1_0kalp")
 texture = ExtResource("4_4bbm7")
-description = "Add 0s to the deck. Activate to discard all 0s."
+description = "Add 0s to the deck. Activate to discard all 0s than draw to refill hand."
 exhausts = true
 game_modifier = SubResource("Resource_pp2nd")
 action = SubResource("Resource_q2bk6")
