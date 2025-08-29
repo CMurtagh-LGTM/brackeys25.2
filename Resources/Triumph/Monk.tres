@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=7 format=3 uid="uid://bvguvvoptu63a"]
+
+[ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_0kalp"]
+[ext_resource type="Script" uid="uid://cfn7mwtpthbtq" path="res://Triumph/TriumphAction/AutoDiscardAction.gd" id="1_dkurw"]
+[ext_resource type="Script" uid="uid://d0iblforjduda" path="res://Triumph/TriumphGameModifier/AddCardsModifier.gd" id="2_tptt2"]
+[ext_resource type="Texture2D" uid="uid://c85lust2a0s4r" path="res://Assets/Characters/XIV.svg" id="4_4bbm7"]
+
+[sub_resource type="Resource" id="Resource_q2bk6"]
+script = ExtResource("1_dkurw")
+target = 0
+character = 0
+metadata/_custom_type_script = "uid://cfn7mwtpthbtq"
+
+[sub_resource type="Resource" id="Resource_pp2nd"]
+script = ExtResource("2_tptt2")
+card = 0
+metadata/_custom_type_script = "uid://d0iblforjduda"
+
+[resource]
+script = ExtResource("1_0kalp")
+texture = ExtResource("4_4bbm7")
+description = "Add 0s to the deck. Activate to discard all 0s."
+exhausts = true
+game_modifier = SubResource("Resource_pp2nd")
+action = SubResource("Resource_q2bk6")
+metadata/_custom_type_script = "uid://chanul83o6q5u"

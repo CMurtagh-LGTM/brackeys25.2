@@ -7,5 +7,6 @@ extends Resource
 
 @export var exhausts: bool = true
 
+@export var game_modifier: TriumphGameModifier
 @export var action: TriumphAction
 

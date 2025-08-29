@@ -212,7 +212,7 @@ func _lowest_score_card_index(cards: Array[Card], low: float, high: float, trump
 	var worst_index: int = 0
 	var worst_score: float = INF
 	for index: int in cards.size():
-		if only_trumps and cards[index].suit(trump) != trump:
+		if only_trumps and trump != null and cards[index].suit(trump) != trump:
 			continue
 
 		var score: float = _trick_score_win_change(cards[index], low, high, trump)

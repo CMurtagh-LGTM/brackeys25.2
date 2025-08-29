@@ -162,6 +162,9 @@ func _start_game() -> void:
 		_hands[hand_index].set_ai(AI.new(_ai_info))
 	_dealer = randi_range(0, _hands.size() - 1)
 	
+	for triumph: Triumph in _triumphs:
+		triumph.apply_game_modifier(_calculate_triumph_game_state())
+
 	_deal()
 
 func _end_game() -> void:

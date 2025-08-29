@@ -14,5 +14,6 @@ metadata/_custom_type_script = "uid://dvb5dodkuhx3o"
 script = ExtResource("1_o32po")
 texture = ExtResource("4_njhjn")
 description = "Gain a transient Joker card, then discard a card."
+exhausts = true
 action = SubResource("Resource_7wfuk")
 metadata/_custom_type_script = "uid://chanul83o6q5u"

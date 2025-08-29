@@ -7,11 +7,13 @@
 [sub_resource type="Resource" id="Resource_c4x0f"]
 script = ExtResource("1_encf5")
 target = 1
+cards = 1
 metadata/_custom_type_script = "uid://yssxgene73yk"
 
 [resource]
 script = ExtResource("1_t8pfu")
 texture = ExtResource("2_22j4h")
 description = "Draw a card from the deck then discard a card to the bonus pile."
+exhausts = true
 action = SubResource("Resource_c4x0f")
 metadata/_custom_type_script = "uid://chanul83o6q5u"

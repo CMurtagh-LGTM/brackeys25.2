@@ -12,5 +12,6 @@ metadata/_custom_type_script = "uid://bciiwpycgdygf"
 script = ExtResource("1_gn76q")
 texture = ExtResource("3_unbhi")
 description = "Reject the trump suit and play with no trump suit."
+exhausts = true
 action = SubResource("Resource_iw1d4")
 metadata/_custom_type_script = "uid://chanul83o6q5u"

@@ -31,3 +31,13 @@ func highest_ordinal() -> Card.Ordinal:
 		if card.get_ordinal() > lowest:
 			lowest = card.get_ordinal()
 	return lowest
+
+func suits() -> Array[Suit]:
+	var suits_: Array[Suit]
+	for card: CardInfo in cards:
+		if card.suit == null:
+			continue
+		if suits_.find(card.suit) != -1:
+			continue
+		suits_.append(card.suit)
+	return suits_

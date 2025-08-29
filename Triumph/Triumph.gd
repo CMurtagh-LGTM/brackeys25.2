@@ -12,13 +12,17 @@ var _exhausted: bool = false
 func unexhaust() -> void:
 	_exhausted = false
 
+func apply_game_modifier(state: TriumphGameState) -> void:
+	if _info.game_modifier:
+		_info.game_modifier.change_game(state)
+
 func before_bid(state: TriumphGameState) -> void:
 	@warning_ignore("redundant_await")
 	await _info.action.before_bid(state)
 	_exhausted = _info.exhausts
 
 func has_before_bid(state: TriumphGameState) -> bool:
-	return not _exhausted and _info.action.has_before_bid(state)
+	return not _exhausted and _info.action != null and _info.action.has_before_bid(state)
 
 func description() -> String:
 	return _info.description
@@ -30,4 +34,3 @@ static func instantiate(info: TriumphInfo) -> Triumph:
 
 func _ready() -> void:
 	_image.texture = _info.texture
-

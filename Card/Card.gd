@@ -91,7 +91,7 @@ func move_to(node: Node2D, dest_position: Vector2, dest_rotation: float, duratio
 	var tween = create_tween()
 	tween.set_parallel()
 	tween.tween_property(self, "global_position", dest_position + node.global_position, duration)
-	tween.tween_property(self, "global_rotation", dest_rotation + node.rotation, duration)
+	tween.tween_property(self, "global_rotation", dest_rotation + node.global_rotation, duration)
 	await tween.finished
 	self.get_parent().remove_child(self)
 	node.add_child(self)

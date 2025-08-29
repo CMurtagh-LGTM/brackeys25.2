@@ -9,6 +9,11 @@ var _discard_pile: Stack
 func shuffle() -> void:
 	_cards.shuffle()
 
+func add_card(card: Card) -> void:
+	if card.transient():
+		return
+	await _cards.push_card(card)
+
 func add_cards(cards: Array[Card]) -> void:
 	cards = cards.filter(func(card: Card) -> bool: return not card.transient())
 	await _cards.append(cards)

@@ -12,5 +12,6 @@ metadata/_custom_type_script = "uid://c2er7462v18hc"
 script = ExtResource("1_o2202")
 texture = ExtResource("3_wkb77")
 description = "Each opponent reveals one card."
+exhausts = true
 action = SubResource("Resource_8fo1o")
 metadata/_custom_type_script = "uid://chanul83o6q5u"

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=5 format=3 uid="uid://ygjlvciaoqgy"]
+
+[ext_resource type="Script" uid="uid://dhkk18gth05vy" path="res://Triumph/TriumphGameModifier/RemoveOponentScoreModifier.gd" id="1_m7ypx"]
+[ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_pwvij"]
+[ext_resource type="Texture2D" uid="uid://di7nihmbptn1j" path="res://Assets/Characters/XIII.svg" id="2_lymx0"]
+
+[sub_resource type="Resource" id="Resource_liyin"]
+script = ExtResource("1_m7ypx")
+score = 1
+metadata/_custom_type_script = "uid://dhkk18gth05vy"
+
+[resource]
+script = ExtResource("1_pwvij")
+texture = ExtResource("2_lymx0")
+description = "Opponents start on score -1."
+exhausts = true
+game_modifier = SubResource("Resource_liyin")
+metadata/_custom_type_script = "uid://chanul83o6q5u"
