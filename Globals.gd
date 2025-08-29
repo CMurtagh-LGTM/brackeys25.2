@@ -51,7 +51,7 @@ var open_hands: bool = debug_ai
 
 var muted: bool = true # TODO false
 
-const forced_triumph: TriumphInfo = preload("res://Resources/Triumph/Pauper.tres")
+const forced_triumph: TriumphInfo = preload("res://Resources/Triumph/Madman.tres")
 
 func _ready() -> void:
 	var viewport = get_viewport()
