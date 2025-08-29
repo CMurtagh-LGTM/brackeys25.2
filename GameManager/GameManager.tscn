@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://da5qnxmm2ylvk"]
+[gd_scene load_steps=18 format=3 uid="uid://da5qnxmm2ylvk"]
 
 [ext_resource type="Texture2D" uid="uid://d2oodsnv6qt3m" path="res://Assets/plain-arrow.svg" id="1_jmty1"]
 [ext_resource type="Script" uid="uid://b4r4rffx3opro" path="res://GameManager/GameManager.gd" id="1_v4rul"]
@@ -6,10 +6,35 @@
 [ext_resource type="Texture2D" uid="uid://dycxjfepc72ba" path="res://Assets/Suits/Heart.svg" id="4_jhjwp"]
 [ext_resource type="Texture2D" uid="uid://b71j10i488kgw" path="res://Assets/Suits/Diamond.svg" id="5_hoh1d"]
 [ext_resource type="Texture2D" uid="uid://db1vhbyfchdln" path="res://Assets/Suits/Club.svg" id="6_6wl2n"]
+[ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="7_acnmt"]
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="8_4kblr"]
 [ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="8_6wl2n"]
 [ext_resource type="PackedScene" uid="uid://wd0t3t1h80bu" path="res://Trick/Trick.tscn" id="8_tb2wi"]
 [ext_resource type="PackedScene" uid="uid://bmtthu0vjtlh3" path="res://Deck/Deck.tscn" id="9_tb2wi"]
 [ext_resource type="PackedScene" uid="uid://bpejluo12ftan" path="res://Menu/TriumphChooser.tscn" id="10_nhcvl"]
+
+[sub_resource type="Gradient" id="Gradient_qg0je"]
+offsets = PackedFloat32Array(0, 0.954667, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.501961)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e5001"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ia3ss"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_qg0je")
+noise = SubResource("FastNoiseLite_e5001")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0wrft"]
+resource_local_to_scene = true
+shader = ExtResource("8_4kblr")
+shader_parameter/noise = SubResource("NoiseTexture2D_ia3ss")
+shader_parameter/offset = Vector2(0, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_tb2wi"]
 font_size = 8
@@ -68,6 +93,19 @@ offset_left = -20.0
 offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
+
+[node name="Mould" parent="BidInfo/Total" instance=ExtResource("7_acnmt")]
+material = SubResource("ShaderMaterial_0wrft")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Label2" type="Label" parent="BidInfo/Total"]
 layout_mode = 0

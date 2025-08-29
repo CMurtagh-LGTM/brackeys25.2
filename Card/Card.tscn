@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cjo5i2haxfp05"]
+[gd_scene load_steps=14 format=3 uid="uid://cjo5i2haxfp05"]
 
 [ext_resource type="Script" uid="uid://dx7xolpo3n2vx" path="res://Card/Card.gd" id="1_6ma3f"]
 [ext_resource type="Texture2D" uid="uid://b4u251mxxtj2m" path="res://Assets/Suits/Spade.svg" id="3_5u7pk"]
@@ -6,9 +6,34 @@
 [ext_resource type="Texture2D" uid="uid://c6nbwb26kx7lp" path="res://Assets/FrontBorder.svg" id="4_1xywt"]
 [ext_resource type="Texture2D" uid="uid://b4pql4sdt4b84" path="res://Assets/Characters/11.svg" id="4_hcyk8"]
 [ext_resource type="Texture2D" uid="uid://bmu4qwei2bt1f" path="res://Assets/Suits/Anglo-American_card_suits.svg" id="5_hcyk8"]
+[ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="7_g6lc7"]
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="8_g6lc7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hcyk8"]
 size = Vector2(58, 92)
+
+[sub_resource type="Gradient" id="Gradient_qg0je"]
+offsets = PackedFloat32Array(0, 0.954667, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.501961)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e5001"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ia3ss"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_qg0je")
+noise = SubResource("FastNoiseLite_e5001")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ia3ss"]
+resource_local_to_scene = true
+shader = ExtResource("8_g6lc7")
+shader_parameter/noise = SubResource("NoiseTexture2D_ia3ss")
+shader_parameter/offset = Vector2(0, 0)
 
 [node name="Card" type="Node2D"]
 script = ExtResource("1_6ma3f")
@@ -55,6 +80,9 @@ texture = ExtResource("5_hcyk8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MouseArea"]
 visible = false
 shape = SubResource("RectangleShape2D_hcyk8")
+
+[node name="Mould" parent="." instance=ExtResource("7_g6lc7")]
+material = SubResource("ShaderMaterial_ia3ss")
 
 [connection signal="input_event" from="MouseArea" to="." method="_on_mouse_area_input_event"]
 [connection signal="mouse_entered" from="MouseArea" to="." method="_on_mouse_area_mouse_entered"]

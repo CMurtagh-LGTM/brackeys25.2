@@ -40,7 +40,7 @@ const WHITE: Color = 0xF5DEB3FF #0.96, 0.87, 0.70
 const BLACK: Color = 0x37322DFF
 const RED: Color = 0xDC645AFF
 const YELLOW: Color = 0xDBA55AFF
-const GREEN: Color = 0xD1DB5A
+const GREEN: Color = 0xD1DB5AFF
 
 const LIGHT_RED: Color = 0xF4BCB2FF
 const LIGHT_GREEN: Color = 0xEAF4B2FF

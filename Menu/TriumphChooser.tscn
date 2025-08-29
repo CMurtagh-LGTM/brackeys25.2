@@ -1,6 +1,37 @@
-[gd_scene load_steps=2 format=3 uid="uid://bpejluo12ftan"]
+[gd_scene load_steps=9 format=3 uid="uid://bpejluo12ftan"]
 
 [ext_resource type="Script" uid="uid://brr1dwsjwqhw" path="res://Menu/TriumphChooser.gd" id="1_k4hj0"]
+[ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="2_kbljl"]
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="3_xh4ym"]
+
+[sub_resource type="Gradient" id="Gradient_k4hj0"]
+offsets = PackedFloat32Array(0, 0.704, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.25098)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_s5nl3"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jgf78"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_k4hj0")
+noise = SubResource("FastNoiseLite_s5nl3")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rjtxt"]
+resource_local_to_scene = true
+shader = ExtResource("3_xh4ym")
+shader_parameter/noise = SubResource("NoiseTexture2D_jgf78")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kbljl"]
+resource_local_to_scene = true
+shader = ExtResource("3_xh4ym")
+shader_parameter/noise = SubResource("NoiseTexture2D_jgf78")
+shader_parameter/offset = Vector2(0, 0)
 
 [node name="TriumphChooser" type="Node2D"]
 script = ExtResource("1_k4hj0")
@@ -42,8 +73,34 @@ layout_mode = 2
 focus_mode = 0
 text = "Hide"
 
+[node name="Mould" parent="MenuButtons/VBoxContainer/CenterContainer/HBoxContainer/Hide" instance=ExtResource("2_kbljl")]
+material = SubResource("ShaderMaterial_rjtxt")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Skip" type="Button" parent="MenuButtons/VBoxContainer/CenterContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 text = "Skip"
+
+[node name="Mould" parent="MenuButtons/VBoxContainer/CenterContainer/HBoxContainer/Skip" instance=ExtResource("2_kbljl")]
+material = SubResource("ShaderMaterial_kbljl")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2

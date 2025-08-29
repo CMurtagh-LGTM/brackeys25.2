@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtsvp7okoe2s6"]
+
+[ext_resource type="Material" uid="uid://l7l7mawnati2" path="res://Mould/Mould.tres" id="1_pgn0v"]
+[ext_resource type="Script" uid="uid://cygk12wxhnibk" path="res://Mould/Mould.gd" id="2_c3lcg"]
+
+[node name="Mould" type="ColorRect"]
+material = ExtResource("1_pgn0v")
+offset_left = -28.0
+offset_top = -45.0
+offset_right = 28.0
+offset_bottom = 45.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("2_c3lcg")

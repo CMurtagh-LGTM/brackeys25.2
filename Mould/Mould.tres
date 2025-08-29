@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://l7l7mawnati2"]
+
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="1_tsfcv"]
+
+[sub_resource type="Gradient" id="Gradient_6av1v"]
+offsets = PackedFloat32Array(0, 0.933333, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.501961)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pgrey"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ia3ss"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_6av1v")
+noise = SubResource("FastNoiseLite_pgrey")
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_tsfcv")
+shader_parameter/noise = SubResource("NoiseTexture2D_ia3ss")
+shader_parameter/offset = Vector2(0, 0)

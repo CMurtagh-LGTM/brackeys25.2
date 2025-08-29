@@ -1,17 +1,66 @@
-[gd_scene load_steps=8 format=3 uid="uid://ckta17078muxh"]
+[gd_scene load_steps=19 format=3 uid="uid://ckta17078muxh"]
 
 [ext_resource type="Script" uid="uid://bctw7rnd23ycv" path="res://Hand/Hand.gd" id="1_kj8sc"]
 [ext_resource type="PackedScene" uid="uid://c767fye8y5ef1" path="res://Deck/Stack.tscn" id="2_wnkge"]
 [ext_resource type="Texture2D" uid="uid://dcvemtlnepedh" path="res://Assets/Circle.svg" id="3_p271h"]
 [ext_resource type="Texture2D" uid="uid://gf5ub6ytpvim" path="res://Assets/Characters/D.svg" id="4_217al"]
+[ext_resource type="Material" uid="uid://l7l7mawnati2" path="res://Mould/Mould.tres" id="4_qdlwu"]
+[ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="5_4xcgc"]
 [ext_resource type="PackedScene" uid="uid://bgeuvmtmxcwnk" path="res://Bid/Bid.tscn" id="5_217al"]
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="6_qdlwu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p271h"]
 bg_color = Color(1, 1, 1, 1)
 
+[sub_resource type="Gradient" id="Gradient_c374h"]
+offsets = PackedFloat32Array(0, 0.834667, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.25098)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pdyud"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qdlwu"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_c374h")
+noise = SubResource("FastNoiseLite_pdyud")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o22qa"]
+resource_local_to_scene = true
+shader = ExtResource("6_qdlwu")
+shader_parameter/noise = SubResource("NoiseTexture2D_qdlwu")
+shader_parameter/offset = Vector2(0, 0)
+
 [sub_resource type="LabelSettings" id="LabelSettings_217al"]
 font_size = 8
 font_color = Color(0.215686, 0.196078, 0.176471, 1)
+
+[sub_resource type="Gradient" id="Gradient_2sarg"]
+offsets = PackedFloat32Array(0, 0.834667, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.25098)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5bows"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4xcgc"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_2sarg")
+noise = SubResource("FastNoiseLite_5bows")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c374h"]
+resource_local_to_scene = true
+shader = ExtResource("6_qdlwu")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
 
 [node name="Hand" type="Node2D"]
 script = ExtResource("1_kj8sc")
@@ -29,6 +78,11 @@ self_modulate = Color(0.960784, 0.870588, 0.701961, 1)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_p271h")
 
+[node name="Mould" type="Sprite2D" parent="Dealer"]
+self_modulate = Color(0.960784, 0.870588, 0.701961, 1)
+material = ExtResource("4_qdlwu")
+texture = ExtResource("3_p271h")
+
 [node name="D" type="Sprite2D" parent="Dealer"]
 self_modulate = Color(0.215686, 0.196078, 0.176471, 1)
 scale = Vector2(1.5, 1.5)
@@ -43,6 +97,19 @@ offset_top = -20.0
 offset_right = 20.0
 offset_bottom = 20.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_p271h")
+
+[node name="Mould" parent="BidIndicator/Panel" instance=ExtResource("5_4xcgc")]
+material = SubResource("ShaderMaterial_o22qa")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Label" type="Label" parent="BidIndicator/Panel"]
 custom_minimum_size = Vector2(40, 40)
@@ -86,6 +153,19 @@ offset_bottom = 27.0
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Mould" parent="TotalScore/Panel" instance=ExtResource("5_4xcgc")]
+material = SubResource("ShaderMaterial_c374h")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Info" type="Node2D" parent="."]
 

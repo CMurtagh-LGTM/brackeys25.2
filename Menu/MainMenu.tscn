@@ -1,6 +1,84 @@
-[gd_scene load_steps=2 format=3 uid="uid://buuha4e7375vl"]
+[gd_scene load_steps=17 format=3 uid="uid://buuha4e7375vl"]
 
 [ext_resource type="Script" uid="uid://djf6lw2iyp7ww" path="res://Menu/MainMenu.gd" id="1_exbqw"]
+[ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="2_tma8a"]
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="3_tpenk"]
+
+[sub_resource type="Gradient" id="Gradient_1xywt"]
+offsets = PackedFloat32Array(0, 0.704, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.25098)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_tsfcv"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tpenk"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_1xywt")
+noise = SubResource("FastNoiseLite_tsfcv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_exbqw"]
+resource_local_to_scene = true
+shader = ExtResource("3_tpenk")
+shader_parameter/noise = SubResource("NoiseTexture2D_tpenk")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_nkib0"]
+offsets = PackedFloat32Array(0, 0.704, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.25098)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_r1n58"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tma8a"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_nkib0")
+noise = SubResource("FastNoiseLite_r1n58")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tpenk"]
+resource_local_to_scene = true
+shader = ExtResource("3_tpenk")
+shader_parameter/noise = SubResource("NoiseTexture2D_tma8a")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_biqin"]
+resource_local_to_scene = true
+shader = ExtResource("3_tpenk")
+shader_parameter/noise = SubResource("NoiseTexture2D_tma8a")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_um3lu"]
+resource_local_to_scene = true
+shader = ExtResource("3_tpenk")
+shader_parameter/noise = SubResource("NoiseTexture2D_tma8a")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sfxdn"]
+resource_local_to_scene = true
+shader = ExtResource("3_tpenk")
+shader_parameter/noise = SubResource("NoiseTexture2D_tma8a")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u0a2j"]
+resource_local_to_scene = true
+shader = ExtResource("3_tpenk")
+shader_parameter/noise = SubResource("NoiseTexture2D_tma8a")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fgdcb"]
+resource_local_to_scene = true
+shader = ExtResource("3_tpenk")
+shader_parameter/noise = SubResource("NoiseTexture2D_tma8a")
+shader_parameter/offset = Vector2(0, 0)
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_exbqw")
@@ -32,7 +110,7 @@ metadata/_tab_index = 0
 [node name="Label" type="Label" parent="MenuButtons/MenuTabs/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
-text = "Game Title"
+text = "deTrump"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -48,15 +126,54 @@ layout_mode = 2
 focus_mode = 0
 text = "Start"
 
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Start" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_exbqw")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="HowToPlay" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "How To Play"
 
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/HowToPlay" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_tpenk")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Credits" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
 text = "Credits"
+
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Credits" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_biqin")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MenuButtons/MenuTabs"]
 visible = false
@@ -66,6 +183,11 @@ metadata/_tab_index = 1
 
 [node name="Panel" type="PanelContainer" parent="MenuButtons/MenuTabs/VBoxContainer2"]
 layout_mode = 2
+
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer2/Panel" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_um3lu")
+layout_mode = 2
+size_flags_vertical = 1
 
 [node name="Label" type="RichTextLabel" parent="MenuButtons/MenuTabs/VBoxContainer2/Panel"]
 custom_minimum_size = Vector2(1050, 0)
@@ -90,6 +212,19 @@ layout_mode = 2
 focus_mode = 0
 text = "Back"
 
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer2/CenterContainer/HowToPlayBack" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_sfxdn")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="VBoxContainer3" type="VBoxContainer" parent="MenuButtons/MenuTabs"]
 visible = false
 layout_mode = 2
@@ -97,6 +232,10 @@ alignment = 1
 metadata/_tab_index = 2
 
 [node name="Panel" type="PanelContainer" parent="MenuButtons/MenuTabs/VBoxContainer3"]
+layout_mode = 2
+
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer3/Panel" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_u0a2j")
 layout_mode = 2
 
 [node name="Label" type="RichTextLabel" parent="MenuButtons/MenuTabs/VBoxContainer3/Panel"]
@@ -115,6 +254,19 @@ layout_mode = 2
 layout_mode = 2
 focus_mode = 0
 text = "Back"
+
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer3/CenterContainer/CreditsBackPressed" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_fgdcb")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/HowToPlay" to="." method="_on_how_to_play_pressed"]

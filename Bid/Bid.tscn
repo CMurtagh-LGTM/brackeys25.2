@@ -1,6 +1,91 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgeuvmtmxcwnk"]
+[gd_scene load_steps=18 format=3 uid="uid://bgeuvmtmxcwnk"]
 
 [ext_resource type="Script" uid="uid://bi8hoql14qx5w" path="res://Bid/Bid.gd" id="1_il7qo"]
+[ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="2_m8g6h"]
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="3_dlwn4"]
+
+[sub_resource type="Gradient" id="Gradient_2sarg"]
+offsets = PackedFloat32Array(0, 0.834667, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.25098)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5bows"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4xcgc"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_2sarg")
+noise = SubResource("FastNoiseLite_5bows")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3md1o"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m8g6h"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dlwn4"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2sarg"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5bows"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxhy8"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vyjl7"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tfc8l"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q8lea"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_um0c2"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ldca4"]
+resource_local_to_scene = true
+shader = ExtResource("3_dlwn4")
+shader_parameter/noise = SubResource("NoiseTexture2D_4xcgc")
+shader_parameter/offset = Vector2(0, 0)
 
 [node name="Bid" type="Node2D"]
 script = ExtResource("1_il7qo")
@@ -18,11 +103,37 @@ layout_mode = 2
 focus_mode = 0
 text = "0"
 
+[node name="Mould" parent="HBoxContainer/0" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_3md1o")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="1" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 40)
 layout_mode = 2
 focus_mode = 0
 text = "1"
+
+[node name="Mould" parent="HBoxContainer/1" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_m8g6h")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="2" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 40)
@@ -30,11 +141,37 @@ layout_mode = 2
 focus_mode = 0
 text = "2"
 
+[node name="Mould" parent="HBoxContainer/2" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_dlwn4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="3" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 40)
 layout_mode = 2
 focus_mode = 0
 text = "3"
+
+[node name="Mould" parent="HBoxContainer/3" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_2sarg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="4" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 40)
@@ -42,11 +179,37 @@ layout_mode = 2
 focus_mode = 0
 text = "4"
 
+[node name="Mould" parent="HBoxContainer/4" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_5bows")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="5" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 40)
 layout_mode = 2
 focus_mode = 0
 text = "5"
+
+[node name="Mould" parent="HBoxContainer/5" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_cxhy8")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="6" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 40)
@@ -54,11 +217,37 @@ layout_mode = 2
 focus_mode = 0
 text = "6"
 
+[node name="Mould" parent="HBoxContainer/6" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_vyjl7")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="7" type="Button" parent="HBoxContainer"]
 custom_minimum_size = Vector2(30, 40)
 layout_mode = 2
 focus_mode = 0
 text = "7"
+
+[node name="Mould" parent="HBoxContainer/7" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_tfc8l")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="8" type="Button" parent="HBoxContainer"]
 visible = false
@@ -66,17 +255,56 @@ custom_minimum_size = Vector2(30, 40)
 layout_mode = 2
 text = "8"
 
+[node name="Mould" parent="HBoxContainer/8" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_q8lea")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="9" type="Button" parent="HBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(30, 40)
 layout_mode = 2
 text = "9"
 
+[node name="Mould" parent="HBoxContainer/9" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_um0c2")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="10" type="Button" parent="HBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(30, 40)
 layout_mode = 2
 text = "10"
+
+[node name="Mould" parent="HBoxContainer/10" instance=ExtResource("2_m8g6h")]
+material = SubResource("ShaderMaterial_ldca4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="pressed" from="HBoxContainer/0" to="." method="_on_0_pressed"]
 [connection signal="pressed" from="HBoxContainer/1" to="." method="_on_1_pressed"]
