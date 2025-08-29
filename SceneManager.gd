@@ -1,8 +1,8 @@
 extends Node
 
 const games: Array[GameInfo] = [
-	# preload("res://Resources/Games/One.tres"),
-	# preload("res://Resources/Games/Two.tres"),
+	preload("res://Resources/Games/One.tres"),
+	preload("res://Resources/Games/Two.tres"),
 	preload("res://Resources/Games/Three.tres"),
 ]
 
@@ -21,33 +21,21 @@ func _ready() -> void:
 	_triumph_pool = TriumphPool.new()
 	while true:
 		await _show_main_menu()
-		if await _play():
-			await _show_victory()
-		else:
-			await _show_game_over()
+		await _play()
 
 func _show_main_menu() -> void:
 	_main_menu.visible = true
 	await _main_menu.start_pressed
 	_main_menu.visible = false
 
-func _play() -> bool:
+func _play() -> void:
 	_triumph_pool.reset()
 	var triumphs: Array[Triumph] = []
 	for game: GameInfo in games:
-		_game_preview.set_game_info(game)
-		_game_preview.visible = true
-		await _game_preview.start_pressed
-		_game_preview.visible = false
+		await _show_game_preview(game)
 
 		# TODO move down
-		if not _triumph_pool.is_empty():
-			_triumph_chooser.visible = true
-			var triumph = await _triumph_chooser.choose(_triumph_pool.choices(3))
-			if triumph != null:
-				_triumph_pool.remove_choice(triumph)
-				triumphs.append(triumph)
-			_triumph_chooser.visible = false
+		await _show_triumph_chooser(triumphs)
 
 		for triumph_: Triumph in triumphs:
 			triumph_.unexhaust()
@@ -70,19 +58,36 @@ func _play() -> bool:
 		var score: int = result[1]
 
 		if not game.win_condition.has_won(place, score):
-			return false
-	return true
+			await _show_game_over(place, score, game.win_condition.to_label())
+			return
+	await _show_victory()
+	return
 
-func _show_game_over() -> void:
+func _show_game_preview(game: GameInfo) -> void:
+	_game_preview.set_game_info(game)
+	_game_preview.visible = true
+	await _game_preview.start_pressed
+	_game_preview.visible = false
+
+func _show_triumph_chooser(triumphs: Array[Triumph]) -> void:
+	if not _triumph_pool.is_empty():
+		_triumph_chooser.visible = true
+		var triumph = await _triumph_chooser.choose(_triumph_pool.choices(3))
+		if triumph != null:
+			_triumph_pool.remove_choice(triumph)
+			triumphs.append(triumph)
+		_triumph_chooser.visible = false
+
+func _show_game_over(place: int, score: int, win_label: String) -> void:
+	_game_over.set_score(score)
+	_game_over.set_place(place)
+	_game_over.set_win_condition(win_label)
 	_game_over.visible = true
 	await _game_over.main_menu_pressed
 	_game_over.visible = false
-	
-	_show_main_menu()
 
 func _show_victory() -> void:
 	_victory.visible = true
 	await _victory.main_menu_pressed
 	_victory.visible = false
 	
-	_show_main_menu()
