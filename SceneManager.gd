@@ -35,6 +35,7 @@ func _show_main_menu() -> void:
 func _play() -> void:
 	_triumph_pool.reset()
 	var triumphs: Array[Triumph] = []
+	var index: int = 0
 	for game: GameInfo in games:
 		await _show_game_preview(game)
 
@@ -63,8 +64,10 @@ func _play() -> void:
 			await _show_game_over(place, score, game.win_condition.to_label())
 			return
 
-		await _show_triumph_chooser(triumphs)
+		if index < games.size() - 1:
+			await _show_triumph_chooser(triumphs)
 
+		index += 1
 	await _show_victory()
 
 func _show_game_preview(game: GameInfo) -> void:
