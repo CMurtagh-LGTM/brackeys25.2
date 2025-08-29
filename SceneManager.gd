@@ -69,9 +69,6 @@ func _play() -> bool:
 		var place: int = result[0]
 		var score: int = result[1]
 
-		print("place:", place + 1)
-		print("score:", score)
-
 		if not game.win_condition.has_won(place, score):
 			return false
 	return true

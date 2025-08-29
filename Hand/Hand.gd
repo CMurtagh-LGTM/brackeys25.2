@@ -60,6 +60,11 @@ func remove_card(card: Card) -> void:
 func get_hand_size() -> int:
 	return _cards.size()
 
+func random_card() -> Card:
+	if _cards.is_empty():
+		return null
+	return _cards.pick_random()
+
 func discard_last_card() -> Card:
 	assert(not _cards.is_empty())
 	var card: Card = _cards[-1]

@@ -122,7 +122,7 @@ func _calculate_game_state() -> GameState:
 	return GameState.new(_trump, _trick.lead_suit(_trump), _deck.deck_info, _trick.get_cards(), _trick.card_count() == _hands.size() - 1)
 
 func _calculate_triumph_game_state() -> TriumphGameState:
-	return TriumphGameState.new(_hands[0], _deck, _discard_pile, _origin)
+	return TriumphGameState.new(_hands[0], _hands, _deck, _discard_pile, _origin)
 
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
