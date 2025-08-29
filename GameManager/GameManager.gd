@@ -119,7 +119,7 @@ func _ready() -> void:
 	_start_game()
 
 func _calculate_triumph_game_state() -> TriumphGameState:
-	return TriumphGameState.new(_hands[0], _hands, _deck, _discard_pile, _bonus_pile, _origin)
+	return TriumphGameState.new(_hands[0], _hands, _deck, _discard_pile, _bonus_pile, _origin, _game_state)
 
 func _on_hand_play(card: Card) -> void:
 	_hands[_current_hand].lose_turn()
@@ -351,7 +351,7 @@ func _on_update_game_state_trump() -> void:
 			pip.modulate.a = a
 			target_colour = Suit.colours[_game_state.trump().colour]
 
-		target_colour.a = float(_game_state.trump != null)
+		target_colour.a = float(_game_state.trump() != null)
 		create_tween().tween_property(pip, "modulate", target_colour, 0.2)
 
 func _compass_to_hand_index(compass: Hand.Compass) -> int:

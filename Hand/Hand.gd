@@ -46,6 +46,8 @@ func add_card(card: Card, index: int = -1) -> void:
 
 		if _game_state != null and card.get_bower(_game_state.trump()):
 			card.highlight(card.get_bower_colour())
+		else:
+			card.unhighlight()
 
 	_position_cards()
 
@@ -195,9 +197,12 @@ func set_game_state(game_state: GameState) -> void:
 	_game_state.trump_changed.connect(_on_trump_update)
 
 func _on_trump_update() -> void:
-	for card: Card in _cards:
-		if card.get_bower(_game_state.trump()) and _ai == null:
-			card.highlight(card.get_bower_colour())
+	if _ai == null:
+		for card: Card in _cards:
+			if card.get_bower(_game_state.trump()):
+				card.highlight(card.get_bower_colour())
+			else:
+				card.unhighlight()
 	
 func gain_turn() -> void:
 	_has_turn = true
