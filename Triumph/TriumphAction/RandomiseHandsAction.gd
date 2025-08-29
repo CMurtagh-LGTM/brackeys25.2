@@ -15,7 +15,7 @@ func before_bid(state: TriumphGameState) -> void:
 
 	for _i in hand_size:
 		for hand: Hand in state.hands:
-			hand.add_card(cards.pop_back())
+			await hand.add_card(cards.pop_back(), -1, Globals.card_stack_time)
 
 func has_before_bid(_state: TriumphGameState) -> bool:
 	return true

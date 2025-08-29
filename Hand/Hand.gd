@@ -37,12 +37,12 @@ var _game_state: GameState
 signal play(Card)
 signal _discard_card(Card)
 
-func add_card(card: Card, index: int = -1) -> void:
+func add_card(card: Card, index: int = -1, time: float = Globals.card_deal_time) -> void:
 	if index == -1:
 		_cards.push_back(card)
 	else:
 		_cards.insert(index, card)
-	await card.move_to(self, Vector2.ZERO, 0, Globals.card_deal_time)
+	await card.move_to(self, Vector2.ZERO, 0, time)
 	card.reveal(globals.open_hands or _ai == null)
 	if _ai == null:
 		card.clicked.connect(_on_card_clicked.bind(card))
