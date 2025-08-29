@@ -310,6 +310,9 @@ func _set_bid_indicator() -> void:
 func _can_play_card(card: Card) -> bool:
 	var card_suit: Suit = card.suit(_game_state.trump())
 
+	# Can always play excuse card
+	if card.is_excuse():
+		return true
 	# Leading can play any
 	if _game_state.lead_suit() == null:
 		return true

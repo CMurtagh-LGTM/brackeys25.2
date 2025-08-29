@@ -11,6 +11,7 @@ func shuffle() -> void:
 
 func add_card(card: Card) -> void:
 	if card.transient():
+		card.get_parent().remove_child(card)
 		return
 	await _cards.push_card(card)
 

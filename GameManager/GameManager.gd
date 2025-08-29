@@ -238,6 +238,9 @@ func _triumphs_before_bid() -> void:
 			break
 	_triumph_chooser.visible = false
 
+	for triumph: Triumph in _triumphs:
+		triumph.reset_use()
+
 	_start_bid()
 
 func _start_bid() -> void:
@@ -317,6 +320,8 @@ func _end_trick() -> void:
 func _calculate_bonus_score() -> int:
 	var bonus: int = 0
 	for card: Card in _bonus_pile.get_cards():
+		if card.is_excuse():
+			bonus += 2
 		if card.suit(_game_state.trump()) != _game_state.trump():
 			continue
 		bonus += 1

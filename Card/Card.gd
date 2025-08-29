@@ -55,6 +55,9 @@ func get_bower(trump: Suit) -> Bower:
 func get_bower_colour() -> Color:
 	return _info.bower_colour
 
+func is_excuse() -> bool:
+	return _info.get_excuse()
+
 func suit(trump: Suit) -> Suit:
 	if get_bower(trump) != Bower.NONE:
 		return trump

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="TriumphInfo" load_steps=6 format=3 uid="uid://b4wt784jaate5"]
+
+[ext_resource type="Resource" uid="uid://dbuc65ma2bm11" path="res://Resources/Cards/Excuse.tres" id="1_00ps4"]
+[ext_resource type="Script" uid="uid://chanul83o6q5u" path="res://Triumph/TriumphInfo.gd" id="1_jmers"]
+[ext_resource type="Script" uid="uid://dvb5dodkuhx3o" path="res://Triumph/TriumphAction/MaterialiseAction.gd" id="2_cnwd5"]
+[ext_resource type="Texture2D" uid="uid://cs7avg4ty4177" path="res://Assets/Characters/XV.svg" id="4_1umbx"]
+
+[sub_resource type="Resource" id="Resource_gxttr"]
+script = ExtResource("2_cnwd5")
+card_info = ExtResource("1_00ps4")
+metadata/_custom_type_script = "uid://dvb5dodkuhx3o"
+
+[resource]
+script = ExtResource("1_jmers")
+texture = ExtResource("4_1umbx")
+description = "Add an Excuse card to hand then discard a card. This card always looses but can always be played. It has a bonus value of 2."
+exhausts = true
+action = SubResource("Resource_gxttr")
+metadata/_custom_type_script = "uid://chanul83o6q5u"

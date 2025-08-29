@@ -66,7 +66,6 @@ func _play() -> void:
 			await _show_game_over(place, score, game.win_condition.to_label())
 			return
 	await _show_victory()
-	return
 
 func _show_game_preview(game: GameInfo) -> void:
 	_game_preview.set_game_info(game)

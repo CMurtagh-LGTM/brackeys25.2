@@ -13,7 +13,7 @@ var _used: bool = false
 func unexhaust() -> void:
 	_exhausted = false
 
-func end_use() -> void:
+func reset_use() -> void:
 	_used = false
 
 func apply_game_modifier(state: TriumphGameState) -> void:
