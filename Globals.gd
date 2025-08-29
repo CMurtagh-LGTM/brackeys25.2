@@ -49,6 +49,8 @@ const LIGHT_BLUE: Color = 0xB3CAF5FF
 const debug_ai: bool = false
 var open_hands: bool = debug_ai
 
+var muted: bool = false
+
 func _ready() -> void:
 	var viewport = get_viewport()
 	viewport_size = viewport.get_stretch_transform().affine_inverse() * Vector2(viewport.size)

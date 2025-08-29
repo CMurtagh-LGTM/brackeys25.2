@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://duhu46r5y5yu2"]
+[gd_scene load_steps=27 format=3 uid="uid://duhu46r5y5yu2"]
 
 [ext_resource type="Script" uid="uid://dwor16eunpxo2" path="res://SceneManager.gd" id="1_cm0pq"]
 [ext_resource type="Script" uid="uid://6dn2wx0g8imc" path="res://Resizer.gd" id="1_r0du0"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://bpejluo12ftan" path="res://Menu/TriumphChooser.tscn" id="6_lgr22"]
 [ext_resource type="PackedScene" uid="uid://clb7npp5n07pm" path="res://Menu/Victory.tscn" id="8_03owx"]
 [ext_resource type="PackedScene" uid="uid://qr7a56qi4ccv" path="res://Menu/MenuPips.tscn" id="8_trn2v"]
+[ext_resource type="Script" uid="uid://x6wy7henby7m" path="res://Mute.gd" id="10_20pc6"]
+[ext_resource type="AudioStream" uid="uid://cfrgunor0etqw" path="res://Assets/music.mp3" id="10_wkp8b"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3dxm6"]
 noise_type = 2
@@ -71,6 +73,11 @@ shader_parameter/noise_grain2 = SubResource("NoiseTexture2D_fos0i")
 shader_parameter/perlin_noise_cloud = SubResource("NoiseTexture2D_3dxm6")
 shader_parameter/cell_noise_cloud = SubResource("NoiseTexture2D_lgr22")
 
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_20pc6"]
+shuffle = true
+stream_count = 1
+stream_0 = ExtResource("10_wkp8b")
+
 [node name="Main" type="Node"]
 script = ExtResource("1_cm0pq")
 
@@ -120,3 +127,20 @@ mouse_filter = 2
 [node name="Resizer" type="Node2D" parent="CanvasLayer/ColorRect"]
 script = ExtResource("1_r0du0")
 metadata/_custom_type_script = "uid://6dn2wx0g8imc"
+
+[node name="Mute" type="Node" parent="."]
+script = ExtResource("10_20pc6")
+
+[node name="MuteButton" type="Button" parent="Mute"]
+offset_top = 613.0
+offset_right = 50.0
+offset_bottom = 648.0
+focus_mode = 0
+text = "Mute"
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="Mute"]
+stream = SubResource("AudioStreamPlaylist_20pc6")
+volume_db = -5.0
+autoplay = true
+
+[connection signal="pressed" from="Mute/MuteButton" to="Mute" method="_on_mute_button_pressed"]
