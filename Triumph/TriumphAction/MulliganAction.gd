@@ -8,7 +8,7 @@ func before_bid(state: TriumphGameState) -> void:
 		await state.discard_pile.push_card(state.player.discard_last_card())
 
 	for _i: int in hand_size:
-		await state.player.add_card(await state.deck.draw_card())
+		await state.player.add_card(await state.deck.draw_card(), -1, Globals.card_deal_time, true)
 
 func has_before_bid(_state: TriumphGameState) -> bool:
 	return true

@@ -8,7 +8,7 @@ func before_bid(state: TriumphGameState) -> void:
 	var hand_size: int = state.player.get_hand_size()
 
 	for _i: int in cards:
-		await state.player.add_card(await state.deck.draw_card())
+		await state.player.add_card(await state.deck.draw_card(), -1, Globals.card_deal_time, true)
 
 	var cards_to_discard: Array[Card] = await state.player.discard(hand_size, target)
 	if target == Hand.DiscardTarget.DISCARD:

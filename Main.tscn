@@ -86,7 +86,7 @@ z_index = -1
 offset_right = 1151.0
 offset_bottom = 648.0
 mouse_filter = 2
-color = Color(0.46056, 0.48, 0.3504, 1)
+color = Color(0.337925, 0.35, 0.2695, 1)
 
 [node name="Resizer" type="Node2D" parent="ColorRect"]
 script = ExtResource("1_r0du0")

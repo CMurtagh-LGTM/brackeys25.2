@@ -70,9 +70,9 @@ script = ExtResource("1_kj8sc")
 [node name="Stack" parent="." instance=ExtResource("2_wnkge")]
 
 [node name="HandScore" type="Label" parent="."]
-modulate = Color(0.215686, 0.196078, 0.176471, 1)
 offset_right = 22.0
 offset_bottom = 27.0
+theme_override_colors/font_color = Color(0.960784, 0.870588, 0.701961, 1)
 text = "10"
 
 [node name="Dealer" type="Sprite2D" parent="."]
@@ -177,6 +177,7 @@ offset_left = -40.0
 offset_top = -15.0
 offset_right = 40.0
 offset_bottom = 15.0
+theme_override_colors/font_color = Color(0.960784, 0.870588, 0.701961, 1)
 text = "Discarding"
 horizontal_alignment = 1
 vertical_alignment = 1
