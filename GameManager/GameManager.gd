@@ -75,7 +75,7 @@ var _current_arrow_point: Hand.Compass
 
 var _tutorial_manager: TutorialManager
 
-const _pile_seperation: float = 10
+const _pile_seperation: float = 20
 const _next_position_offset: Vector2 = Vector2(74, 56)
 const _bid_position_offset: Vector2 = Vector2(0, 100)
 const _deck_position_offset: Vector2 = Vector2(-184, 0)

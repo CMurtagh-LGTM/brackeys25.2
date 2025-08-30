@@ -56,11 +56,11 @@ alignment = 1
 [node name="CenterContainer2" type="CenterContainer" parent="MenuButtons/VBoxContainer"]
 layout_mode = 2
 
-[node name="TriumphList" type="HBoxContainer" parent="MenuButtons/VBoxContainer/CenterContainer2"]
+[node name="TriumphList" type="GridContainer" parent="MenuButtons/VBoxContainer/CenterContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
-alignment = 1
+columns = 3
 
 [node name="CenterContainer" type="CenterContainer" parent="MenuButtons/VBoxContainer"]
 layout_mode = 2
