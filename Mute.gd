@@ -3,7 +3,12 @@ extends Node
 @onready var _mute_button: Button = $MuteButton
 @onready var _music_player: AudioStreamPlayer = $MusicPlayer
 
+var _set_play: bool = false
+
 func _handle_mute_changed() -> void:
+	if not _set_play:
+		_music_player.play()
+		_set_play = true
 	_music_player.stream_paused = globals.muted
 	if globals.muted:
 		_mute_button.text = "Unmute"
