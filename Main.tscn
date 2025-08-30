@@ -142,6 +142,5 @@ text = "Mute"
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="Mute"]
 stream = SubResource("AudioStreamPlaylist_20pc6")
 volume_db = -20.0
-autoplay = true
 
 [connection signal="pressed" from="Mute/MuteButton" to="Mute" method="_on_mute_button_pressed"]
