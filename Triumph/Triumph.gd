@@ -32,6 +32,9 @@ func has_before_bid(state: TriumphGameState) -> bool:
 func description() -> String:
 	return _info.description
 
+func info() -> TriumphInfo:
+	return _info
+
 static func instantiate(info: TriumphInfo) -> Triumph:
 	var triumph = _triumphs_scene.instantiate()
 	triumph._info = info

@@ -29,7 +29,7 @@ Do not press pass, you will not get a triumph if you do so.""", TutorialStep.Ste
 	TutorialStep.new(
 	"""You can now choose what triumphs you wish to play. \
 You can play any number of triumphs each round but most triumphs can only be played once a match. \
-Press pass if you want to save the remaining triumphs for a later round.""", TutorialStep.Step.TRIUMPH_BID, true # TODO make work
+Press pass if you want to save the remaining triumphs for a later round.""", TutorialStep.Step.TRIUMPH_BID, true
 	),
 	TutorialStep.new(
 	"""Placing a bid is important. This sets the minimum amount of tricks you need to take this round, so lower bids are good. \
@@ -74,6 +74,15 @@ So if you bid high future players can bid lower this round.""", TutorialStep.Ste
 
 var _tutorial_index: int = 0
 
+func set_index(index_: int) -> void:
+	_tutorial_index = index_
+
+func index() -> int:
+	return _tutorial_index
+
+static func end_index() -> int:
+	return 15
+
 func is_bid() -> bool:
 	if _tutorial_index >= _tutorials.size():
 		return false
@@ -100,6 +109,8 @@ func is_triumph_bid() -> bool:
 	return _tutorials[_tutorial_index].step == TutorialStep.Step.TRIUMPH_BID
 
 func show_next() -> void:
+	if _tutorial_index >= _tutorials.size():
+		return
 	_popup.visible = true
 	var tutorial: TutorialStep = _tutorials[_tutorial_index]
 	await _popup.show_popup(tutorial.popup_text, tutorial.ok_button)

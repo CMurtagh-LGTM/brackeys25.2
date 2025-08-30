@@ -24,22 +24,45 @@ func _ready() -> void:
 	_game_preview.visible = false
 	_triumph_pool = TriumphPool.new()
 	while true:
-		var tutorial_manager: TutorialManager = null
-		if await _show_main_menu():
-			tutorial_manager = TutorialManager.instantiate()
-		await _play(tutorial_manager)
+		var play_state: MainMenu.PlayState = await _show_main_menu()
 
-func _show_main_menu() -> bool:
+		var save_file: SaveFile = SaveFile.new()
+		var tutorial_manager: TutorialManager = null
+		if play_state == MainMenu.PlayState.CONTINUE and _has_save_file():
+			save_file = _load_game()
+			if save_file.tutorial_index < TutorialManager.end_index():
+				tutorial_manager = TutorialManager.instantiate()
+				tutorial_manager.set_index(save_file.tutorial_index)
+
+		if play_state == MainMenu.PlayState.TUTORIAL:
+			tutorial_manager = TutorialManager.instantiate()
+
+		await _play(tutorial_manager, save_file)
+
+func _show_main_menu() -> MainMenu.PlayState:
+	var can_start: bool = false
+	var can_continue: bool = false
+	if _has_save_file():
+		can_continue = true
+		can_start = _load_game().tutorial_index >= TutorialManager.end_index()
+
+	_main_menu.enable_buttons(can_start, can_continue)
 	_main_menu.visible = true
-	var use_tutorial:bool = await _main_menu.start_pressed
+	var use_tutorial: MainMenu.PlayState = await _main_menu.start_pressed
 	_main_menu.visible = false
 	return use_tutorial
 
-func _play(tutorial_manager: TutorialManager) -> void:
+func _play(tutorial_manager: TutorialManager, save_file: SaveFile) -> void:
 	_triumph_pool.reset()
 	var triumphs: Array[Triumph] = []
-	var index: int = 0
-	for game: GameInfo in games:
+
+	for triumph_info: TriumphInfo in save_file.triumph_infos:
+		triumphs.push_back(_triumph_pool.retrieve_triumph(triumph_info))
+
+	for index: int in range(save_file.current_level, games.size()):
+		_save_game(tutorial_manager, index, triumphs)
+
+		var game: GameInfo = games[index]
 		await _show_game_preview(game)
 
 		for triumph_: Triumph in triumphs:
@@ -66,6 +89,7 @@ func _play(tutorial_manager: TutorialManager) -> void:
 		var score: int = result[1]
 
 		if not game.win_condition.has_won(place, score):
+			_save_game(tutorial_manager, 0, [])
 			await _show_game_over(place, score, game.win_condition.to_label())
 			return
 
@@ -74,13 +98,29 @@ func _play(tutorial_manager: TutorialManager) -> void:
 			tutorial_manager.position = globals.viewport_center()
 			await tutorial_manager.show_next()
 			tutorial_manager.dismiss_popup()
-		remove_child(tutorial_manager)
+			remove_child(tutorial_manager)
 
 		if index < games.size() - 1:
 			await _show_triumph_chooser(triumphs)
-
-		index += 1
 	await _show_victory()
+
+func _save_game(tutorial_manager: TutorialManager, level_index: int, triumphs: Array[Triumph]) -> void:
+	var triumph_infos: Array[TriumphInfo] = []
+	for triumph: Triumph in triumphs:
+		triumph_infos.push_back(triumph.info())
+
+	var tutorial_manager_index: int = TutorialManager.end_index()
+	if tutorial_manager != null:
+		tutorial_manager_index = tutorial_manager.index()
+
+	var save_file: SaveFile = SaveFile.new(tutorial_manager_index, level_index, triumph_infos) #TODO
+	ResourceSaver.save(save_file, "user://save.tres")
+
+func _has_save_file() -> bool:
+	return ResourceLoader.exists("user://save.tres")
+
+func _load_game() -> SaveFile:
+	return load("user://save.tres")
 
 func _show_game_preview(game: GameInfo) -> void:
 	_game_preview.set_game_info(game)
@@ -109,4 +149,3 @@ func _show_victory() -> void:
 	_victory.visible = true
 	await _victory.main_menu_pressed
 	_victory.visible = false
-	

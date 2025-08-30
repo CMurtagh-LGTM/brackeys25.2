@@ -31,6 +31,16 @@ func choices(n: int) -> Array[Triumph]:
 func remove_choice(triumph: Triumph) -> void:
 	_triumphs.erase(triumph)
 
+func retrieve_triumph(triumph_info: TriumphInfo) -> Triumph:
+	for triumph: Triumph in _triumphs:
+		if triumph.info() != triumph_info:
+			continue
+		remove_choice(triumph)
+		return triumph
+
+	assert(false)
+	return null
+
 func is_empty() -> bool:
 	return _triumphs.is_empty()
 

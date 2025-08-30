@@ -1,0 +1,14 @@
+class_name SaveFile
+extends Resource
+
+@export var tutorial_index: int
+@export var current_level: int
+
+@export var triumph_infos: Array[TriumphInfo]
+
+func _init(tutorial_index_: int = 0, current_level_: int = 0, triumph_infos_: Array[TriumphInfo] = []) -> void:
+	tutorial_index = tutorial_index_
+	current_level = current_level_
+	triumph_infos = triumph_infos_
+	
+
