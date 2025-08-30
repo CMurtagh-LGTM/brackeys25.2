@@ -30,4 +30,5 @@ rounds = 5
 tricks = 7
 win_condition = SubResource("Resource_28t4k")
 hands = 2
+dealer = -1
 metadata/_custom_type_script = "uid://c2wr4vn8g6efw"
