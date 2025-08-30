@@ -240,13 +240,32 @@ material = SubResource("ShaderMaterial_u0a2j")
 layout_mode = 2
 
 [node name="Label" type="RichTextLabel" parent="MenuButtons/MenuTabs/VBoxContainer3/Panel"]
+custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
+focus_mode = 2
 bbcode_enabled = true
-text = "TODO"
+text = "Made by CMurtagh-LGTM
+
+\"SCP-x5x (Outer Thoughts)\" Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 4.0 License
+http://creativecommons.org/licenses/by/4.0/
+
+Game auio is from https://kenney.nl/assets/casino-audio
+
+You can find the arrow art at https://game-icons.net/1x1/delapouite/plain-arrow.html
+
+Some suit designs are found on Wikimedia 
+https://commons.wikimedia.org/wiki/File:Anglo-American_card_suits.svg
+https://en.wikipedia.org/wiki/File:RosendeutschschweizerBlatt.svg
+https://en.wikipedia.org/wiki/File:Bay_eichel.svg
+
+The font license https://fonts.google.com/specimen/Sofia/license
+"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 justification_flags = 131
+selection_enabled = true
 
 [node name="CenterContainer" type="CenterContainer" parent="MenuButtons/MenuTabs/VBoxContainer3"]
 layout_mode = 2
