@@ -24,15 +24,18 @@ func _ready() -> void:
 	_game_preview.visible = false
 	_triumph_pool = TriumphPool.new()
 	while true:
-		await _show_main_menu()
-		await _play()
+		var tutorial_manager: TutorialManager = null
+		if await _show_main_menu():
+			tutorial_manager = TutorialManager.instantiate()
+		await _play(tutorial_manager)
 
-func _show_main_menu() -> void:
+func _show_main_menu() -> bool:
 	_main_menu.visible = true
-	await _main_menu.start_pressed
+	var use_tutorial:bool = await _main_menu.start_pressed
 	_main_menu.visible = false
+	return use_tutorial
 
-func _play() -> void:
+func _play(tutorial_manager: TutorialManager) -> void:
 	_triumph_pool.reset()
 	var triumphs: Array[Triumph] = []
 	var index: int = 0
@@ -49,7 +52,9 @@ func _play() -> void:
 		game_manager.set_trick_count(game.tricks)
 		game_manager.set_win_condition(game.win_condition.to_label())
 		game_manager.set_hand_count(game.hands)
+		game_manager.set_dealer(game.dealer)
 		game_manager.set_triumphs(triumphs)
+		game_manager.set_tutorial_manager(tutorial_manager)
 
 		add_child(game_manager)
 		# Can't be Array[int], as much as I'd like that
@@ -63,6 +68,13 @@ func _play() -> void:
 		if not game.win_condition.has_won(place, score):
 			await _show_game_over(place, score, game.win_condition.to_label())
 			return
+
+		if tutorial_manager.is_triumph():
+			add_child(tutorial_manager)
+			tutorial_manager.position = globals.viewport_center()
+			await tutorial_manager.show_next()
+			tutorial_manager.dismiss_popup()
+		remove_child(tutorial_manager)
 
 		if index < games.size() - 1:
 			await _show_triumph_chooser(triumphs)

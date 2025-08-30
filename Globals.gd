@@ -49,7 +49,7 @@ const LIGHT_BLUE: Color = 0xB3CAF5FF
 const debug_ai: bool = false
 var open_hands: bool = debug_ai
 
-var muted: bool = false
+var muted: bool = true # TODO false
 
 const forced_triumph: TriumphInfo = null # preload("res://Resources/Triumph/Agent.tres")
 

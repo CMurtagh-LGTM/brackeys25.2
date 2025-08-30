@@ -11,7 +11,7 @@ metadata/_custom_type_script = "uid://2t24lro41dkk"
 [resource]
 script = ExtResource("1_b2oh0")
 texture = ExtResource("2_faxor")
-description = "Place the current turnup in the discard pile and draw a new one."
+description = "Place the current turned up card in the discard pile and draw a new one."
 exhausts = true
 action = SubResource("Resource_62wwf")
 metadata/_custom_type_script = "uid://chanul83o6q5u"

@@ -1,0 +1,88 @@
+[gd_scene load_steps=9 format=3 uid="uid://r5hvl35av2yj"]
+
+[ext_resource type="Script" uid="uid://c3sptld2cywrn" path="res://Tutorial/TutorialPopup.gd" id="1_auvg6"]
+[ext_resource type="PackedScene" uid="uid://dtsvp7okoe2s6" path="res://Mould/Mould.tscn" id="2_gew45"]
+[ext_resource type="Shader" uid="uid://p3mvclycg3my" path="res://Card/Card.gdshader" id="3_si4kn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_auvg6"]
+bg_color = Color(0.215686, 0.196078, 0.176471, 1)
+
+[sub_resource type="Gradient" id="Gradient_6av1v"]
+offsets = PackedFloat32Array(0, 0.933333, 1)
+colors = PackedColorArray(0.917647, 0.956863, 0.698039, 0, 0.817717, 0.86, 0.3526, 0.25098, 0.817717, 0.86, 0.3526, 0.501961)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pgrey"]
+noise_type = 3
+frequency = 0.0215
+fractal_octaves = 4
+fractal_lacunarity = 2.5
+fractal_gain = 0.4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ia3ss"]
+width = 316
+seamless = true
+color_ramp = SubResource("Gradient_6av1v")
+noise = SubResource("FastNoiseLite_pgrey")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_feh7i"]
+resource_local_to_scene = true
+shader = ExtResource("3_si4kn")
+shader_parameter/noise = SubResource("NoiseTexture2D_ia3ss")
+shader_parameter/offset = Vector2(0, 0)
+
+[node name="TutorialPopup" type="Node2D"]
+z_index = 1
+script = ExtResource("1_auvg6")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.0
+offset_top = -25.5
+offset_right = 214.0
+offset_bottom = 25.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_auvg6")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TutorialText" type="RichTextLabel" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/Panel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+
+[node name="OkContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Ok" type="Button" parent="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/OkContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Ok"
+
+[node name="Mould" parent="PanelContainer" instance=ExtResource("2_gew45")]
+material = SubResource("ShaderMaterial_feh7i")
+layout_mode = 2
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/CenterContainer/VBoxContainer/OkContainer/Ok" to="." method="_on_ok_pressed"]

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhdiggactfic"]
+
+[ext_resource type="Script" uid="uid://jdvs75c2lheh" path="res://Tutorial/TutorialManager.gd" id="1_uf23h"]
+[ext_resource type="PackedScene" uid="uid://r5hvl35av2yj" path="res://Tutorial/TutorialPopup.tscn" id="2_gba8d"]
+
+[node name="TutorialManager" type="Node2D"]
+script = ExtResource("1_uf23h")
+
+[node name="TutorialPopup" parent="." instance=ExtResource("2_gba8d")]

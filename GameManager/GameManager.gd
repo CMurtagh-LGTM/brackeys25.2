@@ -73,6 +73,8 @@ var _win_condition_text: String = ""
 
 var _current_arrow_point: Hand.Compass
 
+var _tutorial_manager: TutorialManager
+
 const _pile_seperation: float = 10
 const _next_position_offset: Vector2 = Vector2(74, 56)
 const _bid_position_offset: Vector2 = Vector2(0, 100)
@@ -81,6 +83,7 @@ const _turnup_position_offset: Vector2 = _deck_position_offset + Vector2.LEFT * 
 const _discard_pile_position_offset: Vector2 = - _deck_position_offset
 const _bonus_pile_position_offset: Vector2 = - _deck_position_offset + Vector2.RIGHT * (Card.width + _pile_seperation)
 const _win_condition_position_offset: Vector2 = Vector2.UP * 110
+const _tutorial_manager_position_offset: Vector2 = Vector2.UP * 180
 
 func set_deck_info(deck_info: DeckInfo) -> void:
 	assert(not initialized)
@@ -106,29 +109,29 @@ func set_hand_count(count: int) -> void:
 	assert(count >= 2 and count <= 4)
 	_hand_count = count
 
+func set_dealer(dealer: int) -> void:
+	assert(dealer >= -1 and dealer < _hand_count)
+	_dealer = dealer
+
 func set_triumphs(triumphs: Array[Triumph]) -> void:
 	assert(not initialized)
 	_triumphs = triumphs
+
+func set_tutorial_manager(tutorial_manager: TutorialManager) -> void:
+	assert(not initialized)
+	_tutorial_manager = tutorial_manager
 
 func _ready() -> void:
 	initialized = true
 	globals.viewport_resize.connect(_on_viewport_resize)
 
+	if _tutorial_manager != null:
+		add_child(_tutorial_manager)
+
 	_start_game()
 
 func _calculate_triumph_game_state() -> TriumphGameState:
 	return TriumphGameState.new(_hands[0], _hands, _deck, _discard_pile, _bonus_pile, _origin, _game_state)
-
-func _on_hand_play(card: Card) -> void:
-	_hands[_current_hand].lose_turn()
-	await _trick.add_card(card, _game_state.trump(), _hand_index_to_compass(_current_hand))
-	_current_hand += 1
-	_current_hand %= _hands.size()
-	if _trick.card_count() >= _hands.size():
-		_end_trick()
-		return
-	_hands[_current_hand].gain_turn()
-	_point_to_hand(_hand_index_to_compass(_current_hand))
 
 func _start_game() -> void:
 	_deals_remaining = _deal_count
@@ -169,7 +172,8 @@ func _start_game() -> void:
 	_hands[0].set_is_player()
 	for hand_index: int in range(1, _hands.size()):
 		_hands[hand_index].set_ai(AI.new(_ai_info))
-	_dealer = randi_range(0, _hands.size() - 1)
+	if _dealer == -1:
+		_dealer = randi_range(0, _hands.size() - 1)
 
 	for bid_index: int in _game_state.trick_count() + 1:
 		_game_state.add_bid(NormalBid.new(bid_index))
@@ -188,6 +192,9 @@ func _end_game() -> void:
 			return 
 		return a.get_total_score() > b.get_total_score()
 	)
+
+	if _tutorial_manager != null:
+		remove_child(_tutorial_manager)
 
 	finished.emit(positions.find(_hands[0]), _hands[0].get_total_score())
 
@@ -219,6 +226,11 @@ func _on_turnup_changed() -> void:
 
 func _triumphs_before_bid() -> void:
 	_point_to_hand(_hand_index_to_compass(0))
+
+	if _tutorial_manager.is_triumph_bid():
+		await _tutorial_manager.show_next()
+	_tutorial_manager.dismiss_popup()
+
 	var game_state := _calculate_triumph_game_state()
 
 	_triumph_chooser.visible = true
@@ -247,6 +259,10 @@ func _triumphs_before_bid() -> void:
 
 	_start_bid()
 
+func _show_bid_tutorial() -> void:
+	if _tutorial_manager.is_bid():
+		await _tutorial_manager.show_next()
+
 func _start_bid() -> void:
 	# Get bids from players
 	var current_total := 0
@@ -264,7 +280,9 @@ func _start_bid() -> void:
 		var minimum_bid: int = max(ceilf((_game_state.trick_count() - current_total + 1) / float(_hands.size() - relative_bid_index)), 0)
 
 		if hand.is_player():
+			_show_bid_tutorial()
 			await hand.player_bid(minimum_bid)
+			_tutorial_manager.dismiss_popup()
 		else:
 			var current_bid_score: int = _hands[highest_bidder_index].current_bid().score(_game_state) if _hands[highest_bidder_index].current_bid() else 0
 			await hand.ai_bid(minimum_bid, _game_state.trick_count() - 1, current_bid_score, _deck.peek_top())
@@ -301,11 +319,39 @@ func _on_bonus_pile_changed() -> void:
 	_bonus_label.text = str(_calculate_bonus_score())
 	_bonus_label.visible = not _bonus_pile.is_empty()
 
+func _show_hand_play_tutorial() -> void:
+	# dismissed at the start of play and end_trick
+	if _hands[_current_hand].is_player() and _tutorial_manager.is_play():
+		await _tutorial_manager.show_next()
+
 func _start_trick() -> void:
+	if _tutorial_manager.is_trick():
+		await _tutorial_manager.show_next()
+	_tutorial_manager.dismiss_popup()
+	_show_hand_play_tutorial()
+
+	_hands[_current_hand].gain_turn()
+	_point_to_hand(_hand_index_to_compass(_current_hand))
+
+func _on_hand_play(card: Card) -> void:
+	_tutorial_manager.dismiss_popup()
+
+	_hands[_current_hand].lose_turn()
+	await _trick.add_card(card, _game_state.trump(), _hand_index_to_compass(_current_hand))
+	_current_hand += 1
+	_current_hand %= _hands.size()
+	if _trick.card_count() >= _hands.size():
+		_end_trick()
+		return
+
+	_show_hand_play_tutorial()
+
 	_hands[_current_hand].gain_turn()
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
 func _end_trick() -> void:
+	_tutorial_manager.dismiss_popup()
+
 	var winner: Hand.Compass = _trick.get_winner(_game_state.trump())
 	_point_to_hand(winner)
 	_current_hand = _compass_to_hand_index(winner)
@@ -422,6 +468,9 @@ func _on_viewport_resize() -> void:
 	_win_condition.position = globals.viewport_center() + _win_condition_position_offset
 	_deck_order_label.position = globals.viewport_size - _deck_order_label.size
 	_origin.position = globals.viewport_center()
+
+	if _tutorial_manager != null:
+		_tutorial_manager.position = globals.viewport_center() + _tutorial_manager_position_offset
 
 	if _game_state.turnup():
 		_game_state.turnup().position = globals.viewport_center() + _turnup_position_offset

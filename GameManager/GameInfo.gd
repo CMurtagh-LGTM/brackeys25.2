@@ -9,3 +9,5 @@ extends Resource
 @export var win_condition: WinCondition
 @export var hands: int = 4
 
+## Select -1 for a random dealer
+@export_range(-1, 3) var dealer: int = -1

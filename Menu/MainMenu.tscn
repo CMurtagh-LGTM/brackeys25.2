@@ -122,6 +122,24 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
+[node name="Tutorial" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Tutorial"
+
+[node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Tutorial" instance=ExtResource("2_tma8a")]
+material = SubResource("ShaderMaterial_exbqw")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Start" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
@@ -143,7 +161,7 @@ grow_vertical = 2
 [node name="HowToPlay" type="Button" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 focus_mode = 0
-text = "How To Play"
+text = "Reference"
 
 [node name="Mould" parent="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/HowToPlay" instance=ExtResource("2_tma8a")]
 material = SubResource("ShaderMaterial_tpenk")
@@ -288,6 +306,7 @@ offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Tutorial" to="." method="_on_tutorial_pressed"]
 [connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/HowToPlay" to="." method="_on_how_to_play_pressed"]
 [connection signal="pressed" from="MenuButtons/MenuTabs/VBoxContainer/CenterContainer/VBoxContainer/Credits" to="." method="_on_credits_pressed"]
