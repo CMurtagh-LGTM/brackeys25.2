@@ -141,7 +141,9 @@ func winning_trick(cards_: Array[Card]) -> void:
 	_hand_score_label.text = str(_current_deal_score)
 	_hand_score_label.visible = true
 	if _current_bid.has_met(_current_deal_score):
-		_bid_indicator.modulate = Globals.LIGHT_RED if not _current_bid.has_met(_current_deal_score) else Globals.LIGHT_GREEN
+		_bid_indicator.modulate = Globals.LIGHT_GREEN
+	else:
+		_bid_indicator.modulate = Globals.LIGHT_RED
 
 func get_deal_score() -> int:
 	return _current_deal_score
