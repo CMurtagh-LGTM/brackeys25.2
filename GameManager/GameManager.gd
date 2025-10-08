@@ -227,9 +227,10 @@ func _on_turnup_changed() -> void:
 func _triumphs_before_bid() -> void:
 	_point_to_hand(_hand_index_to_compass(0))
 
-	if _tutorial_manager.is_triumph_bid():
-		await _tutorial_manager.show_next()
-	_tutorial_manager.dismiss_popup()
+	if _tutorial_manager != null:
+		if _tutorial_manager.is_triumph_bid():
+			await _tutorial_manager.show_next()
+		_tutorial_manager.dismiss_popup()
 
 	var game_state := _calculate_triumph_game_state()
 
@@ -260,7 +261,7 @@ func _triumphs_before_bid() -> void:
 	_start_bid()
 
 func _show_bid_tutorial() -> void:
-	if _tutorial_manager.is_bid():
+	if _tutorial_manager != null and _tutorial_manager.is_bid():
 		await _tutorial_manager.show_next()
 
 func _start_bid() -> void:
@@ -282,7 +283,8 @@ func _start_bid() -> void:
 		if hand.is_player():
 			_show_bid_tutorial()
 			await hand.player_bid(minimum_bid)
-			_tutorial_manager.dismiss_popup()
+			if _tutorial_manager != null:
+				_tutorial_manager.dismiss_popup()
 		else:
 			var current_bid_score: int = _hands[highest_bidder_index].current_bid().score(_game_state) if _hands[highest_bidder_index].current_bid() else 0
 			await hand.ai_bid(minimum_bid, _game_state.trick_count() - 1, current_bid_score, _deck.peek_top())
@@ -325,16 +327,18 @@ func _show_hand_play_tutorial() -> void:
 		await _tutorial_manager.show_next()
 
 func _start_trick() -> void:
-	if _tutorial_manager.is_trick():
-		await _tutorial_manager.show_next()
-	_tutorial_manager.dismiss_popup()
-	_show_hand_play_tutorial()
+	if _tutorial_manager != null:
+		if _tutorial_manager.is_trick():
+			await _tutorial_manager.show_next()
+		_tutorial_manager.dismiss_popup()
+		_show_hand_play_tutorial()
 
 	_hands[_current_hand].gain_turn()
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
 func _on_hand_play(card: Card) -> void:
-	_tutorial_manager.dismiss_popup()
+	if _tutorial_manager != null:
+		_tutorial_manager.dismiss_popup()
 
 	_hands[_current_hand].lose_turn()
 	await _trick.add_card(card, _game_state.trump(), _hand_index_to_compass(_current_hand))
@@ -344,13 +348,15 @@ func _on_hand_play(card: Card) -> void:
 		_end_trick()
 		return
 
-	_show_hand_play_tutorial()
+	if _tutorial_manager != null:
+		_show_hand_play_tutorial()
 
 	_hands[_current_hand].gain_turn()
 	_point_to_hand(_hand_index_to_compass(_current_hand))
 
 func _end_trick() -> void:
-	_tutorial_manager.dismiss_popup()
+	if _tutorial_manager != null:
+		_tutorial_manager.dismiss_popup()
 
 	var winner: Hand.Compass = _trick.get_winner(_game_state.trump())
 	_point_to_hand(winner)

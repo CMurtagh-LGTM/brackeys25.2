@@ -8,7 +8,7 @@ extends Node2D
 @onready var _continue_button: Button = %Continue
 
 enum PlayState {
-	TUTORIAL, START, CONTINUE
+	TUTORIAL, START, CONTINUE, SINGLE
 }
 
 signal start_pressed(play_state: PlayState)
@@ -33,11 +33,19 @@ func _on_start_pressed() -> void:
 func _on_continue_pressed() -> void:
 	start_pressed.emit(PlayState.CONTINUE)
 
+func _on_single_match_pressed() -> void:
+	_menu_tabs.current_tab = 0
+	start_pressed.emit(PlayState.SINGLE)
+
 func _on_how_to_play_pressed():
 	_menu_tabs.current_tab = 1
+
+func _on_extra_pressed() -> void:
+	_menu_tabs.current_tab = 3
 
 func _on_credits_pressed():
 	_menu_tabs.current_tab = 2
 
 func _on_back_pressed():
 	_menu_tabs.current_tab = 0
+

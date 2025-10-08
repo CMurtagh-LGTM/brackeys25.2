@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="GameInfo" load_steps=7 format=3 uid="uid://ds1i02su8ruku"]
+
+[ext_resource type="Script" uid="uid://dte1rd2vlh44p" path="res://Hand/AIInfo.gd" id="1_4yjqp"]
+[ext_resource type="Script" uid="uid://c2wr4vn8g6efw" path="res://GameManager/GameInfo.gd" id="1_ik7ft"]
+[ext_resource type="Resource" uid="uid://7u0h8e28bfup" path="res://Resources/Decks/French33.tres" id="2_4mpxy"]
+[ext_resource type="Script" uid="uid://dh0njfgbt545i" path="res://GameManager/WinConditions/PlaceWinCondition.gd" id="4_uaarl"]
+
+[sub_resource type="Resource" id="Resource_gs0tm"]
+script = ExtResource("1_4yjqp")
+high_bid = 2
+metadata/_custom_type_script = "uid://dte1rd2vlh44p"
+
+[sub_resource type="Resource" id="Resource_ojaxf"]
+script = ExtResource("4_uaarl")
+minimum_place = 1
+metadata/_custom_type_script = "uid://dh0njfgbt545i"
+
+[resource]
+script = ExtResource("1_ik7ft")
+deck_info = ExtResource("2_4mpxy")
+ai_info = SubResource("Resource_gs0tm")
+win_condition = SubResource("Resource_ojaxf")
+metadata/_custom_type_script = "uid://c2wr4vn8g6efw"

@@ -15,9 +15,9 @@ fractal_gain = 0.4
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ia3ss"]
 width = 316
-seamless = true
-color_ramp = SubResource("Gradient_6av1v")
 noise = SubResource("FastNoiseLite_pgrey")
+color_ramp = SubResource("Gradient_6av1v")
+seamless = true
 
 [resource]
 resource_local_to_scene = true

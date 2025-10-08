@@ -7,14 +7,8 @@
 
 [sub_resource type="Resource" id="Resource_y583k"]
 script = ExtResource("1_xbw0a")
-trump_bonus = 0.4
 singleton_threshold = 16
 offsuit_threshold = 19
-stash_threshold = 1.5
-high_bid = 3
-high_bid_penalty = 0.25
-turnup_score_threshold = 0.5
-turnup_reveal_threshold = 0.75
 metadata/_custom_type_script = "uid://dte1rd2vlh44p"
 
 [sub_resource type="Resource" id="Resource_ow3pn"]
@@ -26,9 +20,5 @@ metadata/_custom_type_script = "uid://dh0njfgbt545i"
 script = ExtResource("1_ce5kj")
 deck_info = ExtResource("2_y583k")
 ai_info = SubResource("Resource_y583k")
-rounds = 3
-tricks = 7
 win_condition = SubResource("Resource_ow3pn")
-hands = 4
-dealer = -1
 metadata/_custom_type_script = "uid://c2wr4vn8g6efw"

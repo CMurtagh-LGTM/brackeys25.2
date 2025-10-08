@@ -10,6 +10,8 @@ const games: Array[GameInfo] = [
 	preload("res://Resources/Games/Seven.tres"),
 ]
 
+const single_game: GameInfo = preload("res://Resources/Games/Single.tres")
+
 @onready var _main_menu: MainMenu = $MainMenu
 @onready var _game_preview: GamePreview = $GamePreview
 @onready var _game_over: GameOver = $GameOver
@@ -34,17 +36,12 @@ func _ready() -> void:
 
 		var play_state: MainMenu.PlayState = await _show_main_menu(tutorial_complete, first_level)
 
-		var save_file: SaveFile = SaveFile.new()
-		save_file.tutorial_complete = tutorial_complete
-		var tutorial_manager: TutorialManager = TutorialManager.instantiate()
-		if play_state == MainMenu.PlayState.CONTINUE and _has_save_file():
-			save_file = _load_game()
-			tutorial_manager.set_index(save_file.tutorial_index)
-
-		if play_state == MainMenu.PlayState.START:
-			tutorial_manager.set_index(TutorialManager.end_index())
-
-		await _play(tutorial_manager, save_file)
+		if (play_state == MainMenu.PlayState.TUTORIAL
+			or play_state == MainMenu.PlayState.START
+			or play_state == MainMenu.PlayState.CONTINUE):
+			await _normal_game(tutorial_complete, play_state)
+		elif play_state == MainMenu.PlayState.SINGLE:
+			await _single_game()
 
 func _show_main_menu(tutorial_complete: bool, first_level: bool) -> MainMenu.PlayState:
 	var can_start: bool = false
@@ -58,6 +55,47 @@ func _show_main_menu(tutorial_complete: bool, first_level: bool) -> MainMenu.Pla
 	var use_tutorial: MainMenu.PlayState = await _main_menu.start_pressed
 	_main_menu.visible = false
 	return use_tutorial
+
+func _normal_game(tutorial_complete: bool, play_state: MainMenu.PlayState) -> void:
+	var save_file: SaveFile = SaveFile.new()
+	save_file.tutorial_complete = tutorial_complete
+	var tutorial_manager: TutorialManager = TutorialManager.instantiate()
+	if play_state == MainMenu.PlayState.CONTINUE and _has_save_file():
+		save_file = _load_game()
+		tutorial_manager.set_index(save_file.tutorial_index)
+
+	if play_state == MainMenu.PlayState.START:
+		tutorial_manager.set_index(TutorialManager.end_index())
+
+	await _play(tutorial_manager, save_file)
+
+func _single_game() -> void:
+	var game: GameInfo = single_game
+	await _show_game_preview(game)
+
+	var game_manager: GameManager = _game_scene.instantiate()
+	game_manager.set_deck_info(game.deck_info)
+	game_manager.set_ai_info(game.ai_info)
+	game_manager.set_deal_count(game.rounds)
+	game_manager.set_trick_count(game.tricks)
+	game_manager.set_win_condition(game.win_condition.to_label())
+	game_manager.set_hand_count(game.hands)
+	game_manager.set_dealer(game.dealer)
+
+	add_child(game_manager)
+	# Can't be Array[int], as much as I'd like that
+	var result: Array = await game_manager.finished
+	# var result := [0, 100]
+	remove_child(game_manager)
+
+
+	var place: int = result[0]
+	var score: int = result[1]
+
+	if not game.win_condition.has_won(place, score):
+		await _show_game_over(place, score, game.win_condition.to_label())
+	else:
+		await _show_victory()
 
 func _play(tutorial_manager: TutorialManager, save_file: SaveFile) -> void:
 	_triumph_pool.reset()
