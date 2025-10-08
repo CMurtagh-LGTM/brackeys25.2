@@ -26,10 +26,13 @@ func _ready() -> void:
 	while true:
 
 		var tutorial_complete: bool = false
+		var first_level: bool = false
 		if _has_save_file():
-			tutorial_complete = _load_game().tutorial_complete
+			var _save_file: SaveFile = _load_game()
+			tutorial_complete = _save_file.tutorial_complete
+			first_level = _save_file.current_level == 0
 
-		var play_state: MainMenu.PlayState = await _show_main_menu(tutorial_complete)
+		var play_state: MainMenu.PlayState = await _show_main_menu(tutorial_complete, first_level)
 
 		var save_file: SaveFile = SaveFile.new()
 		save_file.tutorial_complete = tutorial_complete
@@ -43,11 +46,11 @@ func _ready() -> void:
 
 		await _play(tutorial_manager, save_file)
 
-func _show_main_menu(tutorial_complete: bool) -> MainMenu.PlayState:
+func _show_main_menu(tutorial_complete: bool, first_level: bool) -> MainMenu.PlayState:
 	var can_start: bool = false
 	var can_continue: bool = false
 	if _has_save_file():
-		can_continue = true
+		can_continue = not first_level
 		can_start = tutorial_complete
 
 	_main_menu.enable_buttons(can_start, can_continue)
